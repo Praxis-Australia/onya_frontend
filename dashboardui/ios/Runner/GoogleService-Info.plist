@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>575147882005-kug2dq0gtb6sarfjfvebub5r09772d1m.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.575147882005-kug2dq0gtb6sarfjfvebub5r09772d1m</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAgClYi1rp2ExfcTCZ--CJbDNaGlwo7fgA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>575147882005</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.dashboardui</string>
+	<key>PROJECT_ID</key>
+	<string>praxis-donation-backend</string>
+	<key>STORAGE_BUCKET</key>
+	<string>praxis-donation-backend.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:575147882005:ios:605a6a77de1022fb90c01c</string>
+</dict>
+</plist>

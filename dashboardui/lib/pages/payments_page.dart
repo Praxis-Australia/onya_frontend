@@ -4,6 +4,8 @@ import 'package:dashboardui/pages/home_page.dart';
 import 'package:dashboardui/functions/firebase_user_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class PaymentsPage extends StatefulWidget {
   const PaymentsPage({Key? key}) : super(key: key);
@@ -25,25 +27,27 @@ class _PaymentsPageState extends State<PaymentsPage> {
       print(id);
     }
 
+    DateTime fromTimestampToDateTime(Timestamp timestamp) {
+        print(timestamp);
+        return DateTime.fromMicrosecondsSinceEpoch(timestamp.microsecondsSinceEpoch);
+    }
+
     Future<List<MyTransactionCard>> _createTransactionList(transactions) async {
         List<String> amounts = [];
         List<String> postDates = [];
 
-        List<MyTransactionCard> cards = [
-            MyTransactionCard(
-                amount: 'hello',
-                date: 'hello',
-                charityPref: 'hello',
-            ),
-        ];
+        List<MyTransactionCard> cards = [];
 
         for (var transaction in transactions) {
             await FirebaseFunction.read('transactions', transaction).then(
                 (value) => {
+                    if ((value!['post_date']) is String) {
+                        value!['post_date'] = Timestamp.fromDate(DateFormat("dd/mm/yyyy hh:mm:ss").parse(value!['post_date']))
+                    },
                     amounts.add(value!['amount'].toString()),
                     cards.add(MyTransactionCard(
                         amount: value!['amount'].toString(),
-                        date: value!['post_date'],
+                        date: DateFormat('yyyy-MM-dd').format(fromTimestampToDateTime(value!['post_date'])),
                         charityPref: 'ello',
                     )),
                 }

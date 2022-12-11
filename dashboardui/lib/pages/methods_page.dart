@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:dashboardui/util/my_detailed_card.dart';
 import 'package:dashboardui/pages/home_page.dart';
+import 'package:dashboardui/util/my_charity_card.dart';
+import 'package:dashboardui/functions/firebase_user_functions.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MethodsPage extends StatefulWidget {
   const MethodsPage({Key? key}) : super(key: key);
@@ -10,7 +15,20 @@ class MethodsPage extends StatefulWidget {
 }
 
 class _MethodsPageState extends State<MethodsPage> {
-     @override
+
+
+    String id = "h";
+    int index = 0;
+    late User user;
+    
+    void initState() {
+      super.initState();
+      user = FirebaseAuth.instance.currentUser!;
+      id = user.uid;
+      print("id " + id);
+    }
+
+    @override
     Widget build(BuildContext context) {
         return Scaffold(
             backgroundColor: Colors.grey[300],
@@ -46,8 +64,28 @@ class _MethodsPageState extends State<MethodsPage> {
                                         )
                             ) 
                         ),
-                        Text(
-                            'This is the methods page.'
+                        StreamBuilder(
+                            stream: FirebaseFirestore.instance.collection('charities').snapshots(),
+                            builder: (context, snapshot) {
+                                print(snapshot);
+                                if (snapshot.hasData) {
+                                    return ListView.builder(
+                                        itemCount: snapshot.data!.docs.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                            DocumentSnapshot charity = snapshot.data!.docs[index];
+                                            return MyCharityCard(
+                                                charityId: charity.id,
+                                                id: id,
+                                            );
+                                        }
+                                    );
+                                }
+                                return MyCharityCard(
+                                    charityId: 'GRYsjKanNhabgHSSx65V',
+                                    id: id,
+                                );
+                            }
                         )
                     ]
                 ), // Row

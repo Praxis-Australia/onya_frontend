@@ -25,44 +25,64 @@ class _PaymentsPageState extends State<PaymentsPage> {
       print(id);
     }
 
+    Future<List<MyTransactionCard>> _createTransactionList(transactions) async {
+        List<String> amounts = [];
+        List<String> postDates = [];
+
+        List<MyTransactionCard> cards = [
+            MyTransactionCard(
+                amount: 'hello',
+                date: 'hello',
+                charityPref: 'hello',
+            ),
+        ];
+
+        for (var transaction in transactions) {
+            await FirebaseFunction.read('transactions', transaction).then(
+                (value) => {
+                    amounts.add(value!['amount'].toString()),
+                    cards.add(MyTransactionCard(
+                        amount: value!['amount'].toString(),
+                        date: value!['post_date'],
+                        charityPref: 'ello',
+                    )),
+                }
+            );
+        }
+        
+        // var amount = (await transaction)!['amount'];
+        // var post_date = (await transaction)!['post_date'];
+        return cards;
+    }
+
     Future<List<MyTransactionCard>> _getTransactions(id) async {
         Future<Map<String, dynamic>?> transactionList = FirebaseFunction.read('users', id);
-        // transactions = (await transactionList)!['transaction'];
-        return [MyTransactionCard(
-            amount: '123.35',
-            date:'11/12/2023',
-            charityPref:'no')];
+        var transactions = (await transactionList)!['transactions'];
+        print(transactions);
+        var detailedTransactionList = await _createTransactionList(await transactions);
+        return detailedTransactionList;
     }
 
     Widget _list() {
         return FutureBuilder(
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             //show progress bar if no data
-            if (snapshot.connectionState == ConnectionState.none &&
+            print(snapshot);
+            if (snapshot.connectionState == ConnectionState.waiting ||
                 !snapshot.hasData) {
-            return Text('None');
+                return new Padding(
+                    padding: const EdgeInsets.only(top: 300.0),
+                    child:CircularProgressIndicator(),
+                );
             }
-            return ListView.builder(
+            return new Container(height:750, child:ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
-                return ListTile(
-                    title: Card(
-                        child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                                children: [
-                                    Text(snapshot.data[index].amount),
-                                    Text(snapshot.data[index].date),
-                                    Text(snapshot.data[index].charityPref),
-                                ],
-                            ),
-                        )
-                    )
-                );
+                return snapshot.data[index];
                 },
-            );
+            ));
         },
         future: _getTransactions(id),
         initialData: [],
@@ -105,10 +125,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                         )
                             ) 
                         ),
-                        Container(
-                            height:600,
-                            child: _list(),
-                        ),
+                        _list()
                     ]
                 ), // Row
             ),

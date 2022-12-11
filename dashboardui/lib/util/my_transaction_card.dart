@@ -17,10 +17,10 @@ class MyTransactionCard extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return Padding(
-            padding: const EdgeInsets.symmetric(horizontal:25),
+            padding: const EdgeInsets.symmetric(horizontal:25, vertical:5),
             child: Container(
                 width: 300,
-                padding: EdgeInsets.all(15.0),
+                padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -28,7 +28,7 @@ class MyTransactionCard extends StatelessWidget {
                 child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    SizedBox(height: 5),
+                    SizedBox(height: 15),
                     Text(
                     date,
                     style: TextStyle(

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dashboardui/util/my_firebase_figure.dart';
+import 'package:intl/intl.dart';
 
 class MyCard extends StatelessWidget {
-    final MyFirebaseFigure amount;
-    final String date;
+    final String amount;
+    final DateTime date;
     final String titleText;
     final color;
 
@@ -32,27 +33,38 @@ class MyCard extends StatelessWidget {
                 children: [
                     SizedBox(height: 5),
                     Text(
-                    titleText,
-                    style: TextStyle(
-                        color: Colors.white,
-                    )
+                        titleText,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                        )
                     ),
                     SizedBox(height: 5),
-                    amount,
+                    Text(
+                        '\$ ' + amount,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                        )
+                    ),
                     SizedBox(height: 10),
                     Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                         Text(
-                        'Date',
+                        'Last checked:',
                         style: TextStyle(
                             color: Colors.white,
+                            fontSize: 15,
                         )
                         ),
                         Text(
-                        date.toString(),
+                        DateFormat('yyyy-MM-dd').format(date),
                         style: TextStyle(
                             color: Colors.white,
+                            fontSize: 15,
                         )
                         ),
                     ],

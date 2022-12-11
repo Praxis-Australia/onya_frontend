@@ -5,6 +5,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:dashboardui/util/my_card.dart';
 import 'package:dashboardui/util/my_icon.dart';
 import 'package:dashboardui/util/my_detailed_card.dart';
+import 'package:dashboardui/util/my_total_donations_card.dart';
+import 'package:dashboardui/util/my_roundup_card.dart';
 import 'package:dashboardui/pages/payments_page.dart';
 import 'package:dashboardui/pages/send_page.dart';
 import 'package:dashboardui/pages/give_page.dart';
@@ -76,22 +78,46 @@ class _HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     controller: _controller,
                     children: [
-                      MyCard(
-                        titleText: 'Ello', 
-                        amount: MyFirebaseFigure(
-                          collection:'users',
-                          id:id,
-                          value:'bigBucks',
-                          style:TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          preString: '\$',
-                        ), 
-                        date: '12/12/2021', 
-                        color: Colors.blue
+                      MyTotalDonationsCard(
+                        id:id,
+                        color: Colors.blue,
                       ),
+                      MyRoundupCard(
+                        id:id,
+                        color: Colors.green,
+                      ),
+                      // MyCard(
+                      //   titleText: 'Ello', 
+                      //   amount: MyFirebaseFigure(
+                      //     collection:'users',
+                      //     id:id,
+                      //     value:'firstName',
+                      //     style:TextStyle(
+                      //       fontSize: 20.0,
+                      //       fontWeight: FontWeight.bold,
+                      //       color: Colors.white,
+                      //     ),
+                      //     preString: 'namo: ',
+                      //   ), 
+                      //   date: '12/12/2021', 
+                      //   color: Colors.green
+                      // ),
+                      // MyCard(
+                      //   titleText: 'Ello', 
+                      //   amount: MyFirebaseFigure(
+                      //     collection:'users',
+                      //     id:id,
+                      //     value:'lastName',
+                      //     style:TextStyle(
+                      //       fontSize: 20.0,
+                      //       fontWeight: FontWeight.bold,
+                      //       color: Colors.white,
+                      //     ),
+                      //     preString: 'name: ',
+                      //   ), 
+                      //   date: '12/12/2021', 
+                      //   color: Colors.red
+                      // ),
                       // MyCard(titleText: 'Giving Preferences', amount: 100, date: '12/12/2021', color: Colors.red),
                       // MyCard(titleText: 'Active Methods', amount: 15, date: '12/12/2021', color: Colors.green),
                     ],
@@ -102,7 +128,7 @@ class _HomePageState extends State<HomePage> {
 
                 SmoothPageIndicator(
                   controller: _controller, 
-                  count: 3,
+                  count: 2,
                   effect: ExpandingDotsEffect(
                     activeDotColor: Colors.grey,
                   ),

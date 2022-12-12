@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboardui/util/my_account_card.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 class MyBasiqConnect extends StatelessWidget {
     final String id;
@@ -18,9 +20,20 @@ class MyBasiqConnect extends StatelessWidget {
                 if (!snapshot.hasData) {
                 return Text("Loading");
                 } else {
-                  var uid = snapshot.data!['basiq']['uid'];
-                  if (uid == null) {
-                    return Text("No Basiq ID. Please contact us for a link.");
+                  var ids = snapshot.data!['basiq']['connectionIds'];
+                  print(ids);
+                  if (ids.length == 0) {
+                    return Column(
+                      children:[
+                          Text(
+                            "No connections ID. Use this link "
+                          ),
+                          InkWell(
+                            child: new Text('Open linkey'),
+                            onTap: () => launch(snapshot.data!['basiq']['consentLink'])
+                          )
+                        ]
+                    );
                   } else {
                     var accountNames = snapshot.data!['basiq']['availableAccounts'];
                     return ListView.builder(

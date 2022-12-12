@@ -32,7 +32,12 @@ class _MyCharityCardState extends State<MyCharityCard> {
                     builder: (context, charitySnapshot) {
                         if (userSnapshot.hasData && charitySnapshot.hasData) {
                             if (_currentSliderValue == -1) {
-                                _currentSliderValue = userSnapshot.data!['charitySelection'][charityId].toDouble();
+                                if (userSnapshot.data!['charitySelection'][charityId] == null) {
+                                    _currentSliderValue = 0;
+                                }
+                                else {
+                                    _currentSliderValue = userSnapshot.data!['charitySelection'][charityId].toDouble();
+                                }
                             }
                             return Padding(
                                 padding: EdgeInsets.symmetric(horizontal:25, vertical: 10),

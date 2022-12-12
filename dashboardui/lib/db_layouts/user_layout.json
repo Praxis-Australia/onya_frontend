@@ -1,0 +1,27 @@
+{
+    "basiq":{
+        "accountNames":[],
+        "availableAccounts":[],
+        "connectionIds":[]
+    },
+    "charitySelection":{},
+    "roundup":{
+        "config":{
+            "debitAt":10,
+            "debitConnectionId":null,
+            "enabled":false,
+            "roundTo":1,
+            "transactionConnectionId":null
+        },
+        "nextDebit":{
+            "accAmount":0,
+            "lastChecked":null
+        },
+        "statistics":{
+            "total":0
+        },
+        "transactions":[],
+        "uid":null,
+        "userCreated":null
+    }
+}

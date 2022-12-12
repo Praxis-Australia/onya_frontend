@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dashboardui/util/my_login.dart';
+import 'package:dashboardui/pages/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -37,10 +38,38 @@ class _LoginPageState extends State<LoginPage> {
                     Center(
                         child: Container(
                             width: 300.0,
-                            height: 300.0,
+                            height: 200.0,
                             child: MyLogin(),
                         ),
                     ),
+                    SizedBox(
+                        height:00.0,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            Text(
+                                'Don\'t have an account? ',
+                                style: TextStyle(
+                                fontSize: 15.0,
+                                ),
+                            ),
+                            InkWell(
+                                onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => SignupPage()),
+                                    );
+                                },
+                                child:Text(
+                                    'Sign up',
+                                    style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                    ),
+                                ),
+                            )
+                        ],
+                    )
                 ]
             )
         )

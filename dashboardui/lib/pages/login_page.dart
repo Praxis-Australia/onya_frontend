@@ -44,31 +44,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(
                         height:00.0,
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                            Text(
-                                'Don\'t have an account? ',
-                                style: TextStyle(
-                                fontSize: 15.0,
-                                ),
-                            ),
-                            InkWell(
-                                onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => SignupPage()),
-                                    );
-                                },
-                                child:Text(
-                                    'Sign up',
-                                    style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    ),
-                                ),
-                            )
-                        ],
                     )
                 ]
             )

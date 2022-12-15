@@ -10,45 +10,45 @@ class MyLogin extends StatefulWidget {
 
 class _MyLoginState extends State<MyLogin> {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final TextEditingController _emailController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _mobileController = TextEditingController();
+    final TextEditingController _otpController = TextEditingController();
     bool _success = false;
-    String? _userEmail;
-    String? _userID;
+    bool _otpSent = false;
     Exception? _errorMessage;
-    User? user;
+    ConfirmationResult? confirmationResult;
 
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
     void _login() async {
         _success = true;
-        try {
-            final User? user = (await 
-            _auth.signInWithEmailAndPassword(
-                email: _emailController.text,
-                password: _passwordController.text,
-            )
-        ).user;
+        
+        ConfirmationResult? confirmationResult = await _auth.signInWithPhoneNumber(_mobileController.text);
         } on Exception catch (e) {
             setState(() {
-            _success = false;
             _errorMessage = e;
             print(e);
-            user = null;
             print("there was an exception");
             });
         }
 
-        if (_success) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-            );
-        } else {
-            _success = false;
-        }
+    }
 
-        // await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+    void _validate() async {
+        try {
+            if (confirmationResult != null) {
+                await confirmationResult.confirm(_otpController.text);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                );
+            }
+        } on Exception catch (e) {
+            setState(() {
+            _errorMessage = e;
+            print(e);
+            print("there was an exception");
+            });
+        }
     }
 
     @override
@@ -58,44 +58,70 @@ class _MyLoginState extends State<MyLogin> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
-                        validator: (String? value) {
-                            if (value!.isEmpty) {
-                                return 'Please enter some text';
-                            }
-                            return null;
-                        },
-                    ),
-                    TextFormField(
-                        controller: _passwordController,
-                        decoration: const InputDecoration(labelText: 
-                            'Password'),
-                        validator: (String? value) {
-                        if (value!.isEmpty) {
-                            return 'Please enter some text';
-                        }
-                        return null;
-                        },
-                    ),
-                    Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                                if (true) {
-                                    _login();
-                                }
-                            },
-                            child: const Text('Submit'),
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.blue, // background
-                                onPrimary: Colors.white, // foreground
+                    Visibility(
+                        visible: !_otpSent,
+                        child: [
+                            TextFormField(
+                                controller: _mobileController,
+                                decoration: const InputDecoration(labelText: 'Mobile Number'),
+                                validator: (String? value) {
+                                    if (value!.isEmpty) {
+                                        return 'Please enter some text';
+                                    }
+                                    return null;
+                                },
                             ),
-                            
-                        ),
-                    )
+                            Container(
+                                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                alignment: Alignment.center,
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                        if (true) {
+                                            _login();
+                                        }
+                                    },
+                                    child: const Text('Login'),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.blue, // background
+                                        onPrimary: Colors.white, // foreground
+                                    ),
+                                    
+                                ),
+                            )
+                        ]
+                    ),
+                    Visibility(
+                        visible: _otpSent,
+                        child: [
+                            TextFormField(
+                                controller: _otpController,
+                                decoration: const InputDecoration(labelText: 'One-Time Password'),
+                                validator: (String? value) {
+                                    if (value!.isEmpty) {
+                                        return 'Please enter the OTP';
+                                    }
+                                    return null;
+                                },
+                            ),
+                            Container(
+                                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                alignment: Alignment.center,
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                        if (true) {
+                                            _validate();
+                                        }
+                                    },
+                                    child: const Text('Validate'),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.blue, // background
+                                        onPrimary: Colors.white, // foreground
+                                    ),
+                                    
+                                ),
+                            )
+                        ]
+                    ),
                 ]
             )
         );

@@ -10,6 +10,7 @@ import 'package:dashboardui/pages/payments_page.dart';
 import 'package:dashboardui/pages/login_page.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
 
@@ -17,8 +18,13 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
   GoRoute(
       path: '/',
       builder: (context, state) => HomePage(),
-      redirect: (context, state) {
-        if (1 % 2 == 0) {
+      redirect: (context, state) async {
+        // Boolean async function to redirect to login page if user is not logged in
+        final bool isUserLoggedIn = await FirebaseAuth.instance
+            .authStateChanges()
+            .map((User? user) => user != null)
+            .first;
+        if (!isUserLoggedIn) {
           return '/login';
         } else {
           return null;

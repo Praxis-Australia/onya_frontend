@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dashboardui/pages/home_page.dart';
+import 'package:go_router/go_router.dart';
 //import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class MyPhoneLogin extends StatefulWidget {
@@ -37,10 +38,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
   void _validate() async {
     try {
       await confirmationResult.confirm(_otpController.text);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      context.go('/');
     } on Exception catch (e) {
       setState(() {
         _errorMessage = e;

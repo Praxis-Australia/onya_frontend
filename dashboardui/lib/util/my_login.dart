@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dashboardui/pages/home_page.dart';
+import 'package:go_router/go_router.dart';
 //import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class MyLogin extends StatefulWidget {
@@ -39,10 +40,7 @@ class _MyLoginState extends State<MyLogin> {
     }
 
     if (_success) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      context.go('/');
     } else {
       _success = false;
     }

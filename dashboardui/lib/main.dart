@@ -14,23 +14,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
 
-final GoRouter router = GoRouter(routes: <RouteBase>[
-  GoRoute(
-      path: '/',
-      builder: (context, state) => HomePage(),
-      redirect: (context, state) async {
-        // Boolean async function to redirect to login page if user is not logged in
-        final bool isUserLoggedIn = await FirebaseAuth.instance
-            .authStateChanges()
-            .map((User? user) => user != null)
-            .first;
-        if (!isUserLoggedIn) {
-          return '/login';
-        } else {
-          return null;
-        }
-      },
-      routes: <RouteBase>[
+final GoRouter router = GoRouter(
+    redirect: (context, state) async {
+      // Redirect when logged out using FirebaseAuth.instance.authStateChanges()
+      if (FirebaseAuth.instance.currentUser == null && state.path != '/login') {
+        return '/login';
+      } else {
+        return null;
+      }
+    },
+    routes: <RouteBase>[
+      GoRoute(path: '/', builder: (context, state) => HomePage(), routes: <
+          RouteBase>[
         GoRoute(path: 'login', builder: (context, state) => const LoginPage()),
         GoRoute(path: 'give', builder: (context, state) => const GivePage()),
         GoRoute(path: 'send', builder: (context, state) => const SendPage()),
@@ -44,7 +39,7 @@ final GoRouter router = GoRouter(routes: <RouteBase>[
         GoRoute(
             path: 'settings', builder: (context, state) => const SettingsPage())
       ])
-]);
+    ]);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

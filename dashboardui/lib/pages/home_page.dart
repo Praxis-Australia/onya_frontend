@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'onya.',
                   style: TextStyle(
                     fontSize: 30.0,
@@ -61,18 +61,25 @@ class _HomePageState extends State<HomePage> {
                   collection: 'users',
                   id: id,
                   value: 'firstName',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                   preString: '',
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    context.go('/login');
+                  },
+                  child: const Text('Logout'),
                 ) // Text
                 // Something here
               ],
             ), // Row
           ), // Padding
 
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           Container(
               height: 180,
               child: PageView(
@@ -124,17 +131,17 @@ class _HomePageState extends State<HomePage> {
                 ],
               )),
 
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
 
           SmoothPageIndicator(
             controller: _controller,
             count: 2,
-            effect: ExpandingDotsEffect(
+            effect: const ExpandingDotsEffect(
               activeDotColor: Colors.grey,
             ),
           ),
 
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
@@ -169,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ])),
 
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
 
           Column(children: [
             // Statistics row

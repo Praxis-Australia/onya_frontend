@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dashboardui/util/my_login.dart';
+import 'package:dashboardui/util/my_phone_login.dart';
 import 'package:dashboardui/pages/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,69 +11,49 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _phoneLogin = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body: SafeArea(
-            child: Column(
-                children: [
-                    Padding(
-                        padding: const EdgeInsets.only(left: 25.0, right:25.0, top: 15.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                            Text(
-                                'login.',
-                                style: TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                                ),
-                            ), // Text
-                            ],
-                        ), // Row
-                    ),
-                    SizedBox(
-                        height: 20.0,
-                    ),
-                    Center(
-                        child: Container(
-                            width: 300.0,
-                            height: 200.0,
-                            child: MyLogin(),
-                        ),
-                    ),
-                    SizedBox(
-                        height:00.0,
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                            Text(
-                                'Don\'t have an account? ',
-                                style: TextStyle(
-                                fontSize: 15.0,
-                                ),
-                            ),
-                            InkWell(
-                                onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => SignupPage()),
-                                    );
-                                },
-                                child:Text(
-                                    'Sign up',
-                                    style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    ),
-                                ),
-                            )
-                        ],
-                    )
-                ]
-            )
-        )
-    );
+            child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'login.',
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ), // Text
+              ],
+            ), // Row
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Center(
+            child: Container(
+              width: 300.0,
+              height: 200.0,
+              child: (!_phoneLogin) ? MyLogin() : MyPhoneLogin(),
+            ),
+          ),
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  _phoneLogin = !_phoneLogin;
+                });
+              },
+              child: Text("Toggle between phone and email")),
+          SizedBox(
+            height: 00.0,
+          )
+        ])));
   }
 }

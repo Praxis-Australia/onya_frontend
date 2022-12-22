@@ -18,210 +18,201 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashboardui/util/my_firebase_figure.dart';
 import 'package:dashboardui/functions/firebase_user_functions.dart';
 
+import 'package:go_router/go_router.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-    String id = "h";
-    late User user;
-    
-    void initState() {
-      super.initState();
-      user = FirebaseAuth.instance.currentUser!;
-      id = user.uid;
-      print(id);
-    }
+  String id = "h";
+  late User user;
 
-    // PageView controller
-    final _controller = PageController();
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser!;
+    id = user.uid;
+    print(id);
+  }
 
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
-          backgroundColor: Colors.grey[300],
-          body: SafeArea(
-            child: Column(
+  // PageView controller
+  final _controller = PageController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.grey[300],
+        body: SafeArea(
+            child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0, right:25.0, top: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'onya.',
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      MyFirebaseFigure(
-                        collection:'users',
-                        id:id,
-                        value:'firstName',
-                        style:TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        preString: '',
-                      ) // Text
-                      // Something here
-                    ],
-                  ), // Row
-                ), // Padding
-
-                SizedBox(height: 25),
-                Container(
-                  height:180,
-                  child: PageView(
-                    scrollDirection: Axis.horizontal,
-                    controller: _controller,
-                    children: [
-                      MyTotalDonationsCard(
-                        id:id,
-                        color: Colors.blue,
-                      ),
-                      MyRoundupCard(
-                        id:id,
-                        color: Colors.green,
-                      ),
-                      // MyCard(
-                      //   titleText: 'Ello', 
-                      //   amount: MyFirebaseFigure(
-                      //     collection:'users',
-                      //     id:id,
-                      //     value:'firstName',
-                      //     style:TextStyle(
-                      //       fontSize: 20.0,
-                      //       fontWeight: FontWeight.bold,
-                      //       color: Colors.white,
-                      //     ),
-                      //     preString: 'namo: ',
-                      //   ), 
-                      //   date: '12/12/2021', 
-                      //   color: Colors.green
-                      // ),
-                      // MyCard(
-                      //   titleText: 'Ello', 
-                      //   amount: MyFirebaseFigure(
-                      //     collection:'users',
-                      //     id:id,
-                      //     value:'lastName',
-                      //     style:TextStyle(
-                      //       fontSize: 20.0,
-                      //       fontWeight: FontWeight.bold,
-                      //       color: Colors.white,
-                      //     ),
-                      //     preString: 'name: ',
-                      //   ), 
-                      //   date: '12/12/2021', 
-                      //   color: Colors.red
-                      // ),
-                      // MyCard(titleText: 'Giving Preferences', amount: 100, date: '12/12/2021', color: Colors.red),
-                      // MyCard(titleText: 'Active Methods', amount: 15, date: '12/12/2021', color: Colors.green),
-                    ],
-                  )
-                ),
-                
-                SizedBox(height: 25),
-
-                SmoothPageIndicator(
-                  controller: _controller, 
-                  count: 2,
-                  effect: ExpandingDotsEffect(
-                    activeDotColor: Colors.grey,
+                const Text(
+                  'onya.',
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+                MyFirebaseFigure(
+                  collection: 'users',
+                  id: id,
+                  value: 'firstName',
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  preString: '',
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    context.go('/login');
+                  },
+                  child: const Text('Logout'),
+                ) // Text
+                // Something here
+              ],
+            ), // Row
+          ), // Padding
 
-                SizedBox(height: 25),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:15),
-                  child:Row(
+          const SizedBox(height: 25),
+          Container(
+              height: 180,
+              child: PageView(
+                scrollDirection: Axis.horizontal,
+                controller: _controller,
+                children: [
+                  MyTotalDonationsCard(
+                    id: id,
+                    color: Colors.blue,
+                  ),
+                  MyRoundupCard(
+                    id: id,
+                    color: Colors.green,
+                  ),
+                  // MyCard(
+                  //   titleText: 'Ello',
+                  //   amount: MyFirebaseFigure(
+                  //     collection:'users',
+                  //     id:id,
+                  //     value:'firstName',
+                  //     style:TextStyle(
+                  //       fontSize: 20.0,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.white,
+                  //     ),
+                  //     preString: 'namo: ',
+                  //   ),
+                  //   date: '12/12/2021',
+                  //   color: Colors.green
+                  // ),
+                  // MyCard(
+                  //   titleText: 'Ello',
+                  //   amount: MyFirebaseFigure(
+                  //     collection:'users',
+                  //     id:id,
+                  //     value:'lastName',
+                  //     style:TextStyle(
+                  //       fontSize: 20.0,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.white,
+                  //     ),
+                  //     preString: 'name: ',
+                  //   ),
+                  //   date: '12/12/2021',
+                  //   color: Colors.red
+                  // ),
+                  // MyCard(titleText: 'Giving Preferences', amount: 100, date: '12/12/2021', color: Colors.red),
+                  // MyCard(titleText: 'Active Methods', amount: 15, date: '12/12/2021', color: Colors.green),
+                ],
+              )),
+
+          const SizedBox(height: 25),
+
+          SmoothPageIndicator(
+            controller: _controller,
+            count: 2,
+            effect: const ExpandingDotsEffect(
+              activeDotColor: Colors.grey,
+            ),
+          ),
+
+          const SizedBox(height: 25),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    MyIcon(icon: 'lib/icons/give-help.png', 
-                      color: Colors.grey.shade100, 
-                      size: 100, 
-                      textDescription:'Give',
+                    MyIcon(
+                      icon: 'lib/icons/give-help.png',
+                      color: Colors.grey.shade100,
+                      size: 100,
+                      textDescription: 'Give',
                       onPress: () {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GivePage()),
-                        );
+                        context.go('/give');
                       },
                     ),
-                    MyIcon(icon: 'lib/icons/send.png', 
-                      color: Colors.grey.shade100, 
-                      size: 100, 
-                      textDescription:'Send',
+                    MyIcon(
+                      icon: 'lib/icons/send.png',
+                      color: Colors.grey.shade100,
+                      size: 100,
+                      textDescription: 'Send',
                       onPress: () {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SendPage()),
-                        );
+                        context.go('/send');
                       },
                     ),
-                    MyIcon(icon: 'lib/icons/bill.png', 
-                      color: Colors.grey.shade100, 
-                      size: 100, 
-                      textDescription:'Payments',
+                    MyIcon(
+                      icon: 'lib/icons/bill.png',
+                      color: Colors.grey.shade100,
+                      size: 100,
+                      textDescription: 'Payments',
                       onPress: () {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => PaymentsPage()),
-                        );
+                        context.go('/payments');
                       },
                     ),
-                  ]
-                )
-                ),
+                  ])),
 
-                SizedBox(height: 25),
+          const SizedBox(height: 25),
 
-                Column(
-                  children:[
-                    // Statistics row
-                    MyDetailedCard(
-                      titleText: 'Statistics',
-                      description: 'View your giving statistics',
-                      color: Colors.blue,
-                      iconPath: 'lib/icons/statistics.png',
-                      width: 400,
-                      onPress: () {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => StatisticsPage()),
-                        );
-                      },
-                    ),
+          Column(children: [
+            // Statistics row
+            MyDetailedCard(
+              titleText: 'Statistics',
+              description: 'View your giving statistics',
+              color: Colors.blue,
+              iconPath: 'lib/icons/statistics.png',
+              width: 400,
+              onPress: () {
+                context.go('/stats');
+              },
+            ),
 
-                    MyDetailedCard(
-                      titleText: 'Methods',
-                      description: 'Change your giving methods',
-                      color: Colors.red,
-                      iconPath: 'lib/icons/types.png',
-                      width: 400,
-                      onPress: () {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MethodsPage()),
-                        );
-                      },
-                    ),
+            MyDetailedCard(
+              titleText: 'Methods',
+              description: 'Change your giving methods',
+              color: Colors.red,
+              iconPath: 'lib/icons/types.png',
+              width: 400,
+              onPress: () {
+                context.go('/methods');
+              },
+            ),
 
-                    MyDetailedCard(
-                      titleText: 'Settings',
-                      description: 'Change preferences',
-                      color: Colors.green,
-                      iconPath: 'lib/icons/settings.png',
-                      width: 400,
-                      onPress: () {
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => SettingsPage()),
-                        );
-                      },
-                    ),
-                  ]
-                )
-              ]
-            )
-          )
-        );
-    }
+            MyDetailedCard(
+              titleText: 'Settings',
+              description: 'Change preferences',
+              color: Colors.green,
+              iconPath: 'lib/icons/settings.png',
+              width: 400,
+              onPress: () {
+                context.go('/settings');
+              },
+            ),
+          ])
+        ])));
+  }
 }

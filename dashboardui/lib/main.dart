@@ -32,12 +32,33 @@ class MyApp extends StatelessWidget {
         value: FirebaseAuth.instance.authStateChanges(),
         initialData: FirebaseAuth.instance.currentUser,
         child: Consumer<User?>(builder: (context, User? user, child) {
-          return StreamProvider<UserDoc?>.value(
-              value: (user != null) ? _db.userStream(user.uid) : null,
-              initialData: null,
-              child: MaterialApp.router(
-                routerConfig: router,
-              ));
+          // TODO: Clean up the conditional to remove repetition and prevent router from reading null UserDoc
+          if (user == null) {
+            return MaterialApp.router(
+              routerConfig: router,
+            );
+          } else {
+            return FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .get(),
+                builder:
+                    (context, AsyncSnapshot<DocumentSnapshot> asyncSnapshot) {
+                  if (asyncSnapshot.hasData) {
+                    final DocumentSnapshot snapshot = asyncSnapshot.data!;
+
+                    return StreamProvider<UserDoc?>.value(
+                        value: _db.userStream(user.uid),
+                        initialData: UserDoc.fromDocSnapshot(snapshot),
+                        child: MaterialApp.router(
+                          routerConfig: router,
+                        ));
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                });
+          }
         }));
   }
 }

@@ -46,20 +46,21 @@ class MyCard extends StatelessWidget {
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: (date != null)
-                    ? [
-                        Text('Last checked:',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            )),
-                        Text(DateFormat('yyyy-MM-dd').format(date!),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            )),
-                      ]
-                    : [],
+                children: [
+                  Text('Last checked:',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      )),
+                  Text(
+                      (date == null)
+                          ? 'N/A (Not checked yet)'
+                          : DateFormat('yyyy-MM-dd').format(date!),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      )),
+                ],
               ),
             ])));
   }

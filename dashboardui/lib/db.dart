@@ -12,7 +12,11 @@ class DatabaseService {
 
   Stream<UserDoc?> userStream(String uid) {
     return _firestore.collection('users').doc(uid).snapshots().map((snapshot) {
-      return UserDoc.fromDocSnapshot(snapshot);
+      if (snapshot.exists) {
+        return UserDoc.fromDocSnapshot(snapshot);
+      } else {
+        return null;
+      }
     });
   }
 

@@ -87,11 +87,13 @@ class _HomePageState extends State<HomePage> {
                 controller: _controller,
                 children: [
                   MyTotalDonationsCard(
-                    id: id,
+                    total: userDoc.roundup['statistics']['total'],
+                    lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
                     color: Colors.blue,
                   ),
                   MyRoundupCard(
-                    id: id,
+                    accAmount: userDoc.roundup['nextDebit']['accAmount'],
+                    lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
                     color: Colors.green,
                   ),
                   // MyCard(

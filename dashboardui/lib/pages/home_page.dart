@@ -1,6 +1,8 @@
+import 'package:dashboardui/models.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:dashboardui/util/my_card.dart';
 import 'package:dashboardui/util/my_icon.dart';
@@ -33,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     user = FirebaseAuth.instance.currentUser!;
     id = user.uid;
-    print(id);
+    // print(id);
   }
 
   // PageView controller
@@ -41,6 +43,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserDoc? userDoc = Provider.of<UserDoc?>(context);
+
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body: SafeArea(
@@ -57,20 +61,16 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                MyFirebaseFigure(
-                  collection: 'users',
-                  id: id,
-                  value: 'firstName',
+                Text(
+                  userDoc!.firstName,
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
-                  preString: '',
                 ),
                 TextButton(
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
-                    context.go('/login');
                   },
                   child: const Text('Logout'),
                 ) // Text

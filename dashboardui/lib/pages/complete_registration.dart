@@ -1,14 +1,13 @@
+import 'package:dashboardui/services/db.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dashboardui/pages/home_page.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
-import 'dart:math';
+import 'package:provider/provider.dart';
 
 //import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class CompleteRegistrationPage extends StatefulWidget {
+  const CompleteRegistrationPage({super.key});
+
   @override
   CompleteRegistrationPageState createState() =>
       CompleteRegistrationPageState();
@@ -18,28 +17,21 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  bool _success = false;
-  Exception? _errorMessage;
-  User? user;
-
-  final User? _user = FirebaseAuth.instance.currentUser;
-
-  void _updateUser() async {
-    var id = _user!.uid;
-    DocumentReference userRef =
-        FirebaseFirestore.instance.collection('users').doc(id);
-
-    await userRef.update({
-      "firstName": _firstNameController.text,
-      "lastName": _lastNameController.text,
-      "isRegComplete": true,
-    });
-
-    context.go('/');
-  }
 
   @override
   Widget build(BuildContext context) {
+    final DatabaseService db = Provider.of<DatabaseService>(context);
+
+    Future<void> onPress() async {
+      try {
+        await db.completeRegistration(
+            _firstNameController.text, _lastNameController.text);
+        context.go('/onboarding/basiq-setup');
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body: SafeArea(
@@ -97,9 +89,7 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             alignment: Alignment.center,
                             child: ElevatedButton(
-                              onPressed: () async {
-                                _updateUser();
-                              },
+                              onPressed: onPress,
                               child: const Text('Continue'),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.blue, // background

@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:dashboardui/util/my_login.dart';
 import 'package:dashboardui/util/my_phone_login.dart';
-import 'package:dashboardui/pages/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  bool _phoneLogin = false;
-
+class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +26,9 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold,
                   ),
-                ), // Text
+                ),
               ],
-            ), // Row
+            ),
           ),
           SizedBox(
             height: 20.0,
@@ -41,16 +37,9 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               width: 300.0,
               height: 200.0,
-              child: (!_phoneLogin) ? MyLogin() : MyPhoneLogin(),
+              child: MyPhoneLogin(),
             ),
           ),
-          TextButton(
-              onPressed: () {
-                setState(() {
-                  _phoneLogin = !_phoneLogin;
-                });
-              },
-              child: Text("Toggle between phone and email")),
           SizedBox(
             height: 00.0,
           )

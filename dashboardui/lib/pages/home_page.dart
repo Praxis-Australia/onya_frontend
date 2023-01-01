@@ -1,43 +1,23 @@
 import 'package:dashboardui/models.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:dashboardui/util/my_card.dart';
 import 'package:dashboardui/util/my_icon.dart';
 import 'package:dashboardui/util/my_detailed_card.dart';
 import 'package:dashboardui/util/my_total_donations_card.dart';
 import 'package:dashboardui/util/my_roundup_card.dart';
-import 'package:dashboardui/pages/payments_page.dart';
-import 'package:dashboardui/pages/send_page.dart';
-import 'package:dashboardui/pages/give_page.dart';
-import 'package:dashboardui/pages/statistics_page.dart';
-import 'package:dashboardui/pages/methods_page.dart';
-import 'package:dashboardui/pages/settings_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dashboardui/util/my_firebase_figure.dart';
-import 'package:dashboardui/functions/firebase_user_functions.dart';
 
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  String id = "h";
-  late User user;
-
-  void initState() {
-    super.initState();
-    user = FirebaseAuth.instance.currentUser!;
-    id = user.uid;
-    // print(id);
-  }
-
+class HomePageState extends State<HomePage> {
   // PageView controller
   final _controller = PageController();
 
@@ -62,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Text(
-                  userDoc!.firstName,
+                  userDoc!.firstName ?? "No name set",
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,

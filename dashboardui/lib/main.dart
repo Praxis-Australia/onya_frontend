@@ -1,7 +1,6 @@
-import 'dart:isolate';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dashboardui/db.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:dashboardui/services/auth.dart';
+import 'package:dashboardui/services/db.dart';
 import 'package:dashboardui/models.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,36 +23,39 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final DatabaseService _db = DatabaseService();
+  final AuthService auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User?>.value(
-        value: FirebaseAuth.instance.authStateChanges(),
-        initialData: FirebaseAuth.instance.currentUser,
+        value: auth.authChanges,
+        initialData: auth.currentUser,
         child: Consumer<User?>(builder: (context, User? user, child) {
-          // TODO: Clean up the conditional to remove repetition and prevent router from reading null UserDoc
           if (user == null) {
             return MaterialApp.router(
               routerConfig: router,
             );
           } else {
-            return FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(user.uid)
-                    .get(),
-                builder:
-                    (context, AsyncSnapshot<DocumentSnapshot> asyncSnapshot) {
-                  if (asyncSnapshot.hasData) {
-                    final DocumentSnapshot snapshot = asyncSnapshot.data!;
+            final DatabaseService db = DatabaseService(uid: user.uid);
 
-                    return StreamProvider<UserDoc?>.value(
-                        value: _db.userStream(user.uid),
-                        initialData: UserDoc.fromDocSnapshot(snapshot),
+            return FutureBuilder(
+                future: db.getUser(),
+                builder: (context, AsyncSnapshot<UserDoc> asyncSnapshot) {
+                  if (asyncSnapshot.hasData) {
+                    final UserDoc snapshot = asyncSnapshot.data!;
+                    return MultiProvider(
+                        providers: [
+                          StreamProvider<UserDoc?>.value(
+                            value: db.userStream(),
+                            initialData: snapshot,
+                          ),
+                          Provider<DatabaseService>.value(value: db),
+                        ],
                         child: MaterialApp.router(
                           routerConfig: router,
                         ));
+                  } else if (asyncSnapshot.hasError) {
+                    return Text(asyncSnapshot.error.toString());
                   } else {
                     return const CircularProgressIndicator();
                   }

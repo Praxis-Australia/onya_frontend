@@ -21,11 +21,20 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -50,33 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'praxis-donation-backend',
     authDomain: 'praxis-donation-backend.firebaseapp.com',
     storageBucket: 'praxis-donation-backend.appspot.com',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCCuftl8mwI2qO2DX1f29NoPshnW1aMM74',
-    appId: '1:575147882005:android:8489900cf6862bc890c01c',
-    messagingSenderId: '575147882005',
-    projectId: 'praxis-donation-backend',
-    storageBucket: 'praxis-donation-backend.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAgClYi1rp2ExfcTCZ--CJbDNaGlwo7fgA',
-    appId: '1:575147882005:ios:605a6a77de1022fb90c01c',
-    messagingSenderId: '575147882005',
-    projectId: 'praxis-donation-backend',
-    storageBucket: 'praxis-donation-backend.appspot.com',
-    iosClientId: '575147882005-kug2dq0gtb6sarfjfvebub5r09772d1m.apps.googleusercontent.com',
-    iosBundleId: 'com.example.dashboardui',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAgClYi1rp2ExfcTCZ--CJbDNaGlwo7fgA',
-    appId: '1:575147882005:ios:605a6a77de1022fb90c01c',
-    messagingSenderId: '575147882005',
-    projectId: 'praxis-donation-backend',
-    storageBucket: 'praxis-donation-backend.appspot.com',
-    iosClientId: '575147882005-kug2dq0gtb6sarfjfvebub5r09772d1m.apps.googleusercontent.com',
-    iosBundleId: 'com.example.dashboardui',
   );
 }

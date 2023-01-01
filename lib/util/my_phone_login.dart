@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dashboardui/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 //import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class MyPhoneLogin extends StatefulWidget {
@@ -11,8 +12,9 @@ class MyPhoneLogin extends StatefulWidget {
 
 class _MyPhoneLoginState extends State<MyPhoneLogin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _mobileController = TextEditingController();
+  // final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
+  String phoneNumber = '';
   bool _otpSent = false;
   Exception? _errorMessage;
   late ConfirmationResult confirmationResult;
@@ -21,8 +23,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
 
   void _login() async {
     try {
-      confirmationResult =
-          await _auth.signInWithPhoneNumber(_mobileController.text);
+      confirmationResult = await _auth.signInWithPhoneNumber(phoneNumber);
       setState(() {
         _otpSent = true;
       });
@@ -50,6 +51,11 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
 
   @override
   Widget build(BuildContext context) {
+    void onInputChanged(PhoneNumber number) {
+      print(number);
+      phoneNumber = number.phoneNumber!;
+    }
+
     return Form(
         key: _formKey,
         child: Column(children: [
@@ -58,16 +64,18 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextFormField(
-                    controller: _mobileController,
-                    decoration:
-                        const InputDecoration(labelText: 'Mobile Number'),
+                  const Text("Sign in with your phone number"),
+                  InternationalPhoneNumberInput(
+                    onInputChanged: onInputChanged,
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return 'Please enter some text';
+                        return 'Please enter your phone number';
                       }
                       return null;
                     },
+                    initialValue: PhoneNumber(isoCode: 'AU'),
+                    countries: ["AU"],
+                    // textFieldController: _mobileController,
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),

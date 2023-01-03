@@ -74,7 +74,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
                       return null;
                     },
                     initialValue: PhoneNumber(isoCode: 'AU'),
-                    countries: ["AU"],
+                    countries: const ["AU"],
                     // textFieldController: _mobileController,
                   ),
                   Container(

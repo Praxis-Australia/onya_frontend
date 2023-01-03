@@ -5,12 +5,16 @@ import 'dart:async';
 import '../models.dart';
 
 class DatabaseService {
-  DatabaseService({required this.uid});
+  DatabaseService({required this.uid}) {
+    _firestore = FirebaseFirestore.instance;
+    _functions = FirebaseFunctions.instance;
+
+    // _functions.useFunctionsEmulator('localhost', 5001);
+  }
 
   final String uid;
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseFunctions _functions = FirebaseFunctions.instance;
+  late FirebaseFirestore _firestore;
+  late FirebaseFunctions _functions;
 
   Future<UserDoc> getUser() async {
     final DocumentSnapshot snapshot =

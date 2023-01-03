@@ -77,7 +77,7 @@ class BasiqSetupPageState extends State<BasiqSetupPage> {
                               alignment: Alignment.center,
                               child: ElevatedButton(
                                 onPressed: onPress,
-                                child: const Text('Connect'),
+                                child: const Text('Continue'),
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.blue, // background
                                   onPrimary: Colors.white, // foreground

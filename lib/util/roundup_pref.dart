@@ -20,9 +20,10 @@ class RoundupPreference extends StatelessWidget {
     String? watchedAccountId = userDoc.roundup['config']['watchedAccountId'];
     String? debitAccountId = userDoc.roundup['config']['debitAccountId'];
     num? roundTo = userDoc.roundup['config']['roundTo'];
+    bool isEnabled = userDoc.roundup['config']['isEnabled'];
 
     // print(userDoc!.basiq['availableAccounts'][0].runtimeType);
-    List<DropdownMenuItem<String>>? accountDropdownItems = userDoc!
+    List<DropdownMenuItem<String>>? accountDropdownItems = userDoc
         .basiq['availableAccounts']
         .map<DropdownMenuItem<String>>((dynamic account) =>
             DropdownMenuItem<String>(
@@ -37,7 +38,27 @@ class RoundupPreference extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Dropdown button with userDoc.accounts
+                const Text(
+                  'Enable round-ups',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                FormField(
+                  initialValue: isEnabled,
+                  builder: (FormFieldState<bool> field) {
+                    return Switch(
+                      value: field.value!,
+                      onChanged: (val) {
+                        field.didChange(val);
+                        isEnabled = val;
+                      },
+                    );
+                  },
+                ),
                 const Text(
                   'Watched account',
                   style: TextStyle(
@@ -114,11 +135,12 @@ class RoundupPreference extends StatelessWidget {
                       return null;
                     }),
                 const SizedBox(height: 20.0),
+                // Disable button if no FormFields has changed
                 ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      await db.updateRoundupConfig(
-                          watchedAccountId!, debitAccountId!, roundTo!);
+                      await db.updateRoundupConfig(isEnabled, watchedAccountId!,
+                          debitAccountId!, roundTo!);
                     }
                   },
                   child: const Text("Save preferences"),

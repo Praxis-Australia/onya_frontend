@@ -66,10 +66,11 @@ class DatabaseService {
     }
   }
 
-  Future<void> updateRoundupConfig(
-      String debitAccountId, String watchedAccountId, num roundTo) async {
+  Future<void> updateRoundupConfig(bool isEnabled, String debitAccountId,
+      String watchedAccountId, num roundTo) async {
+    print(isEnabled);
     await _firestore.collection('users').doc(uid).update({
-      'roundup.isConfigured': true,
+      'roundup.config.isEnabled': isEnabled,
       'roundup.config.debitAccountId': debitAccountId,
       'roundup.config.watchedAccountId': watchedAccountId,
       'roundup.config.roundTo': roundTo,

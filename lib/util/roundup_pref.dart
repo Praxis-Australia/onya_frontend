@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:dashboardui/services/db.dart';
 import 'package:provider/provider.dart';
 import 'package:dashboardui/models.dart';
+import 'package:go_router/go_router.dart';
 
 class RoundupPreference extends StatelessWidget {
-  const RoundupPreference({Key? key}) : super(key: key);
+  final bool isOnboarding;
+  const RoundupPreference({Key? key, this.isOnboarding = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,8 @@ class RoundupPreference extends StatelessWidget {
     String? watchedAccountId = userDoc.roundup['config']['watchedAccountId'];
     String? debitAccountId = userDoc.roundup['config']['debitAccountId'];
     num? roundTo = userDoc.roundup['config']['roundTo'];
-    bool isEnabled = userDoc.roundup['config']['isEnabled'];
+    bool isEnabled =
+        (isOnboarding) ? true : userDoc.roundup['config']['isEnabled'];
 
     // print(userDoc!.basiq['availableAccounts'][0].runtimeType);
     List<DropdownMenuItem<String>>? accountDropdownItems = userDoc
@@ -38,27 +42,34 @@ class RoundupPreference extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Enable round-ups',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                FormField(
-                  initialValue: isEnabled,
-                  builder: (FormFieldState<bool> field) {
-                    return Switch(
-                      value: field.value!,
-                      onChanged: (val) {
-                        field.didChange(val);
-                        isEnabled = val;
-                      },
-                    );
-                  },
-                ),
+                Visibility(
+                    visible: !isOnboarding,
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Enable round-ups',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        FormField(
+                          initialValue: isEnabled,
+                          builder: (FormFieldState<bool> field) {
+                            return Switch(
+                              value: field.value!,
+                              onChanged: (val) {
+                                field.didChange(val);
+                                isEnabled = val;
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    )),
+
                 const Text(
                   'Watched account',
                   style: TextStyle(
@@ -142,8 +153,13 @@ class RoundupPreference extends StatelessWidget {
                       await db.updateRoundupConfig(isEnabled, debitAccountId!,
                           watchedAccountId!, roundTo!);
                     }
+                    if (isOnboarding) {
+                      context.go('/');
+                    }
                   },
-                  child: const Text("Save preferences"),
+                  child: (!isOnboarding)
+                      ? const Text("Save preferences")
+                      : const Text("Continue"),
                 )
               ],
             )));

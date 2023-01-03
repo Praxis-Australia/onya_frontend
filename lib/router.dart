@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dashboardui/pages/basiq_setup_page.dart';
+import 'package:dashboardui/pages/roundup_onboarding.dart';
 import 'package:dashboardui/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -71,7 +72,11 @@ final GoRouter router = GoRouter(
       routes: <RouteBase>[
         GoRoute(
           path: 'basiq-setup',
-          builder: (context, state) => BasiqSetupPage(),
+          builder: (context, state) => const BasiqSetupPage(),
+        ),
+        GoRoute(
+          path: 'roundups',
+          builder: (context, state) => const RoundupOnboardingPage(),
         ),
       ],
     ),

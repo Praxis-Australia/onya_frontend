@@ -127,28 +127,3 @@ class RoundupPreference extends StatelessWidget {
             )));
   }
 }
-
-// class AccountSelector extends StatelessWidget {
-//   final String target;
-
-//   const AccountSelector({Key? key, required this.target}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
-
-//     return DropdownButtonFormField<String>(
-//       decoration: const InputDecoration(
-//         labelText: 'Select an account',
-//       ),
-//       value: userDoc!.roundup['config'],
-//       onChanged: (String? newValue) {},
-//       items: userDoc.accounts
-//           .map((Account account) => DropdownMenuItem<String>(
-//                 value: account.id,
-//                 child: Text(account.name),
-//               ))
-//           .toList(),
-//     );
-//   }
-// }

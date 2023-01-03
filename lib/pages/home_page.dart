@@ -129,24 +129,24 @@ class HomePageState extends State<HomePage> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    MyIcon(
-                      icon: 'lib/icons/give-help.png',
-                      color: Colors.grey.shade100,
-                      size: 100,
-                      textDescription: 'Give',
-                      onPress: () {
-                        context.go('/give');
-                      },
-                    ),
-                    MyIcon(
-                      icon: 'lib/icons/send.png',
-                      color: Colors.grey.shade100,
-                      size: 100,
-                      textDescription: 'Send',
-                      onPress: () {
-                        context.go('/send');
-                      },
-                    ),
+                    // MyIcon(
+                    //   icon: 'lib/icons/give-help.png',
+                    //   color: Colors.grey.shade100,
+                    //   size: 100,
+                    //   textDescription: 'Give',
+                    //   onPress: () {
+                    //     context.go('/give');
+                    //   },
+                    // ),
+                    // MyIcon(
+                    //   icon: 'lib/icons/send.png',
+                    //   color: Colors.grey.shade100,
+                    //   size: 100,
+                    //   textDescription: 'Send',
+                    //   onPress: () {
+                    //     context.go('/send');
+                    //   },
+                    // ),
                     MyIcon(
                       icon: 'lib/icons/bill.png',
                       color: Colors.grey.shade100,
@@ -156,45 +156,54 @@ class HomePageState extends State<HomePage> {
                         context.go('/payments');
                       },
                     ),
+                    MyIcon(
+                      icon: 'lib/icons/settings.png',
+                      color: Colors.grey.shade100,
+                      size: 100,
+                      textDescription: 'Settings',
+                      onPress: () {
+                        context.go('/settings');
+                      },
+                    ),
                   ])),
 
           const SizedBox(height: 25),
 
-          Column(children: [
-            // Statistics row
-            MyDetailedCard(
-              titleText: 'Statistics',
-              description: 'View your giving statistics',
-              color: Colors.blue,
-              iconPath: 'lib/icons/statistics.png',
-              width: 400,
-              onPress: () {
-                context.go('/stats');
-              },
-            ),
+          // Column(children: [
+          //   // Statistics row
+          //   MyDetailedCard(
+          //     titleText: 'Statistics',
+          //     description: 'View your giving statistics',
+          //     color: Colors.blue,
+          //     iconPath: 'lib/icons/statistics.png',
+          //     width: 400,
+          //     onPress: () {
+          //       context.go('/stats');
+          //     },
+          //   ),
 
-            MyDetailedCard(
-              titleText: 'Methods',
-              description: 'Change your giving methods',
-              color: Colors.red,
-              iconPath: 'lib/icons/types.png',
-              width: 400,
-              onPress: () {
-                context.go('/methods');
-              },
-            ),
+          //   MyDetailedCard(
+          //     titleText: 'Methods',
+          //     description: 'Change your giving methods',
+          //     color: Colors.red,
+          //     iconPath: 'lib/icons/types.png',
+          //     width: 400,
+          //     onPress: () {
+          //       context.go('/methods');
+          //     },
+          //   ),
 
-            MyDetailedCard(
-              titleText: 'Settings',
-              description: 'Change preferences',
-              color: Colors.green,
-              iconPath: 'lib/icons/settings.png',
-              width: 400,
-              onPress: () {
-                context.go('/settings');
-              },
-            ),
-          ])
+          //   MyDetailedCard(
+          //     titleText: 'Settings',
+          //     description: 'Change preferences',
+          //     color: Colors.green,
+          //     iconPath: 'lib/icons/settings.png',
+          //     width: 400,
+          //     onPress: () {
+          //       context.go('/settings');
+          //     },
+          //   ),
+          // ])
         ])));
   }
 }

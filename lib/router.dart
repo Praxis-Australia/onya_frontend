@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dashboardui/pages/basiq_config_page.dart';
+import 'package:dashboardui/pages/basiq_setup_page.dart';
 import 'package:dashboardui/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -30,7 +30,7 @@ final GoRouter router = GoRouter(
 
     if (userDoc != null) {
       if (userDoc.firstName == null || userDoc.lastName == null) {
-        return '/onboarding/complete-registration';
+        return '/onboarding';
       }
 
       if (userDoc.basiq["configStatus"] == "BASIQ_USER_CREATED") {

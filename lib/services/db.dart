@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import '../models.dart';
 
 class DatabaseService {
-  DatabaseService({required this.uid});
+  DatabaseService({required this.uid}) {
+    _firestore = FirebaseFirestore.instance;
+    _functions = FirebaseFunctions.instance;
+
+    _functions.useFunctionsEmulator('localhost', 5001);
+  }
 
   final String uid;
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseFunctions _functions = FirebaseFunctions.instance;
+  late FirebaseFirestore _firestore;
+  late FirebaseFunctions _functions;
 
   Future<UserDoc> getUser() async {
     final DocumentSnapshot snapshot =
@@ -61,6 +64,16 @@ class DatabaseService {
     } catch (e) {
       return Future.error(e);
     }
+  }
+
+  Future<void> updateRoundupConfig(
+      String debitAccountId, String watchedAccountId, num roundTo) async {
+    await _firestore.collection('users').doc(uid).update({
+      'roundup.isConfigured': true,
+      'roundup.config.debitAccountId': debitAccountId,
+      'roundup.config.watchedAccountId': watchedAccountId,
+      'roundup.config.roundTo': roundTo,
+    });
   }
 
   Future<void> checkBasiqConnections() async {

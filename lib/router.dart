@@ -30,7 +30,7 @@ final GoRouter router = GoRouter(
 
     if (userDoc != null) {
       if (userDoc.firstName == null || userDoc.lastName == null) {
-        return '/onboarding/complete-registration';
+        return '/onboarding';
       }
 
       if (userDoc.basiq["configStatus"] == "BASIQ_USER_CREATED") {

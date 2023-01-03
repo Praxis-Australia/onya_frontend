@@ -139,8 +139,8 @@ class RoundupPreference extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      await db.updateRoundupConfig(isEnabled, watchedAccountId!,
-                          debitAccountId!, roundTo!);
+                      await db.updateRoundupConfig(isEnabled, debitAccountId!,
+                          watchedAccountId!, roundTo!);
                     }
                   },
                   child: const Text("Save preferences"),

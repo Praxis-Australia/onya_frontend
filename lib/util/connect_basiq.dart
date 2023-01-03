@@ -16,7 +16,7 @@ class ConnectBasiq extends StatelessWidget {
     Future<void> onPress() async {
       try {
         await db.checkBasiqConnections();
-        context.go('/');
+        context.go('/onboarding/roundups');
       } catch (e) {
         print(e);
       }

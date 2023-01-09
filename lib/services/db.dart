@@ -30,6 +30,7 @@ class DatabaseService {
     }
   }
 
+// TODO : Implement explicitly cancelling stream when logging out
   Stream<UserDoc?> userStream() {
     return _firestore.collection('users').doc(uid).snapshots().map((snapshot) {
       if (snapshot.exists) {
@@ -66,25 +67,43 @@ class DatabaseService {
     }
   }
 
+  Future<String> getClientToken() async {
+    try {
+      HttpsCallableResult res =
+          await _functions.httpsCallable('getClientToken').call();
+      return res.data['access_token'];
+    } on FirebaseFunctionsException catch (e) {
+      rethrow;
+    } catch (e) {
+      throw Future.error(e);
+    }
+  }
+
   Future<void> updateRoundupConfig(bool isEnabled, String debitAccountId,
       String watchedAccountId, num roundTo) async {
     print(isEnabled);
-    await _firestore.collection('users').doc(uid).update({
+
+    Map<String, dynamic> payload = {
       'roundup.config.isEnabled': isEnabled,
       'roundup.config.debitAccountId': debitAccountId,
       'roundup.config.watchedAccountId': watchedAccountId,
       'roundup.config.roundTo': roundTo,
-    });
+    };
+
+    if (isEnabled) {
+      payload['roundup.nextDebit.lastChecked'] = Timestamp.now();
+    }
+
+    await _firestore.collection('users').doc(uid).update(payload);
   }
 
   Future<void> checkBasiqConnections() async {
     try {
-      await _functions.httpsCallable('refreshUserBasicInfo').call();
+      await _functions.httpsCallable('refreshUserBasiqInfo').call();
     } on FirebaseFunctionsException catch (e) {
-      print(e.code);
-      print(e.message);
+      rethrow;
     } catch (e) {
-      return Future.error(e);
+      throw Future.error(e);
     }
   }
 }

@@ -6,9 +6,9 @@ import '../models.dart';
 class DatabaseService {
   DatabaseService({required this.uid}) {
     _firestore = FirebaseFirestore.instance;
-    _functions = FirebaseFunctions.instance;
+    _functions = FirebaseFunctions.instanceFor(region: 'australia-southeast1');
 
-    _functions.useFunctionsEmulator('localhost', 5001);
+    // _functions.useFunctionsEmulator('localhost', 5001);
   }
 
   final String uid;

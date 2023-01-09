@@ -28,11 +28,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
         _otpSent = true;
       });
     } on Exception catch (e) {
-      setState(() {
-        _errorMessage = e;
-        print(_errorMessage);
-        print("there was an exception");
-      });
+      print(e);
     }
   }
 

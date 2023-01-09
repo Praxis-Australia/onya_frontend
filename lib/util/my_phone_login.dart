@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dashboardui/pages/home_page.dart';
+import 'package:onya_frontend/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 //import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';

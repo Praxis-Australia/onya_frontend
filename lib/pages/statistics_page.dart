@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dashboardui/util/my_detailed_card.dart';
-import 'package:dashboardui/pages/home_page.dart';
+import 'package:onya_frontend/util/my_detailed_card.dart';
+import 'package:onya_frontend/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
 
 class StatisticsPage extends StatefulWidget {

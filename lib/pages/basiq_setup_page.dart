@@ -1,4 +1,4 @@
-import 'package:dashboardui/util/connect_basiq.dart';
+import 'package:onya_frontend/util/connect_basiq.dart';
 import 'package:flutter/material.dart';
 
 class BasiqSetupPage extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:dashboardui/services/db.dart';
+import 'package:onya_frontend/services/db.dart';
 import 'package:provider/provider.dart';
-import 'package:dashboardui/models.dart';
+import 'package:onya_frontend/models.dart';
 import 'package:go_router/go_router.dart';
 
 class RoundupPreference extends StatelessWidget {

@@ -1,11 +1,11 @@
-import 'package:dashboardui/util/roundup_pref.dart';
+import 'package:onya_frontend/util/roundup_pref.dart';
 import 'package:flutter/material.dart';
-import 'package:dashboardui/util/my_detailed_card.dart';
-import 'package:dashboardui/pages/home_page.dart';
+import 'package:onya_frontend/util/my_detailed_card.dart';
+import 'package:onya_frontend/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dashboardui/util/my_basiq_connect.dart';
+import 'package:onya_frontend/util/my_basiq_connect.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 

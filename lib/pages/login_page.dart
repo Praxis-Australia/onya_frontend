@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dashboardui/util/my_phone_login.dart';
+import 'package:onya_frontend/util/my_phone_login.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

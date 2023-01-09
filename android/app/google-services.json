@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:575147882005:android:8489900cf6862bc890c01c",
         "android_client_info": {
-          "package_name": "com.example.dashboardui"
+          "package_name": "com.example.onya_frontend"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "575147882005-kug2dq0gtb6sarfjfvebub5r09772d1m.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.dashboardui"
+                "bundle_id": "com.example.onya_frontend"
               }
             }
           ]

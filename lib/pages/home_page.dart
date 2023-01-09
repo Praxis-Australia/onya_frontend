@@ -1,11 +1,11 @@
-import 'package:dashboardui/models.dart';
+import 'package:onya_frontend/models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:dashboardui/util/my_icon.dart';
-import 'package:dashboardui/util/my_detailed_card.dart';
-import 'package:dashboardui/util/my_total_donations_card.dart';
-import 'package:dashboardui/util/my_roundup_card.dart';
+import 'package:onya_frontend/util/my_icon.dart';
+import 'package:onya_frontend/util/my_detailed_card.dart';
+import 'package:onya_frontend/util/my_total_donations_card.dart';
+import 'package:onya_frontend/util/my_roundup_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:go_router/go_router.dart';

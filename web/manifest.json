@@ -1,6 +1,6 @@
 {
-    "name": "dashboardui",
-    "short_name": "dashboardui",
+    "name": "onya_frontend",
+    "short_name": "onya_frontend",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:dashboardui/util/my_transaction_card.dart';
-import 'package:dashboardui/pages/home_page.dart';
-import 'package:dashboardui/functions/firebase_user_functions.dart';
+import 'package:onya_frontend/util/my_transaction_card.dart';
+import 'package:onya_frontend/pages/home_page.dart';
+import 'package:onya_frontend/functions/firebase_user_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

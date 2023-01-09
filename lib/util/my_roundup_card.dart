@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:dashboardui/util/my_card.dart';
+import 'package:onya_frontend/util/my_card.dart';
 
 class MyRoundupCard extends StatelessWidget {
   final num accAmount;

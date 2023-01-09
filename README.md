@@ -1,4 +1,4 @@
-# dashboardui
+# onya_frontend
 
 A new Flutter project.
 

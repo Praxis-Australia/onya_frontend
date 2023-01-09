@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dashboardui/util/my_firebase_figure.dart';
+import 'package:onya_frontend/util/my_firebase_figure.dart';
 import 'package:intl/intl.dart';
 
 class MyCard extends StatelessWidget {

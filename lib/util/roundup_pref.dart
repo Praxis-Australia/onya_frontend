@@ -20,11 +20,13 @@ class RoundupPreference extends StatelessWidget {
       return const Text("User must be logged in for this widget");
     }
 
-    String? watchedAccountId = userDoc.roundup['config']['watchedAccountId'];
-    String? debitAccountId = userDoc.roundup['config']['debitAccountId'];
-    num? roundTo = userDoc.roundup['config']['roundTo'];
+    String? watchedAccountId =
+        userDoc.donationMethods['roundup']['watchedAccountId'];
+    String? debitAccountId =
+        userDoc.donationMethods['roundup']['debitAccountId'];
+    num? roundTo = userDoc.donationMethods['roundup']['roundTo'];
     bool isEnabled =
-        (isOnboarding) ? true : userDoc.roundup['config']['isEnabled'];
+        (isOnboarding) ? true : userDoc.donationMethods['roundup']['isEnabled'];
 
     // print(userDoc!.basiq['availableAccounts'][0].runtimeType);
     List<DropdownMenuItem<String>>? accountDropdownItems = userDoc
@@ -83,7 +85,7 @@ class RoundupPreference extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Select an account to monitor for round-ups',
                   ),
-                  value: userDoc.roundup['config']['watchedAccountId'],
+                  value: userDoc.donationMethods['roundup']['watchedAccountId'],
                   onChanged: (String? accountId) =>
                       {watchedAccountId = accountId!},
                   items: accountDropdownItems,
@@ -107,12 +109,12 @@ class RoundupPreference extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Round to nearest',
                   ),
-                  value: userDoc.roundup['config']['roundTo'],
+                  value: userDoc.donationMethods['roundup']['roundTo'],
                   onChanged: (num? newAmount) => {roundTo = newAmount!},
                   items: const [
-                    DropdownMenuItem(value: 1, child: Text('\$1')),
-                    DropdownMenuItem(value: 2, child: Text('\$2')),
-                    DropdownMenuItem(value: 5, child: Text('\$5')),
+                    DropdownMenuItem(value: 100, child: Text('\$1')),
+                    DropdownMenuItem(value: 200, child: Text('\$2')),
+                    DropdownMenuItem(value: 500, child: Text('\$5')),
                   ],
                   validator: (num? value) {
                     if (value == null) {

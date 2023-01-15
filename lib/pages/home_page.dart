@@ -66,16 +66,16 @@ class HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 controller: _controller,
                 children: [
-                  MyTotalDonationsCard(
-                    total: userDoc.roundup['statistics']['total'],
-                    lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
-                    color: Colors.blue,
-                  ),
-                  MyRoundupCard(
-                    accAmount: userDoc.roundup['nextDebit']['accAmount'],
-                    lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
-                    color: Colors.green,
-                  ),
+                  // MyTotalDonationsCard(
+                  //   total: userDoc.roundup['statistics']['total'],
+                  //   lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
+                  //   color: Colors.blue,
+                  // ),
+                  // MyRoundupCard(
+                  //   accAmount: userDoc.roundup['nextDebit']['accAmount'],
+                  //   lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
+                  //   color: Colors.green,
+                  // ),
                   // MyCard(
                   //   titleText: 'Ello',
                   //   amount: MyFirebaseFigure(

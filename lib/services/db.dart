@@ -8,7 +8,7 @@ class DatabaseService {
     _firestore = FirebaseFirestore.instance;
     _functions = FirebaseFunctions.instanceFor(region: 'australia-southeast1');
 
-    // _functions.useFunctionsEmulator('localhost', 5001);
+    _functions.useFunctionsEmulator('localhost', 5001);
   }
 
   final String uid;
@@ -84,10 +84,10 @@ class DatabaseService {
     print(isEnabled);
 
     Map<String, dynamic> payload = {
-      'roundup.config.isEnabled': isEnabled,
-      'roundup.config.debitAccountId': debitAccountId,
-      'roundup.config.watchedAccountId': watchedAccountId,
-      'roundup.config.roundTo': roundTo,
+      'donationMethods.roundup.isEnabled': isEnabled,
+      'donationMethods.roundup.debitAccountId': debitAccountId,
+      'donationMethods.roundup.watchedAccountId': watchedAccountId,
+      'donationMethods.roundup.roundTo': roundTo,
     };
 
     if (isEnabled) {

@@ -54,7 +54,13 @@ class MyApp extends StatelessWidget {
                           routerConfig: router,
                         ));
                   } else if (asyncSnapshot.hasError) {
-                    return Text(asyncSnapshot.error.toString());
+                    return MaterialApp(
+                      home: Scaffold(
+                        body: Center(
+                          child: Text("Error: ${asyncSnapshot.error}"),
+                        ),
+                      ),
+                    );
                   } else {
                     return const CircularProgressIndicator();
                   }

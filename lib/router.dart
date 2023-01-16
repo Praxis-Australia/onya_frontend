@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:onya_frontend/pages/basiq_setup_page.dart';
 import 'package:onya_frontend/pages/roundup_onboarding.dart';
+import 'package:onya_frontend/pages/roundup_page.dart';
 import 'package:onya_frontend/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -47,17 +48,17 @@ final GoRouter router = GoRouter(
         path: '/',
         builder: (context, state) => const HomePage(),
         routes: <RouteBase>[
-          GoRoute(path: 'give', builder: (context, state) => const GivePage()),
-          GoRoute(path: 'send', builder: (context, state) => const SendPage()),
           GoRoute(
               path: 'payments',
-              builder: ((context, state) => const PaymentsPage())),
+              builder: ((context, state) => const PaymentsPage()),
+              routes: <RouteBase>[
+                GoRoute(
+                    path: 'payments/:id',
+                    builder: (context, state) => const PaymentsPage())
+              ]),
           GoRoute(
-              path: 'stats',
-              builder: (context, state) => const StatisticsPage()),
-          GoRoute(
-              path: 'methods',
-              builder: (context, state) => const MethodsPage()),
+              path: 'roundup',
+              builder: (context, state) => const RoundupPage()),
           GoRoute(
               path: 'settings',
               builder: (context, state) => const SettingsPage())

@@ -42,8 +42,12 @@ class DatabaseService {
   }
 
   Future<BasiqTransactionDoc?> getBasiqTransaction(String id) async {
-    final DocumentSnapshot snapshot =
-        await _firestore.collection('basiqTransactions').doc(id).get();
+    final DocumentSnapshot snapshot = await _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('basiqTransactions')
+        .doc(id)
+        .get();
 
     try {
       if (snapshot.exists) {

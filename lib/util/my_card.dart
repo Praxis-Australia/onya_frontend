@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 
 class MyCard extends StatelessWidget {
   final String amount;
-  final DateTime? date;
   final String titleText;
   final color;
 
@@ -12,7 +11,6 @@ class MyCard extends StatelessWidget {
       {Key? key,
       required this.titleText,
       required this.amount,
-      required this.date,
       required this.color})
       : super(key: key);
 
@@ -44,24 +42,6 @@ class MyCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Last checked:',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      )),
-                  Text(
-                      (date == null)
-                          ? 'N/A (Not checked yet)'
-                          : DateFormat('yyyy-MM-dd').format(date!),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      )),
-                ],
-              ),
             ])));
   }
 }

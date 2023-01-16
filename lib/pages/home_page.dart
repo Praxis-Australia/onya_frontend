@@ -24,6 +24,21 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
+    final Iterable<OnyaTransactionDoc>? onyaTransactions =
+        Provider.of<Iterable<OnyaTransactionDoc>?>(context);
+
+    final num donationSum = onyaTransactions!.fold(0, (sum, transaction) {
+      return sum + transaction.amount;
+    });
+
+    final num roundupAccruedSum = userDoc!.donationMethods['nextDebit']
+            ['donationSources']
+        .fold(0, (sum, donationSource) {
+      if (donationSource['method'] == 'roundup') {
+        return sum + donationSource['amount'];
+      }
+      return sum;
+    });
 
     return Scaffold(
         backgroundColor: Colors.grey[300],
@@ -66,50 +81,14 @@ class HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 controller: _controller,
                 children: [
-                  // MyTotalDonationsCard(
-                  //   total: userDoc.roundup['statistics']['total'],
-                  //   lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
-                  //   color: Colors.blue,
-                  // ),
-                  // MyRoundupCard(
-                  //   accAmount: userDoc.roundup['nextDebit']['accAmount'],
-                  //   lastChecked: userDoc.roundup['nextDebit']['lastChecked'],
-                  //   color: Colors.green,
-                  // ),
-                  // MyCard(
-                  //   titleText: 'Ello',
-                  //   amount: MyFirebaseFigure(
-                  //     collection:'users',
-                  //     id:id,
-                  //     value:'firstName',
-                  //     style:TextStyle(
-                  //       fontSize: 20.0,
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.white,
-                  //     ),
-                  //     preString: 'namo: ',
-                  //   ),
-                  //   date: '12/12/2021',
-                  //   color: Colors.green
-                  // ),
-                  // MyCard(
-                  //   titleText: 'Ello',
-                  //   amount: MyFirebaseFigure(
-                  //     collection:'users',
-                  //     id:id,
-                  //     value:'lastName',
-                  //     style:TextStyle(
-                  //       fontSize: 20.0,
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.white,
-                  //     ),
-                  //     preString: 'name: ',
-                  //   ),
-                  //   date: '12/12/2021',
-                  //   color: Colors.red
-                  // ),
-                  // MyCard(titleText: 'Giving Preferences', amount: 100, date: '12/12/2021', color: Colors.red),
-                  // MyCard(titleText: 'Active Methods', amount: 15, date: '12/12/2021', color: Colors.green),
+                  MyTotalDonationsCard(
+                    total: donationSum / 100,
+                    color: Colors.blue,
+                  ),
+                  MyRoundupCard(
+                    accAmount: roundupAccruedSum / 100,
+                    color: Colors.green,
+                  ),
                 ],
               )),
 

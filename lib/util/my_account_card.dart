@@ -43,7 +43,6 @@ class MyAccountCard extends StatelessWidget {
             return MyCard(
               titleText: accountName,
               amount: 'Loading',
-              date: DateTime.now(),
               color: Colors.white,
             );
           } else {

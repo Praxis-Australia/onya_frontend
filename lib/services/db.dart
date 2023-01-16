@@ -41,13 +41,29 @@ class DatabaseService {
     });
   }
 
-  Stream<TransactionDoc?> transactionStream(String id) {
+  Future<BasiqTransactionDoc?> getBasiqTransaction(String id) async {
+    final DocumentSnapshot snapshot =
+        await _firestore.collection('basiqTransactions').doc(id).get();
+
+    try {
+      if (snapshot.exists) {
+        return BasiqTransactionDoc.fromDocSnapshot(snapshot);
+      } else {
+        return null;
+      }
+    } catch (err) {
+      return Future.error(err);
+    }
+  }
+
+  Stream<Iterable<OnyaTransactionDoc>?> onyaTransactionsStream() {
     return _firestore
-        .collection('transactions')
-        .doc(id)
+        .collection('onyaTransactions')
+        .where('payer.userId', isEqualTo: uid)
         .snapshots()
         .map((snapshot) {
-      return TransactionDoc.fromDocSnapshot(snapshot);
+      List<QueryDocumentSnapshot> docs = snapshot.docs;
+      return docs.map((doc) => OnyaTransactionDoc.fromDocSnapshot(doc));
     });
   }
 

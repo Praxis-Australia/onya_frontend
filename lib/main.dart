@@ -48,6 +48,10 @@ class MyApp extends StatelessWidget {
                             value: db.userStream(),
                             initialData: snapshot,
                           ),
+                          StreamProvider<Iterable<OnyaTransactionDoc>?>.value(
+                            value: db.onyaTransactionsStream(),
+                            initialData: const [],
+                          ),
                           Provider<DatabaseService>.value(value: db),
                         ],
                         child: MaterialApp.router(

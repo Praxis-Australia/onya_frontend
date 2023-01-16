@@ -27,40 +27,88 @@ class UserDoc {
   }
 }
 
-class TransactionDoc {
+class BasiqTransactionDoc {
   final String id;
+  final String accountId;
   final num amount;
-  final String basiqTransactionId;
-  final Map<String, num> charityPref;
-  final Map<String, dynamic> givingPref;
-  final Timestamp postDate;
-  final String procDate;
-  final String from;
-  final String uid;
+  final String transactionClass;
+  final String connectionId;
+  final String description;
+  final String direction;
+  final String institutionId;
+  final Timestamp? postedDate;
+  final String status;
+  final Timestamp? transactionDate;
+  final Map<String, Map> enrich;
 
-  TransactionDoc(
+  BasiqTransactionDoc(
       this.id,
+      this.accountId,
       this.amount,
-      this.basiqTransactionId,
-      this.charityPref,
-      this.givingPref,
-      this.postDate,
-      this.procDate,
-      this.from,
-      this.uid);
+      this.transactionClass,
+      this.connectionId,
+      this.description,
+      this.direction,
+      this.institutionId,
+      this.postedDate,
+      this.status,
+      this.transactionDate,
+      this.enrich);
 
-  factory TransactionDoc.fromDocSnapshot(DocumentSnapshot doc) {
+  factory BasiqTransactionDoc.fromDocSnapshot(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return TransactionDoc(
-      doc.id,
-      data['amount'] as num,
-      data['basiq_transaction_id'] as String,
-      data['charityPref'] as Map<String, num>,
-      data['givingPref'] as Map<String, dynamic>,
-      data['post_date'] as Timestamp,
-      data['proc_date'] as String,
-      data['from'] as String,
-      data['uid'] as String,
-    );
+    return BasiqTransactionDoc(
+        doc.id,
+        data['accountId'] as String,
+        data['amount'] as num,
+        data['class'] as String,
+        data['connectionId'] as String,
+        data['description'] as String,
+        data['direction'] as String,
+        data['institutionId'] as String,
+        data['postedDate'] as Timestamp?,
+        data['status'] as String,
+        data['transactionDate'] as Timestamp?,
+        data['enrich'] as Map<String, Map>);
+  }
+}
+
+class OnyaTransactionDoc {
+  final String id;
+  final String basiqJobId;
+  final Timestamp created;
+  final Timestamp updated;
+  final String status;
+  final Map<String, String> payer;
+  final String description;
+  final num amount;
+  final Map<String, num> charitySelection;
+  final List<Map<String, dynamic>> donationSources;
+
+  OnyaTransactionDoc(
+      this.id,
+      this.basiqJobId,
+      this.created,
+      this.updated,
+      this.status,
+      this.payer,
+      this.description,
+      this.amount,
+      this.charitySelection,
+      this.donationSources);
+
+  factory OnyaTransactionDoc.fromDocSnapshot(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return OnyaTransactionDoc(
+        doc.id,
+        data['basiqJobId'] as String,
+        data['created'] as Timestamp,
+        data['updated'] as Timestamp,
+        data['status'] as String,
+        data['payer'] as Map<String, String>,
+        data['description'] as String,
+        data['amount'] as num,
+        data['charitySelection'] as Map<String, num>,
+        data['donationSources'] as List<Map<String, dynamic>>);
   }
 }

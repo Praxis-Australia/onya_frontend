@@ -115,7 +115,6 @@ class _MyCharityCardState extends State<MyCharityCard> {
                   return MyCard(
                     titleText: 'Loading',
                     amount: 'Loading',
-                    date: DateTime.now(),
                     color: Colors.white,
                   );
                 }

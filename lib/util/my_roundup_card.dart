@@ -4,13 +4,11 @@ import 'package:onya_frontend/util/my_card.dart';
 
 class MyRoundupCard extends StatelessWidget {
   final num accAmount;
-  final Timestamp? lastChecked;
   final Color color;
 
   const MyRoundupCard({
     Key? key,
     required this.accAmount,
-    required this.lastChecked,
     required this.color,
   }) : super(key: key);
 
@@ -27,7 +25,6 @@ class MyRoundupCard extends StatelessWidget {
     return MyCard(
       titleText: 'Accrued Roundup',
       amount: accAmount.toString(),
-      date: fromTimestampToDateTime(lastChecked),
       color: color,
     );
   }

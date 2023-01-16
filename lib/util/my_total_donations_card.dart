@@ -5,12 +5,10 @@ import 'package:onya_frontend/util/my_card.dart';
 class MyTotalDonationsCard extends StatelessWidget {
   final Color color;
   final num total;
-  final Timestamp? lastChecked;
 
   const MyTotalDonationsCard({
     Key? key,
     required this.total,
-    required this.lastChecked,
     required this.color,
   }) : super(key: key);
 
@@ -27,7 +25,6 @@ class MyTotalDonationsCard extends StatelessWidget {
     return MyCard(
       titleText: 'Total Donations',
       amount: total.toString(),
-      date: fromTimestampToDateTime(lastChecked),
       color: color,
     );
   }

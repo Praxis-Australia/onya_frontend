@@ -48,7 +48,6 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
   @override
   Widget build(BuildContext context) {
     void onInputChanged(PhoneNumber number) {
-      print(number);
       phoneNumber = number.phoneNumber!;
     }
 

@@ -79,11 +79,11 @@ class OnyaTransactionDoc {
   final Timestamp created;
   final Timestamp updated;
   final String status;
-  final Map<String, String> payer;
+  final Map<String, dynamic> payer;
   final String description;
   final num amount;
-  final Map<String, num> charitySelection;
-  final List<Map<String, dynamic>> donationSources;
+  final Map<String, dynamic> charitySelection;
+  final List<dynamic> donationSources;
 
   OnyaTransactionDoc(
       this.id,
@@ -105,10 +105,10 @@ class OnyaTransactionDoc {
         data['created'] as Timestamp,
         data['updated'] as Timestamp,
         data['status'] as String,
-        data['payer'] as Map<String, String>,
+        data['payer'] as Map<String, dynamic>,
         data['description'] as String,
         data['amount'] as num,
-        data['charitySelection'] as Map<String, num>,
-        data['donationSources'] as List<Map<String, dynamic>>);
+        data['charitySelection'] as Map<String, dynamic>,
+        data['donationSources'] as List<dynamic>);
   }
 }

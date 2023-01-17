@@ -56,6 +56,7 @@ class DatabaseService {
         return null;
       }
     } catch (err) {
+      print(err);
       return Future.error(err);
     }
   }

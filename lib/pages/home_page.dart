@@ -136,6 +136,15 @@ class HomePageState extends State<HomePage> {
                       },
                     ),
                     MyIcon(
+                      icon: 'lib/icons/give-help.png',
+                      color: Colors.grey.shade100,
+                      size: 100,
+                      textDescription: 'Roundups',
+                      onPress: () {
+                        context.go('/roundup');
+                      },
+                    ),
+                    MyIcon(
                       icon: 'lib/icons/settings.png',
                       color: Colors.grey.shade100,
                       size: 100,

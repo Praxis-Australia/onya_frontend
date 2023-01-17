@@ -36,10 +36,10 @@ class BasiqTransactionDoc {
   final String description;
   final String direction;
   final String institutionId;
-  final Timestamp? postedDate;
+  final Timestamp? postDate;
   final String status;
   final Timestamp? transactionDate;
-  final Map<String, Map> enrich;
+  final Map<String, dynamic> enrich;
 
   BasiqTransactionDoc(
       this.id,
@@ -50,7 +50,7 @@ class BasiqTransactionDoc {
       this.description,
       this.direction,
       this.institutionId,
-      this.postedDate,
+      this.postDate,
       this.status,
       this.transactionDate,
       this.enrich);
@@ -62,14 +62,14 @@ class BasiqTransactionDoc {
         data['accountId'] as String,
         data['amount'] as num,
         data['class'] as String,
-        data['connectionId'] as String,
+        data['connection'] as String,
         data['description'] as String,
         data['direction'] as String,
         data['institutionId'] as String,
-        data['postedDate'] as Timestamp?,
+        data['postDate'] as Timestamp?,
         data['status'] as String,
         data['transactionDate'] as Timestamp?,
-        data['enrich'] as Map<String, Map>);
+        data['enrich'] as Map<String, dynamic>);
   }
 }
 

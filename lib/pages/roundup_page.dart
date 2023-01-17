@@ -1,3 +1,4 @@
+import 'package:onya_frontend/services/db.dart';
 import 'package:onya_frontend/util/my_roundup_card.dart';
 import 'package:onya_frontend/util/roundup_pref.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,6 @@ class RoundupPageState extends State<RoundupPage> {
         .donationMethods['nextDebit']['donationSources']
         .where((donationSource) => donationSource['method'] == 'roundup')
         .toList();
-
-    print(roundupTransactionSources.length);
-    print(roundupTransactionSources.first);
 
     final num roundupAccruedSum = userDoc.donationMethods['nextDebit']
             ['donationSources']
@@ -66,7 +64,6 @@ class RoundupPageState extends State<RoundupPage> {
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Container(
-                  height: 600,
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius:
@@ -88,19 +85,58 @@ class RoundupPageState extends State<RoundupPage> {
                             accAmount: roundupAccruedSum / 100,
                             color: Colors.green,
                           ),
-                          Container(
-                            child: ListView.builder(
-                              itemCount: roundupTransactionSources.length,
-                              itemBuilder: (context, index) {
-                                return Text(
-                                    roundupTransactionSources[index]['amount']);
-                              },
-                            ),
-                          )
+                          // Listview of widgets for each element in roundupTransactionSources
+                          Column(
+                              children: roundupTransactionSources
+                                  .map((donationSource) =>
+                                      RoundupTransactionItem(
+                                          data: donationSource))
+                                  .toList()),
                         ])),
                   ]))),
         ]), // Row
       ),
     );
+  }
+}
+
+// Widget which gets a transaction ID and calls returns widget with data from Future call
+class RoundupTransactionItem extends StatelessWidget {
+  const RoundupTransactionItem({Key? key, required this.data})
+      : super(key: key);
+
+  final dynamic data;
+
+  @override
+  Widget build(BuildContext context) {
+    final DatabaseService db = Provider.of<DatabaseService>(context);
+    final String id = data['basiqTransaction'].id;
+    return FutureBuilder<BasiqTransactionDoc?>(
+        future: db.getBasiqTransaction(id),
+        builder: (context, AsyncSnapshot<BasiqTransactionDoc?> asyncSnapshot) {
+          if (asyncSnapshot.hasData) {
+            final BasiqTransactionDoc snapshot = asyncSnapshot.data!;
+            return Container(
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
+                // Add rounded corners and black border
+                decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    border: Border.all(color: Colors.black)),
+                child: Column(
+                  children: [
+                    Text("Transaction name: ${snapshot.description}"),
+                    Text(
+                        "Transaction date: ${DateTime.fromMillisecondsSinceEpoch(snapshot.postDate!.millisecondsSinceEpoch)}"),
+                    Text("Transaction amount: ${-1 * snapshot.amount / 100}"),
+                    Text("Rounded up amount: ${data['amount']}"),
+                  ],
+                ));
+          } else if (asyncSnapshot.hasError) {
+            return const Text("Error");
+          }
+          return const Text("Not loaded");
+        });
   }
 }

@@ -13,53 +13,34 @@ import 'package:onya_frontend/util/giving_card.dart';
 
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class PledgePage extends StatefulWidget {
+  const PledgePage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  PledgePageState createState() => PledgePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class PledgePageState extends State<PledgePage> {
   // PageView controller
   final _controller = PageController();
+
+  // Define a function that takes in length and multiplied it by 200 up to a
+  // maximum of 800
+  double getHeight(num length) {
+    if (length == 0) {
+      return 0;
+    } else if (length * 100 > 400) {
+      return 400;
+    } else {
+      return length * 100;
+    }
+  }  
 
   @override
   Widget build(BuildContext context) {
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
-    // final Iterable<OnyaTransactionDoc>? onyaTransactions =
-    //     Provider.of<Iterable<OnyaTransactionDoc>?>(context);
-
-    // final num donationSum = onyaTransactions!.fold(0, (sum, transaction) {
-    //   return sum + transaction.amount;
-    // });
-
-    double getHeight(num length) {
-        if (length == 0) {
-          return 0;
-        } else if (length * 100 > 400) {
-          return 400;
-        } else {
-          return length * 100;
-        }
-      }  
-
-    final num donationSum = 0;
-    final num roundupAccruedSum = 0;
-
-    // final num roundupAccruedSum = userDoc!.donationMethods['nextDebit']
-    //         ['accruedAmount']
-    //     .fold(0, (sum, donationSource) {
-    //   if (donationSource['method'] == 'roundup') {
-    //     return sum + donationSource['amount'];
-    //   }
-    //   return sum;
-    // });
-
-    // Define a variable called blue
-    final Color blue = Color(0xFF003049);
-    // Define a variable called red
-    final Color red = Color(0xFFD62828);
+    final Iterable<OnyaTransactionDoc>? onyaTransactions =
+        Provider.of<Iterable<OnyaTransactionDoc>?>(context);
 
     return Scaffold(
         backgroundColor: Color(0x4fF4F1DE),
@@ -83,37 +64,46 @@ class HomePageState extends State<HomePage> {
             ), // Row
           ), // Padding
 
-          const SizedBox(height: 50),
-          Container(
-              height: 240,
-              child: PageView(
-                scrollDirection: Axis.horizontal,
-                controller: _controller,
-                children: [
-                  MyTotalDonationsCard(
-                    total: donationSum / 100,
-                    color: Color(0xFF003049),
-                  ),
-                  MyRoundupCard(
-                    accAmount: roundupAccruedSum / 100,
-                    color: Color(0xFF003049),
-                  ),
-                ],
-              )),
-
           const SizedBox(height: 25),
 
-          SmoothPageIndicator(
-            controller: _controller,
-            count: 2,
-            effect: const ExpandingDotsEffect(
-              activeDotColor: Color(0xFF003049),
-            ),
-          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                 Text(
+                  // Make this string work even if ${userDoc!.firstName}! is null
+                  'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
+                  style: TextStyle(
+                    fontSize: 50.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF003049),
+                  ),
+                ),
+              ],
+            ), // Row
+          ), // Padding
+
+          const SizedBox(height: 10),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'You have made the following pledges:',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    // fontWeight: FontWeight.bold,
+                    color: Color(0xFF003049),
+                  ),
+                ),
+              ],
+            ), // Row
+          ), // Padding
 
           const SizedBox(height: 25),
-
-          // Put two boxes of the same color here
 
           Container(
           // if userDoc!.donationMethods!['donationPreferences'].length is null, then make the height 0
@@ -132,6 +122,53 @@ class HomePageState extends State<HomePage> {
               return GivingCard(index:index);
             },
           )),
+
+          // const SizedBox(height: 25),
+
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       const Text(
+          //         'You can see our updated list of charities at the link here',
+          //         style: TextStyle(
+          //           fontSize: 24.0,
+          //           // fontWeight: FontWeight.bold,
+          //           color: Color(0xFF003049),
+          //         ),
+          //       ),
+          //     ],
+          //   ), // Row
+          // ), // Padding
+
+          // const SizedBox(height: 25),
+
+          // Button sending you to the onboarding/method page
+
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkResponse(
+                  onTap: () {
+                    context.go('/onboarding/method');
+                  },
+                  splashFactory: InkRipple.splashFactory,
+                  borderRadius: BorderRadius.circular(30), // Make sure this value is equal to the CircleAvatar radius
+                  child: CircleAvatar(
+                    backgroundColor: Color(0xFF003049),
+                    radius: 30, // Adjust this value to make the circle bigger or smaller
+                    child: Icon(Icons.add, color: Colors.white, size: 30.0), // Increase the icon size
+                  ),
+                ),
+              ],
+            ), // Row
+          ), // Padding
+
+          
+
         ])),
 
         
@@ -140,7 +177,7 @@ class HomePageState extends State<HomePage> {
         bottomNavigationBar: Container(
           height: 90,
           child: BottomNavigationBar(
-            backgroundColor: blue,
+            backgroundColor: Color(0xFF003049),
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.white,
             selectedFontSize: 16,
@@ -171,7 +208,7 @@ class HomePageState extends State<HomePage> {
             onTap: (index) {
               switch (index) {
                 case 0:
-                  context.go('');
+                  context.go('/');
                   break;
                 case 1:
                   context.go('/data');

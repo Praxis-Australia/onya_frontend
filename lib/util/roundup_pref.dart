@@ -37,7 +37,7 @@ class RoundupPreference extends StatelessWidget {
         .toList();
 
     return SizedBox(
-        width: 400.0,
+        width: 350.0,
         height: 550.0,
         child: Form(
             key: formKey,
@@ -76,7 +76,7 @@ class RoundupPreference extends StatelessWidget {
                   'Watched account',
                   style: TextStyle(
                     fontSize: 20.0,
-                    color: Colors.black,
+                    color: Color(0xff3D405B),
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.left,
@@ -84,6 +84,9 @@ class RoundupPreference extends StatelessWidget {
                 DropdownButtonFormField<String>(
                   decoration: const InputDecoration(
                     labelText: 'Select an account to monitor for round-ups',
+                    contentPadding: EdgeInsets.only(top:10, bottom: 10),
+                      // hide label after chocie
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
                   ),
                   value: userDoc.donationMethods['roundup']['watchedAccountId'],
                   onChanged: (String? accountId) =>
@@ -96,38 +99,39 @@ class RoundupPreference extends StatelessWidget {
                     return null;
                   },
                 ),
-                const Text(
-                  'Round-up amount',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                DropdownButtonFormField<num>(
-                  decoration: const InputDecoration(
-                    labelText: 'Round to nearest',
-                  ),
-                  value: userDoc.donationMethods['roundup']['roundTo'],
-                  onChanged: (num? newAmount) => {roundTo = newAmount!},
-                  items: const [
-                    DropdownMenuItem(value: 100, child: Text('\$1')),
-                    DropdownMenuItem(value: 200, child: Text('\$2')),
-                    DropdownMenuItem(value: 500, child: Text('\$5')),
-                  ],
-                  validator: (num? value) {
-                    if (value == null) {
-                      return 'Please select an amount';
-                    }
-                    return null;
-                  },
-                ),
+                // const Text(
+                //   'Round-up amount',
+                //   style: TextStyle(
+                //     fontSize: 20.0,
+                //     color: Colors.black,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                //   textAlign: TextAlign.left,
+                // ),
+                // DropdownButtonFormField<num>(
+                //   decoration: const InputDecoration(
+                //     labelText: 'Round to nearest',
+                //   ),
+                //   value: userDoc.donationMethods['roundup']['roundTo'],
+                //   onChanged: (num? newAmount) => {roundTo = newAmount!},
+                //   items: const [
+                //     DropdownMenuItem(value: 100, child: Text('\$1')),
+                //     DropdownMenuItem(value: 200, child: Text('\$2')),
+                //     DropdownMenuItem(value: 500, child: Text('\$5')),
+                //   ],
+                //   validator: (num? value) {
+                //     if (value == null) {
+                //       return 'Please select an amount';
+                //     }
+                //     return null;
+                //   },
+                // ),
+                SizedBox(height: 35.0),
                 const Text(
                   'Debit account',
                   style: TextStyle(
                     fontSize: 20.0,
-                    color: Colors.black,
+                    color: Color(0xff3D405B),
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.left,
@@ -136,6 +140,9 @@ class RoundupPreference extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText:
                           'Select an account to debit from for donations',
+                      contentPadding: EdgeInsets.only(top:10, bottom: 10),
+                      // hide label after chocie
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
                     value: debitAccountId,
                     onChanged: (String? accountId) =>
@@ -147,22 +154,41 @@ class RoundupPreference extends StatelessWidget {
                       }
                       return null;
                     }),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 50.0),
                 // Disable button if no FormFields has changed
-                ElevatedButton(
+                Center(child:ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      await db.updateRoundupConfig(isEnabled, debitAccountId!,
-                          watchedAccountId!, roundTo!);
+                      print("validated");
+                      await db.updateRoundupConfig(false, debitAccountId!,
+                          watchedAccountId!, 0);
                     }
                     if (isOnboarding) {
-                      context.go('/');
+                      print("is onboarding");
+                      context.go('/onboarding/methods');
                     }
                   },
+                  // Style
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xff3D405B),
+                    onPrimary: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                    // add insets
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0, vertical: 15.0),
+                  ),
                   child: (!isOnboarding)
-                      ? const Text("Save preferences")
-                      : const Text("Continue"),
-                )
+                      ? const Text(
+                        "Save preferences")
+                      : const Text("Continue",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.white,
+                          )
+                      ),
+                ))
               ],
             )));
   }

@@ -8,7 +8,7 @@ class DatabaseService {
     _firestore = FirebaseFirestore.instance;
     _functions = FirebaseFunctions.instanceFor(region: 'australia-southeast1');
 
-    _functions.useFunctionsEmulator('localhost', 5001);
+    // _functions.useFunctionsEmulator('localhost', 5001);
   }
 
   final String uid;
@@ -98,6 +98,34 @@ class DatabaseService {
     } catch (e) {
       throw Future.error(e);
     }
+  }
+
+  Future<void> updateFromDonationCard(String charity, String method) async {
+    // Add to a list in firestore under donationMethods.donationPreferences
+    // the map {charity: charity, pledgeType: pledgeType}
+
+    Map<String, dynamic> payload = {
+      'donationMethods.donationPreferences': FieldValue.arrayUnion([
+        {'charity': charity, 'method': method}
+      ])
+    };
+
+    await _firestore.collection('users').doc(uid).update(payload);
+  }
+
+  Future<void> removeDonationPreference(String charity, String method) async {
+    // Add to a list in firestore under donationMethods.donationPreferences
+    // the map {charity: charity, pledgeType: pledgeType}
+
+    // Get the charity and method from the index
+
+    Map<String, dynamic> payload = {
+      'donationMethods.donationPreferences': FieldValue.arrayRemove(
+          [{'charity': charity, 'method': method}]
+      )
+    };
+
+    await _firestore.collection('users').doc(uid).update(payload);
   }
 
   Future<void> updateRoundupConfig(bool isEnabled, String debitAccountId,

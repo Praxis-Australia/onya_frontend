@@ -1,9 +1,9 @@
 import 'package:onya_frontend/services/db.dart';
+import 'package:onya_frontend/util/connect_basiq.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-//import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CompleteRegistrationPage extends StatefulWidget {
   const CompleteRegistrationPage({super.key});
@@ -22,10 +22,23 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
   Widget build(BuildContext context) {
     final DatabaseService db = Provider.of<DatabaseService>(context);
 
+    Future<void> onPressConnect() async {
+      try {
+        String accessToken = await db.getClientToken();
+        String consentUrl = 'https://consent.basiq.io/home?token=$accessToken';
+        String stateParam = '&state=Test';
+        launchUrl(Uri.parse(consentUrl + stateParam));
+      } catch (e) {
+        print(e);
+      }
+    }
+
     Future<void> onPress() async {
       try {
         await db.completeRegistration(
             _firstNameController.text, _lastNameController.text);
+        await onPressConnect();
+        // Run the connect basiq function from the connect_basiq.dart page
         context.go('/onboarding/basiq-setup');
       } catch (e) {
         print(e);
@@ -33,19 +46,22 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
     }
 
     return Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Color(0x4fF4F1DE),
         body: SafeArea(
-            child: Column(children: [
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
           Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'complete signup.',
+                  'onya.',
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 70.0,
                     fontWeight: FontWeight.bold,
+                    color: Color(0xff3D405B),
                   ),
                 ), // Text
               ],
@@ -92,7 +108,7 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
                               onPressed: onPress,
                               child: const Text('Continue'),
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.blue, // background
+                                primary: Color(0xff3D405B), // background
                                 onPrimary: Colors.white, // foreground
                               ),
                             ),

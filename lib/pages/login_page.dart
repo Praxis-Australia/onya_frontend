@@ -12,26 +12,29 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Color(0x4fF4F1DE),
         body: SafeArea(
-            child: Column(children: [
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
           Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'login.',
+                  'onya.',
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 70.0,
                     fontWeight: FontWeight.bold,
+                    color: Color(0xff3D405B),
                   ),
                 ),
               ],
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 35.0,
           ),
           Center(
             child: Container(

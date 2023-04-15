@@ -46,6 +46,7 @@ dependencies:
   go_router: ^6.0.1
   provider: ^6.0.5
   cloud_functions: ^4.0.7
+  charts_flutter: ^0.12.0
 
 dev_dependencies:
   flutter_test:

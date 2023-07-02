@@ -71,38 +71,44 @@ class PledgePageState extends State<PledgePage> {
 
           Padding(
             padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                 Text(
-                  // Make this string work even if ${userDoc!.firstName}! is null
-                  'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
-                  style: TextStyle(
-                    fontSize: 400*50.0/widthOfDevice,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF003049),
+            child: Container(
+              width: widthOfDevice*0.8,
+              height: heightOfDevice*0.08,
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    // Make this string work even if ${userDoc!.firstName}! is null
+                    'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
+                    style: TextStyle(
+                      fontSize: 0.05*heightOfDevice,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF003049),
+                    ),
                   ),
-                ),
-              ],
-            ), // Row
+                ],
+              ),
+            )
           ), // Padding
 
-          SizedBox(height: heightOfDevice/70),
-
           Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'You have made the following pledges:',
-                  style: TextStyle(
-                    fontSize: 200*50.0/widthOfDevice,
-                    // fontWeight: FontWeight.bold,
-                    color: Color(0xFF003049),
+            padding: EdgeInsets.only(left: 0.1*widthOfDevice, right: 0.1*widthOfDevice, top: heightOfDevice*0.02),
+            child: Container(
+              width: widthOfDevice*0.8,
+              height: heightOfDevice*0.05,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'You have made the following pledges:',
+                    style: TextStyle(
+                      fontSize: 0.02*heightOfDevice,
+                      // fontWeight: FontWeight.bold,
+                      color: Color(0xFF003049),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              )
             ), // Row
           ), // Padding
 

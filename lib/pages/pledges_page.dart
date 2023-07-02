@@ -11,6 +11,7 @@ import 'package:onya_frontend/util/my_roundup_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:onya_frontend/util/giving_card.dart';
 import 'package:onya_frontend/util/bottom_navigation_bar.dart';
+import 'package:onya_frontend/functions/font_sizing_functions.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -35,7 +36,7 @@ class PledgePageState extends State<PledgePage> {
     } else {
       return length * heightOfDevice/6;
     }
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,7 @@ class PledgePageState extends State<PledgePage> {
                     // Make this string work even if ${userDoc!.firstName}! is null
                     'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
                     style: TextStyle(
-                      fontSize: 0.05*heightOfDevice,
+                      fontSize: getFontSize(0.08, heightOfDevice, widthOfDevice),
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF003049),
                     ),
@@ -95,14 +96,14 @@ class PledgePageState extends State<PledgePage> {
             padding: EdgeInsets.only(left: 0.1*widthOfDevice, right: 0.1*widthOfDevice, top: heightOfDevice*0.02),
             child: Container(
               width: widthOfDevice*0.8,
-              height: heightOfDevice*0.05,
+              height: heightOfDevice*0.06,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'You have made the following pledges:',
                     style: TextStyle(
-                      fontSize: 0.02*heightOfDevice,
+                      fontSize: getFontSize(0.045, heightOfDevice, widthOfDevice),
                       // fontWeight: FontWeight.bold,
                       color: Color(0xFF003049),
                     ),
@@ -115,7 +116,7 @@ class PledgePageState extends State<PledgePage> {
           SizedBox(height: heightOfDevice/50),
 
           Container(
-            width: widthOfDevice - 50,
+            width: widthOfDevice*0.8,
           // if userDoc!.donationMethods!['donationPreferences'].length is null, then make the height 0
           // otherwise make it a multiple of 200
 
@@ -132,29 +133,6 @@ class PledgePageState extends State<PledgePage> {
               return GivingCard(index:index);
             },
           )),
-
-          // const SizedBox(height: 25),
-
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       const Text(
-          //         'You can see our updated list of charities at the link here',
-          //         style: TextStyle(
-          //           fontSize: 24.0,
-          //           // fontWeight: FontWeight.bold,
-          //           color: Color(0xFF003049),
-          //         ),
-          //       ),
-          //     ],
-          //   ), // Row
-          // ), // Padding
-
-          // const SizedBox(height: 25),
-
-          // Button sending you to the onboarding/method page
 
           Padding(
             padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
@@ -176,13 +154,7 @@ class PledgePageState extends State<PledgePage> {
               ],
             ), // Row
           ), // Padding
-
-          
-
         ])),
-
-        
-        
 
         bottomNavigationBar: BottomNavigationBarWidget(currentIndex:2)
       );

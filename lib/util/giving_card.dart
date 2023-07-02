@@ -3,6 +3,7 @@ import 'package:onya_frontend/services/db.dart';
 import 'package:provider/provider.dart';
 import 'package:onya_frontend/models.dart';
 import 'package:go_router/go_router.dart';
+import 'package:onya_frontend/functions/font_sizing_functions.dart';
 
 class GivingCard extends StatelessWidget {
   final num index;
@@ -22,6 +23,9 @@ class GivingCard extends StatelessWidget {
 
     final String charity = userDoc!.donationMethods!['donationPreferences'][index]['charity'];
     final String method = userDoc.donationMethods!['donationPreferences'][index]['method'];
+
+    double widthOfDevice = MediaQuery.of(context).size.width;
+    double heightOfDevice = MediaQuery.of(context).size.height;
 
     return SizedBox(
         width: 525.0,
@@ -57,7 +61,7 @@ class GivingCard extends StatelessWidget {
                           ],
                         ),
                         style: TextStyle(
-                          fontSize: 24.0,
+                          fontSize: getFontSize(0.04, widthOfDevice, heightOfDevice),
                           color: Color(0xFF3D405B),
                         ),
                       ),

@@ -18,7 +18,7 @@ import 'package:onya_frontend/pages/statistics_page.dart';
 import 'package:onya_frontend/pages/home_page.dart';
 import 'package:onya_frontend/pages/payments_page.dart';
 import 'package:onya_frontend/pages/login_page.dart';
-import 'package:onya_frontend/pages/giving_page.dart';
+import 'package:onya_frontend/pages/donation_page.dart';
 import 'package:onya_frontend/pages/congrats_page.dart';
 import 'package:onya_frontend/pages/pledges_page.dart';
 import 'package:onya_frontend/pages/data_page.dart';

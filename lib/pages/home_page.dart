@@ -124,14 +124,14 @@ class HomePageState extends State<HomePage> {
           // if userDoc!.donationMethods!['donationPreferences'].length is null, then make the height 0
           // otherwise make it a multiple of 200
 
-          height: userDoc!.donationMethods!['donationPreferences'] != null
+          height: userDoc!.donationMethods['donationPreferences'] != null
                 ? getHeight(userDoc!.donationMethods!['donationPreferences'].length, heightOfDevice)
                 : 0,                   
           
           child:ListView.builder(
             // get length of list from userDoc of variable userDoc!.donationMethods!['nextDebit']['donationSources']
-            itemCount: userDoc!.donationMethods!['donationPreferences'] != null
-                ? userDoc!.donationMethods!['donationPreferences'].length
+            itemCount: userDoc!.donationMethods['donationPreferences'] != null
+                ? userDoc!.donationMethods['donationPreferences'].length
                 : 0,
             itemBuilder: (context, index) {
               return GivingCard(index:index);

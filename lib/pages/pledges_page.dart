@@ -117,12 +117,13 @@ class PledgePageState extends State<PledgePage> {
 
           Container(
             width: widthOfDevice*0.8,
+            height: heightOfDevice*0.4,
           // if userDoc!.donationMethods!['donationPreferences'].length is null, then make the height 0
           // otherwise make it a multiple of 200
 
-          height: userDoc!.donationMethods!['donationPreferences'] != null
-                ? getHeight(userDoc!.donationMethods!['donationPreferences'].length, heightOfDevice)
-                : 0,                   
+          // height: userDoc!.donationMethods!['donationPreferences'] != null
+          //       ? getHeight(userDoc!.donationMethods!['donationPreferences'].length, heightOfDevice)
+          //       : 0,                   
           
           child:ListView.builder(
             // get length of list from userDoc of variable userDoc!.donationMethods!['nextDebit']['donationSources']
@@ -135,7 +136,7 @@ class PledgePageState extends State<PledgePage> {
           )),
 
           Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

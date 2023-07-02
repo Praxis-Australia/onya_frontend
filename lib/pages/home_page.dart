@@ -10,6 +10,7 @@ import 'package:onya_frontend/util/my_total_donations_card.dart';
 import 'package:onya_frontend/util/my_roundup_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:onya_frontend/util/giving_card.dart';
+import 'package:onya_frontend/util/bottom_navigation_bar.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -34,11 +35,11 @@ class HomePageState extends State<HomePage> {
     //   return sum + transaction.amount;
     // });
 
-    double getHeight(num length) {
+    double getHeight(num length, num heightOfDevice) {
         if (length == 0) {
           return 0;
-        } else if (length * 100 > 400) {
-          return 400;
+        } else if (length * 100 > heightOfDevice/2) {
+          return heightOfDevice/2;
         } else {
           return length * 100;
         }
@@ -60,6 +61,8 @@ class HomePageState extends State<HomePage> {
     final Color blue = Color(0xFF003049);
     // Define a variable called red
     final Color red = Color(0xFFD62828);
+    double widthOfDevice = MediaQuery.of(context).size.width;
+    double heightOfDevice = MediaQuery.of(context).size.height;
 
     return Scaffold(
         backgroundColor: Color(0x4fF4F1DE),
@@ -83,9 +86,10 @@ class HomePageState extends State<HomePage> {
             ), // Row
           ), // Padding
 
-          const SizedBox(height: 50),
+          SizedBox(height: heightOfDevice/40),
           Container(
-              height: 240,
+              height: heightOfDevice/4,
+              width: widthOfDevice,
               child: PageView(
                 scrollDirection: Axis.horizontal,
                 controller: _controller,
@@ -101,7 +105,7 @@ class HomePageState extends State<HomePage> {
                 ],
               )),
 
-          const SizedBox(height: 25),
+          SizedBox(height: heightOfDevice/40),
 
           SmoothPageIndicator(
             controller: _controller,
@@ -116,11 +120,12 @@ class HomePageState extends State<HomePage> {
           // Put two boxes of the same color here
 
           Container(
+            width: widthOfDevice/1.1,
           // if userDoc!.donationMethods!['donationPreferences'].length is null, then make the height 0
           // otherwise make it a multiple of 200
 
           height: userDoc!.donationMethods!['donationPreferences'] != null
-                ? getHeight(userDoc!.donationMethods!['donationPreferences'].length)
+                ? getHeight(userDoc!.donationMethods!['donationPreferences'].length, heightOfDevice)
                 : 0,                   
           
           child:ListView.builder(
@@ -137,55 +142,7 @@ class HomePageState extends State<HomePage> {
         
         
 
-        bottomNavigationBar: Container(
-          height: 90,
-          child: BottomNavigationBar(
-            backgroundColor: blue,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white,
-            selectedFontSize: 16,
-            unselectedFontSize: 16,
-            selectedLabelStyle: const TextStyle(
-              // change the family to regular flutter font
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold),
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 40),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.show_chart, size: 40),
-                label: 'Data',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.group, size: 40),
-                label: 'Pledges',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings, size: 40),
-                label: 'Settings',
-              ),
-            ],
-            onTap: (index) {
-              switch (index) {
-                case 0:
-                  context.go('');
-                  break;
-                case 1:
-                  context.go('/data');
-                  break;
-                case 2:
-                  context.go('/pledges');
-                  break;
-                case 3:
-                  context.go('/settings');
-                  break;
-              }
-            },
-          ),
-        ),
+        bottomNavigationBar: BottomNavigationBarWidget(currentIndex:0)
       );
   }
 }

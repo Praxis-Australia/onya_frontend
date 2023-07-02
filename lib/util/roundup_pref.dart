@@ -36,42 +36,17 @@ class RoundupPreference extends StatelessWidget {
                 value: account['id'], child: Text(account['name'] ?? "N/A")))
         .toList();
 
+    double widthOfDevice = MediaQuery.of(context).size.width;
+    double heightOfDevice = MediaQuery.of(context).size.height;
+
     return SizedBox(
-        width: 350.0,
-        height: 550.0,
+        width: widthOfDevice/1.2,
+        height: heightOfDevice/3,
         child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Visibility(
-                    visible: !isOnboarding,
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Enable round-ups',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        FormField(
-                          initialValue: isEnabled,
-                          builder: (FormFieldState<bool> field) {
-                            return Switch(
-                              value: field.value!,
-                              onChanged: (val) {
-                                field.didChange(val);
-                                isEnabled = val;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    )),
-
                 const Text(
                   'Watched account',
                   style: TextStyle(
@@ -99,34 +74,7 @@ class RoundupPreference extends StatelessWidget {
                     return null;
                   },
                 ),
-                // const Text(
-                //   'Round-up amount',
-                //   style: TextStyle(
-                //     fontSize: 20.0,
-                //     color: Colors.black,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                //   textAlign: TextAlign.left,
-                // ),
-                // DropdownButtonFormField<num>(
-                //   decoration: const InputDecoration(
-                //     labelText: 'Round to nearest',
-                //   ),
-                //   value: userDoc.donationMethods['roundup']['roundTo'],
-                //   onChanged: (num? newAmount) => {roundTo = newAmount!},
-                //   items: const [
-                //     DropdownMenuItem(value: 100, child: Text('\$1')),
-                //     DropdownMenuItem(value: 200, child: Text('\$2')),
-                //     DropdownMenuItem(value: 500, child: Text('\$5')),
-                //   ],
-                //   validator: (num? value) {
-                //     if (value == null) {
-                //       return 'Please select an amount';
-                //     }
-                //     return null;
-                //   },
-                // ),
-                SizedBox(height: 35.0),
+                SizedBox(height: heightOfDevice/30),
                 const Text(
                   'Debit account',
                   style: TextStyle(
@@ -154,7 +102,7 @@ class RoundupPreference extends StatelessWidget {
                       }
                       return null;
                     }),
-                const SizedBox(height: 50.0),
+                SizedBox(height: heightOfDevice/40),
                 // Disable button if no FormFields has changed
                 Center(child:ElevatedButton(
                   onPressed: () async {
@@ -173,21 +121,19 @@ class RoundupPreference extends StatelessWidget {
                     primary: const Color(0xff3D405B),
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
                     // add insets
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50.0, vertical: 15.0),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widthOfDevice/20, vertical: heightOfDevice/40),
                   ),
-                  child: (!isOnboarding)
-                      ? const Text(
-                        "Save preferences")
-                      : const Text("Continue",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.white,
-                          )
-                      ),
+                  child: Text(
+                        "Save preferences",
+                        style: TextStyle(
+                          fontSize: 500*20.0/widthOfDevice,
+                          color: Colors.white,
+                        )),
+                        
                 ))
               ],
             )));

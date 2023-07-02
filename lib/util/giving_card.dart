@@ -30,7 +30,7 @@ class GivingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 525,
+                // width: 525,
                 decoration: BoxDecoration(
                   color: Color(0xFF003049),
                   borderRadius: BorderRadius.circular(20.0),

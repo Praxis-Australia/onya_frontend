@@ -146,7 +146,7 @@ class _DonationPageState extends State<DonationPage> {
                     ),
                   ]
                 )),
-                SizedBox(height: 50.0),
+                SizedBox(height: 10.0),
                 // This should be a container which updates depending on the 
                 // user's selection of cahrity choosing to display the charity's
                 // information depending on the user's selection
@@ -160,7 +160,7 @@ class _DonationPageState extends State<DonationPage> {
                     //   style: BorderStyle.solid,
                     // ),
                   // ),
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(5.0),
                   child: _selectedCharity == null
                   ? Container()
                   :_selectedCharity == 'Against Malaria'
@@ -181,6 +181,7 @@ class _DonationPageState extends State<DonationPage> {
                                 fontSize: 18.0,
                                 color: Color(0xFF3D405B),
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         )
@@ -201,22 +202,23 @@ class _DonationPageState extends State<DonationPage> {
                                 fontSize: 18.0,
                                 color: Color(0xFF3D405B),
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
                 ),
-                SizedBox(height: 50.0),
+                SizedBox(height: 10.0),
                 Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                    border: Border.all(
-                      color: Color(0xFF3D405B),
-                      width: 1.0,
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                  padding: EdgeInsets.all(16.0),
+                  // decoration: BoxDecoration(
+                  //   color: Colors.white,
+                  //   borderRadius: BorderRadius.circular(20.0),
+                  //   border: Border.all(
+                  //     color: Color(0xFF3D405B),
+                  //     width: 1.0,
+                  //     style: BorderStyle.solid,
+                  //   ),
+                  // ),
+                  padding: EdgeInsets.all(5.0),
                   child: _selectedMethod == null
                   ? Container()
                   :_selectedMethod == '10% of my income'
@@ -237,6 +239,7 @@ class _DonationPageState extends State<DonationPage> {
                               fontSize: 18.0,
                               color: Color(0xFF3D405B),
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       )
@@ -258,6 +261,7 @@ class _DonationPageState extends State<DonationPage> {
                                 fontSize: 18.0,
                                 color: Color(0xFF3D405B),
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         )
@@ -282,7 +286,7 @@ class _DonationPageState extends State<DonationPage> {
                           ],
                         ),
                 ),                
-                SizedBox(height: 50.0),
+                SizedBox(height: 20.0),
                 Row(
                       // Add alignment to right hand side
                       mainAxisAlignment: MainAxisAlignment.center,

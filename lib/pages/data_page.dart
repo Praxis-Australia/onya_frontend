@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:intl/intl.dart';
 
 import 'package:onya_frontend/models.dart';
 import 'package:onya_frontend/util/my_icon.dart';
@@ -11,6 +12,7 @@ import 'package:onya_frontend/util/my_roundup_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:onya_frontend/util/giving_card.dart';
 import 'package:onya_frontend/util/graph_card.dart';
+import 'package:onya_frontend/util/bottom_navigation_bar.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -43,6 +45,8 @@ class DataPageState extends State<DataPage> {
 
   @override
   Widget build(BuildContext context) {
+    double widthOfDevice = MediaQuery.of(context).size.width;
+    double heightOfDevice = MediaQuery.of(context).size.height;
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
     final Iterable<OnyaTransactionDoc>? onyaTransactions =
         Provider.of<Iterable<OnyaTransactionDoc>?>(context);
@@ -51,6 +55,14 @@ class DataPageState extends State<DataPage> {
     final num donationSum = onyaTransactions!.fold(0, (sum, transaction) {
       return sum + transaction.amount;
     });
+
+     int _currentIndex = 0;
+
+    // void _onTabTapped(int index) {
+    //   setState(() {
+    //     _currentIndex = index;
+    //   });
+    // };
 
     return Scaffold(
         backgroundColor: Color(0x4fF4F1DE),
@@ -73,7 +85,7 @@ class DataPageState extends State<DataPage> {
                   ],
                 ), // Row
               ), // Padding
-              const SizedBox(height: 25),
+              SizedBox(height: heightOfDevice/70),
               Padding(
                 padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                 child: Row(
@@ -102,10 +114,10 @@ class DataPageState extends State<DataPage> {
                   ],
                 ), // Row
               ), // Padding
-              const SizedBox(height: 25),
+              SizedBox(height: heightOfDevice/40),
               Container(
-                height:350,
-                width:550,
+                height:heightOfDevice/3,
+                width:widthOfDevice - 50,
                 // decorate this container with a box decoration
                 decoration: BoxDecoration(
                   // add shadow to the container
@@ -132,7 +144,7 @@ class DataPageState extends State<DataPage> {
                 child: GraphCard(),
               
               ),
-              const SizedBox(height: 25),
+              SizedBox(height: heightOfDevice/20),
               Padding(
                 padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                 child: Row(
@@ -151,36 +163,75 @@ class DataPageState extends State<DataPage> {
                   ],
                 ), // Row
               ), // Padding
-              const SizedBox(height: 25),
+              SizedBox(height: heightOfDevice/50),
               // Create a list of transactions
               Container(
-                height: 200,
-                width: 550,
+                height: heightOfDevice/4.5,
+                width: widthOfDevice-50,
                 // decorate this container with a box decoration
-                child: ListView.separated(
+                child: ListView.builder(
                   itemCount: onyaTransactions!.length,
-                  separatorBuilder: (BuildContext context, int index) => const Divider(),
                   itemBuilder: (context, index) {
-                    return Container(child:Text(
-                      onyaTransactions!.elementAt(index).amount.toString(),
-                      // style
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF003049),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children:[Container(
+                      height: heightOfDevice/10,
+                      // width: widthOfDevic,
+                      padding: const EdgeInsets.all(10),
+                      // center elements in the container
+                      alignment: Alignment.center,
+                      child:RichText(
+                        text: TextSpan(
+                          // align text to center
+                          children: [
+                            TextSpan(
+                              text: 'You donated ',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF003049),
+                              ),
+                            ),
+                            TextSpan(
+                              text: onyaTransactions!.elementAt(index).amount.toString(),
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF003049),
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' on ',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF003049),
+                              ),
+                            ),
+                            TextSpan(
+                              text: DateFormat.yMMMMd().format(onyaTransactions!.elementAt(index).created.toDate()),
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF003049),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     // decorate this text
                     decoration: BoxDecoration(
                       // add shadow to the text
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3), // changes position of shadow
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: const Offset(1, 1), // changes position of shadow
                         ),
                       ],
+                      // add outline
                       // set the color of the box decoration
                       color: Colors.white,
                       // set the border radius of the box decoration
@@ -188,13 +239,14 @@ class DataPageState extends State<DataPage> {
                       // set the border of the box decoration
                       border: Border.all(
                         // set the color of the border
-                        color: Colors.white,
+                        color: Color(0xFF003049),
                         // set the width of the border
                         width: 1,
                       ),
                     ),
                     
-                    );
+                    ), 
+                    SizedBox(height: heightOfDevice/50)]);
                   },
                 ),
               ),
@@ -208,55 +260,7 @@ class DataPageState extends State<DataPage> {
         
         
 
-        bottomNavigationBar: Container(
-          height: 90,
-          child: BottomNavigationBar(
-            backgroundColor: Color(0xFF003049),
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white,
-            selectedFontSize: 16,
-            unselectedFontSize: 16,
-            selectedLabelStyle: const TextStyle(
-              // change the family to regular flutter font
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold),
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 40),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.show_chart, size: 40),
-                label: 'Data',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.group, size: 40),
-                label: 'Pledges',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings, size: 40),
-                label: 'Settings',
-              ),
-            ],
-            onTap: (index) {
-              switch (index) {
-                case 0:
-                  context.go('/');
-                  break;
-                case 1:
-                  context.go('/data');
-                  break;
-                case 2:
-                  context.go('/pledges');
-                  break;
-                case 3:
-                  context.go('/settings');
-                  break;
-              }
-            },
-          ),
-        ),
+        bottomNavigationBar: BottomNavigationBarWidget(currentIndex:1)
       );
   }
 }

@@ -10,6 +10,7 @@ import 'package:onya_frontend/util/my_total_donations_card.dart';
 import 'package:onya_frontend/util/my_roundup_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:onya_frontend/util/giving_card.dart';
+import 'package:onya_frontend/util/bottom_navigation_bar.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -26,13 +27,13 @@ class PledgePageState extends State<PledgePage> {
 
   // Define a function that takes in length and multiplied it by 200 up to a
   // maximum of 800
-  double getHeight(num length) {
+  double getHeight(num length, num heightOfDevice) {
     if (length == 0) {
       return 0;
-    } else if (length * 100 > 400) {
-      return 400;
+    } else if (length * heightOfDevice/6 > heightOfDevice/2) {
+      return heightOfDevice/2;
     } else {
-      return length * 100;
+      return length * heightOfDevice/6;
     }
   }  
 
@@ -41,6 +42,8 @@ class PledgePageState extends State<PledgePage> {
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
     final Iterable<OnyaTransactionDoc>? onyaTransactions =
         Provider.of<Iterable<OnyaTransactionDoc>?>(context);
+    double widthOfDevice = MediaQuery.of(context).size.width;
+    double heightOfDevice = MediaQuery.of(context).size.height;
 
     return Scaffold(
         backgroundColor: Color(0x4fF4F1DE),
@@ -67,7 +70,7 @@ class PledgePageState extends State<PledgePage> {
           const SizedBox(height: 25),
 
           Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+            padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -75,7 +78,7 @@ class PledgePageState extends State<PledgePage> {
                   // Make this string work even if ${userDoc!.firstName}! is null
                   'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
                   style: TextStyle(
-                    fontSize: 50.0,
+                    fontSize: 400*50.0/widthOfDevice,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF003049),
                   ),
@@ -84,17 +87,17 @@ class PledgePageState extends State<PledgePage> {
             ), // Row
           ), // Padding
 
-          const SizedBox(height: 10),
+          SizedBox(height: heightOfDevice/70),
 
           Padding(
             padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'You have made the following pledges:',
                   style: TextStyle(
-                    fontSize: 24.0,
+                    fontSize: 200*50.0/widthOfDevice,
                     // fontWeight: FontWeight.bold,
                     color: Color(0xFF003049),
                   ),
@@ -103,14 +106,15 @@ class PledgePageState extends State<PledgePage> {
             ), // Row
           ), // Padding
 
-          const SizedBox(height: 25),
+          SizedBox(height: heightOfDevice/50),
 
           Container(
+            width: widthOfDevice - 50,
           // if userDoc!.donationMethods!['donationPreferences'].length is null, then make the height 0
           // otherwise make it a multiple of 200
 
           height: userDoc!.donationMethods!['donationPreferences'] != null
-                ? getHeight(userDoc!.donationMethods!['donationPreferences'].length)
+                ? getHeight(userDoc!.donationMethods!['donationPreferences'].length, heightOfDevice)
                 : 0,                   
           
           child:ListView.builder(
@@ -174,55 +178,7 @@ class PledgePageState extends State<PledgePage> {
         
         
 
-        bottomNavigationBar: Container(
-          height: 90,
-          child: BottomNavigationBar(
-            backgroundColor: Color(0xFF003049),
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white,
-            selectedFontSize: 16,
-            unselectedFontSize: 16,
-            selectedLabelStyle: const TextStyle(
-              // change the family to regular flutter font
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold),
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: 40),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.show_chart, size: 40),
-                label: 'Data',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.group, size: 40),
-                label: 'Pledges',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings, size: 40),
-                label: 'Settings',
-              ),
-            ],
-            onTap: (index) {
-              switch (index) {
-                case 0:
-                  context.go('/');
-                  break;
-                case 1:
-                  context.go('/data');
-                  break;
-                case 2:
-                  context.go('/pledges');
-                  break;
-                case 3:
-                  context.go('/settings');
-                  break;
-              }
-            },
-          ),
-        ),
+        bottomNavigationBar: BottomNavigationBarWidget(currentIndex:2)
       );
   }
 }

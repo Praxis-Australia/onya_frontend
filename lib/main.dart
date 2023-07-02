@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 import 'router.dart';
 import 'firebase_options.dart';
+import "package:scaled_app/scaled_app.dart";
+import "package:flutter/widgets.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +18,13 @@ void main() async {
   );
   print("Initialised app");
 
+  ScaleFactorCallback scaleFactorCallback = (deviceSize) {
+    // screen width used in your UI design
+    const double widthOfDesign = 600;
+    return deviceSize.width / widthOfDesign;
+  };
+
+  // runAppScaled(MyApp(), scaleFactor: scaleFactorCallback);
   runApp(MyApp());
 }
 

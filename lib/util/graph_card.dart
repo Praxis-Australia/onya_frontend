@@ -57,9 +57,11 @@ class GraphCard extends StatelessWidget {
         ));
       }
 
-      return SizedBox(
-        width: 550.0,
-        height: 350.0,
+      return Container(
+        // width: 550.0,
+        // height: 350.0,
+        // add padding
+        padding: EdgeInsets.symmetric(horizontal:20),
         child: Center(
           child: charts.LineChart(
             seriesList,
@@ -68,36 +70,48 @@ class GraphCard extends StatelessWidget {
             domainAxis: charts.NumericAxisSpec(
               tickProviderSpec: charts.BasicNumericTickProviderSpec(
                 zeroBound: false,
-                dataIsInWholeNumbers: true,
-                
+                dataIsInWholeNumbers: true,     
+                desiredTickCount: 5,          
                 // Make the axis thicker
               ),
+              renderSpec: charts.SmallTickRendererSpec(
+                  labelStyle: charts.TextStyleSpec(
+                    fontSize: 16, // Change the font size to your desired value
+                  ),
+                ),
             ),
             primaryMeasureAxis: charts.NumericAxisSpec(
               tickProviderSpec: charts.BasicNumericTickProviderSpec(
                 zeroBound: false,
                 dataIsInWholeNumbers: true,
+                // scale axis
+                desiredTickCount: 5,
               ),
+              renderSpec: charts.SmallTickRendererSpec(
+                  labelStyle: charts.TextStyleSpec(
+                    fontSize: 16, // Change the font size to your desired value
+                  ),
+                ),
             ),
             // add axis labels
             defaultInteractions: false,
             behaviors: [
               charts.ChartTitle(
-                'Days since first transaction',
+                'Days',
                 behaviorPosition: charts.BehaviorPosition.bottom,
                 titleOutsideJustification: charts.OutsideJustification.middleDrawArea,
               ),
-              charts.ChartTitle(
-                'Total amount donated',
-                behaviorPosition: charts.BehaviorPosition.start,
-                titleOutsideJustification: charts.OutsideJustification.middleDrawArea,
-                // Improve the style 
-                titleStyleSpec: charts.TextStyleSpec(
-                  fontSize: 18,
-                  // Make the color consistent with 0xFF003049 and 0x4fF4F1DE
-                  color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
-                ),
-              ),
+              // charts.ChartTitle(
+              //   'Total',
+              //   behaviorPosition: charts.BehaviorPosition.start,
+              //   titleOutsideJustification: charts.OutsideJustification.middleDrawArea,
+              //   // Improve the style 
+              //   titleStyleSpec: charts.TextStyleSpec(
+              //     fontSize: 18,
+              //     // Make the color consistent with 0xFF003049 and 0x4fF4F1DE
+              //     color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
+              //   ),
+              // ),
             ]
           ),
         ),

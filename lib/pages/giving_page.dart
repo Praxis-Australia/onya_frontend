@@ -15,15 +15,27 @@ class DonationPage extends StatefulWidget {
 class _DonationPageState extends State<DonationPage> {
   String? _selectedCharity;
   String? _selectedMethod;
+  int? _selectedRoundupAmount;
   // final UserDoc? userDoc = Provider.of<UserDoc?>(context);
 
+  final Map<String, String> _charities = {
+    "against-malaria-foundation": "Against Malaria Foundation",
+    "tlycs-90-10-fund": "TLYCS 90-10 Fund",
+    "givedirectly": "GiveDirectly",
+    "new-incentives": "New Incentives"
+  };
 
-  final List<String> _charities = ['Against Malaria', 'Future Fund'];
-  final List<String> _methods = [
-    '10% of my income',
-    '1% of my income',
-    'a round-up to the nearest dollar'
-  ];
+  final Map<String, String> _methods = {
+    // '10% of my income',
+    // '1% of my income',
+    'round-up': 'a round-up of my purchases'
+  };
+
+  final Map<int, String> _roundupAmounts = {
+    100: '\$1',
+    200: '\$2',
+    500: '\$5',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +105,10 @@ class _DonationPageState extends State<DonationPage> {
                               });
                             },
                             items: _charities
-                                .map((charity) => DropdownMenuItem(
-                                      value: charity,
-                                      child: Text(charity),
+                                .entries
+                                .map((entry) => DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
                                     ))
                                 .toList(),
                             hint: Text('charity'),
@@ -134,9 +147,10 @@ class _DonationPageState extends State<DonationPage> {
                               });
                             },
                             items: _methods
-                                .map((method) => DropdownMenuItem(
-                                      value: method,
-                                      child: Text(method),
+                                .entries
+                                .map((entry) => DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
                                     ))
                                 .toList(),
                             hint: Text('method'),
@@ -144,6 +158,53 @@ class _DonationPageState extends State<DonationPage> {
                         ),
                       ],
                     ),
+                    Column(
+                      children: _selectedMethod != 'round-up' ? [] : 
+                      [
+                        SizedBox(height: 16.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'to the nearest ',
+                              style:
+                                  TextStyle(fontSize: 18.0, color: Color(0xFF3D405B)),
+                            ),
+                            SizedBox(width: 8.0),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: 250.0),
+                              child: DropdownButtonFormField<int>(
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFFE07A5F),
+                                      width: 1.0,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 5.0),
+                                ),
+                                value: _selectedRoundupAmount,
+                                onChanged: (int? value) {
+                                  setState(() {
+                                    _selectedRoundupAmount = value;
+                                  });
+                                },
+                                items: _roundupAmounts
+                                    .entries
+                                    .map((entry) => DropdownMenuItem(
+                                          value: entry.key,
+                                          child: Text(entry.value),
+                                        ))
+                                    .toList(),
+                                hint: Text('round-up amount'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]
+                    )
                   ]
                 )),
                 SizedBox(height: 10.0),
@@ -163,7 +224,7 @@ class _DonationPageState extends State<DonationPage> {
                   padding: EdgeInsets.all(5.0),
                   child: _selectedCharity == null
                   ? Container()
-                  :_selectedCharity == 'Against Malaria'
+                  :_selectedCharity == 'against-malaria-foundation'
                       ? Column(
                           children: [
                             Text(
@@ -301,7 +362,13 @@ class _DonationPageState extends State<DonationPage> {
                             ),
                           ),
                           onPressed: () async {
-                            await db.updateFromDonationCard(_selectedCharity!, _selectedMethod!);
+                            await db.updateCharitySelection({
+                              _selectedCharity!: 100
+                            });
+
+                            if (_selectedMethod == "round-up") {
+                              await db.updateRoundupConfig(isEnabled: true, roundTo: _selectedRoundupAmount);
+                            }
                             context.go('/');
                           },
                           child: Text('Finish',

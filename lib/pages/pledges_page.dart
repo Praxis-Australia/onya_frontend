@@ -30,12 +30,12 @@ class PledgePageState extends State<PledgePage> {
   double getHeight(num length, num heightOfDevice) {
     if (length == 0) {
       return 0;
-    } else if (length * heightOfDevice/6 > heightOfDevice/2) {
-      return heightOfDevice/2;
+    } else if (length * heightOfDevice / 6 > heightOfDevice / 2) {
+      return heightOfDevice / 2;
     } else {
-      return length * heightOfDevice/6;
+      return length * heightOfDevice / 6;
     }
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class PledgePageState extends State<PledgePage> {
         backgroundColor: Color(0x4fF4F1DE),
         body: SafeArea(
             child: Column(children: [
-                          // const SizedBox(height: 25),
+          // const SizedBox(height: 25),
           Padding(
             padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
             child: Row(
@@ -74,11 +74,11 @@ class PledgePageState extends State<PledgePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Text(
+                Text(
                   // Make this string work even if ${userDoc!.firstName}! is null
                   'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
                   style: TextStyle(
-                    fontSize: 400*50.0/widthOfDevice,
+                    fontSize: 400 * 50.0 / widthOfDevice,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF003049),
                   ),
@@ -87,7 +87,7 @@ class PledgePageState extends State<PledgePage> {
             ), // Row
           ), // Padding
 
-          SizedBox(height: heightOfDevice/70),
+          SizedBox(height: heightOfDevice / 70),
 
           Padding(
             padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
@@ -97,7 +97,7 @@ class PledgePageState extends State<PledgePage> {
                 Text(
                   'You have made the following pledges:',
                   style: TextStyle(
-                    fontSize: 200*50.0/widthOfDevice,
+                    fontSize: 200 * 50.0 / widthOfDevice,
                     // fontWeight: FontWeight.bold,
                     color: Color(0xFF003049),
                   ),
@@ -106,26 +106,9 @@ class PledgePageState extends State<PledgePage> {
             ), // Row
           ), // Padding
 
-          SizedBox(height: heightOfDevice/50),
+          SizedBox(height: heightOfDevice / 50),
 
-          Container(
-            width: widthOfDevice - 50,
-          // if userDoc!.donationMethods!['donationPreferences'].length is null, then make the height 0
-          // otherwise make it a multiple of 200
-
-          height: userDoc!.donationMethods!['donationPreferences'] != null
-                ? getHeight(userDoc!.donationMethods!['donationPreferences'].length, heightOfDevice)
-                : 0,                   
-          
-          child:ListView.builder(
-            // get length of list from userDoc of variable userDoc!.donationMethods!['nextDebit']['donationSources']
-            itemCount: userDoc!.donationMethods!['donationPreferences'] != null
-                ? userDoc!.donationMethods!['donationPreferences'].length
-                : 0,
-            itemBuilder: (context, index) {
-              return GivingCard(index:index);
-            },
-          )),
+          GivingCardsList(width: widthOfDevice - 50),
 
           // const SizedBox(height: 25),
 
@@ -149,36 +132,36 @@ class PledgePageState extends State<PledgePage> {
           // const SizedBox(height: 25),
 
           // Button sending you to the onboarding/method page
-
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkResponse(
-                  onTap: () {
-                    context.go('/onboarding/method');
-                  },
-                  splashFactory: InkRipple.splashFactory,
-                  borderRadius: BorderRadius.circular(30), // Make sure this value is equal to the CircleAvatar radius
-                  child: CircleAvatar(
-                    backgroundColor: Color(0xFF003049),
-                    radius: 30, // Adjust this value to make the circle bigger or smaller
-                    child: Icon(Icons.add, color: Colors.white, size: 30.0), // Increase the icon size
+          Container(
+            child: userDoc!.donationMethods['roundup']['isEnabled']
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(
+                        left: 25.0, right: 25.0, top: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkResponse(
+                          onTap: () {
+                            context.go('/onboarding/method');
+                          },
+                          splashFactory: InkRipple.splashFactory,
+                          borderRadius: BorderRadius.circular(
+                              30), // Make sure this value is equal to the CircleAvatar radius
+                          child: CircleAvatar(
+                            backgroundColor: Color(0xFF003049),
+                            radius:
+                                30, // Adjust this value to make the circle bigger or smaller
+                            child: Icon(Icons.add,
+                                color: Colors.white,
+                                size: 30.0), // Increase the icon size
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ), // Row
-          ), // Padding
-
-          
-
+          )
         ])),
-
-        
-        
-
-        bottomNavigationBar: BottomNavigationBarWidget(currentIndex:2)
-      );
+        bottomNavigationBar: BottomNavigationBarWidget(currentIndex: 2));
   }
 }

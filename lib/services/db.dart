@@ -113,37 +113,68 @@ class DatabaseService {
     await _firestore.collection('users').doc(uid).update(payload);
   }
 
-  Future<void> removeDonationPreference(String charity, String method) async {
-    // Add to a list in firestore under donationMethods.donationPreferences
-    // the map {charity: charity, pledgeType: pledgeType}
+  // Future<void> removeDonationPreference(String charity, String method) async {
+  //   // Add to a list in firestore under donationMethods.donationPreferences
+  //   // the map {charity: charity, pledgeType: pledgeType}
 
-    // Get the charity and method from the index
+  //   // Get the charity and method from the index
 
-    Map<String, dynamic> payload = {
-      'donationMethods.donationPreferences': FieldValue.arrayRemove(
-          [{'charity': charity, 'method': method}]
-      )
-    };
+  //   Map<String, dynamic> payload = {
+  //     'donationMethods.donationPreferences': FieldValue.arrayRemove(
+  //         [{'charity': charity, 'method': method}]
+  //     )
+  //   };
+
+  //   await _firestore.collection('users').doc(uid).update(payload);
+  // }
+
+  Future<void> updateRoundupConfig({bool? isEnabled, String? debitAccountId,
+      String? watchedAccountId, num? roundTo}) async {
+
+    Map<String, dynamic> payload = {};
+
+    // If params are non-null, then add to payload
+    if (isEnabled != null) {
+      payload['donationMethods.roundup.isEnabled'] = isEnabled;
+      if (isEnabled) {
+        payload['roundup.nextDebit.lastChecked'] = Timestamp.now();
+      }
+    }
+
+    if (debitAccountId != null) {
+      payload['donationMethods.roundup.debitAccountId'] = debitAccountId;
+    }
+
+    if (watchedAccountId != null) {
+      payload['donationMethods.roundup.watchedAccountId'] = watchedAccountId;
+    }
+
+    if (roundTo != null) {
+      payload['donationMethods.roundup.roundTo'] = roundTo;
+    }
 
     await _firestore.collection('users').doc(uid).update(payload);
   }
 
-  Future<void> updateRoundupConfig(bool isEnabled, String debitAccountId,
-      String watchedAccountId, num roundTo) async {
-    print(isEnabled);
+  Future<void> updateCharitySelection(Map<String, int> charitySelection) {
+    // Check that each value is non-negative
+    charitySelection.forEach((key, value) {
+      if (value < 0) {
+        throw Exception('Charity selection values must be non-negative');
+      }
+    });
 
-    Map<String, dynamic> payload = {
-      'donationMethods.roundup.isEnabled': isEnabled,
-      'donationMethods.roundup.debitAccountId': debitAccountId,
-      'donationMethods.roundup.watchedAccountId': watchedAccountId,
-      'donationMethods.roundup.roundTo': roundTo,
-    };
-
-    if (isEnabled) {
-      payload['roundup.nextDebit.lastChecked'] = Timestamp.now();
+    // Check that the sum of the values is 100
+    int sum = charitySelection.values.reduce((a, b) => a + b);
+    if (sum != 100) {
+      throw Exception('Charity selection values must sum to 100');
     }
 
-    await _firestore.collection('users').doc(uid).update(payload);
+    Map<String, dynamic> payload = {
+      'charitySelection': charitySelection,
+    };
+
+    return _firestore.collection('users').doc(uid).update(payload);
   }
 
   Future<void> checkBasiqConnections() async {

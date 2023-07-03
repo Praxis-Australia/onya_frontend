@@ -92,7 +92,7 @@ class RoundupPreference extends StatelessWidget {
                       // hide label after chocie
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
-                    value: debitAccountId,
+                    value: userDoc.donationMethods['roundup']['debitAccountId'],
                     onChanged: (String? accountId) =>
                         {debitAccountId = accountId},
                     items: accountDropdownItems,
@@ -108,8 +108,10 @@ class RoundupPreference extends StatelessWidget {
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
                       print("validated");
-                      await db.updateRoundupConfig(false, debitAccountId!,
-                          watchedAccountId!, 0);
+                      await db.updateRoundupConfig(
+                        watchedAccountId: watchedAccountId,
+                        debitAccountId: debitAccountId,
+                      );
                     }
                     if (isOnboarding) {
                       print("is onboarding");

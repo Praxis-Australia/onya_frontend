@@ -93,14 +93,45 @@ class DatabaseService {
       HttpsCallableResult res =
           await _functions.httpsCallable('getClientToken').call();
       return res.data['access_token'];
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseFunctionsException {
       rethrow;
     } catch (e) {
       throw Future.error(e);
     }
   }
 
-  
+  Future<Map<String, Charity>> getCharities() async {
+    final QuerySnapshot<Map<String, dynamic>> snapshot =
+        await _firestore.collection('charities').orderBy("displayName").get();
+
+    try {
+      Map<String, Charity> charities = {};
+
+      for (var doc in snapshot.docs) {
+        charities[doc.id] = Charity.fromDocSnapshot(doc);
+      }
+
+      return charities;
+    } catch (err) {
+      return Future.error(err);
+    }
+  }
+
+  Future<Charity> getCharity(String id) async {
+    final DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _firestore.collection('charities').doc(id).get();
+
+    try {
+      if (snapshot.exists) {
+        return Charity.fromDocSnapshot(snapshot);
+      } else {
+        throw Exception('Charity with id $id not found in database');
+      }
+    } catch (err) {
+      return Future.error(err);
+    }
+  }
+
   // Future<void> removeDonationPreference(String charity, String method) async {
   //   // Add to a list in firestore under donationMethods.donationPreferences
   //   // the map {charity: charity, pledgeType: pledgeType}
@@ -116,9 +147,11 @@ class DatabaseService {
   //   await _firestore.collection('users').doc(uid).update(payload);
   // }
 
-  Future<void> updateRoundupConfig({bool? isEnabled, String? debitAccountId,
-      String? watchedAccountId, num? roundTo}) async {
-
+  Future<void> updateRoundupConfig(
+      {bool? isEnabled,
+      String? debitAccountId,
+      String? watchedAccountId,
+      num? roundTo}) async {
     Map<String, dynamic> payload = {};
 
     // If params are non-null, then add to payload

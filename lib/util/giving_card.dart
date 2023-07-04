@@ -91,10 +91,11 @@ class RoundupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
     final DatabaseService db = Provider.of<DatabaseService>(context);
+    final Map<String, Charity> charities = Provider.of<Map<String, Charity>>(context);
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    final String charity = userDoc!.charitySelection!.entries.first.key;
+    final String charityId = userDoc!.charitySelection!.entries.first.key;
     final double roundToAmount = userDoc.donationMethods!['roundup']['roundTo'];
     final String method = "purchases rounded to the nearest \$${roundToAmount/100}";
 
@@ -126,7 +127,7 @@ class RoundupCard extends StatelessWidget {
                             ),
                             TextSpan(text: ' to ', style: TextStyle(color: Colors.white)),
                             TextSpan(
-                              text: '$charity',
+                              text: charities[charityId]?.displayName ?? '',
                               style: TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.dotted, color: Colors.white),
                             ),
                           ],

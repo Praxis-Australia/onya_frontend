@@ -18,13 +18,6 @@ class _DonationPageState extends State<DonationPage> {
   int? _selectedRoundupAmount;
   // final UserDoc? userDoc = Provider.of<UserDoc?>(context);
 
-  final Map<String, String> _charities = {
-    "against-malaria-foundation": "Against Malaria Foundation",
-    "tlycs-90-10-fund": "TLYCS 90-10 Fund",
-    "givedirectly": "GiveDirectly",
-    "new-incentives": "New Incentives"
-  };
-
   final Map<String, String> _methods = {
     // '10% of my income',
     // '1% of my income',
@@ -41,6 +34,8 @@ class _DonationPageState extends State<DonationPage> {
   Widget build(BuildContext context) {
     final DatabaseService db = Provider.of<DatabaseService>(context);
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
+    final Map<String, Charity> _charities = Provider.of<Map<String, Charity>>(context);
+
     return Scaffold(
       backgroundColor: Color(0x4FF4F1DE),
       body: Center(
@@ -108,7 +103,7 @@ class _DonationPageState extends State<DonationPage> {
                                 .entries
                                 .map((entry) => DropdownMenuItem(
                                       value: entry.key,
-                                      child: Text(entry.value),
+                                      child: Text(entry.value.displayName),
                                     ))
                                 .toList(),
                             hint: Text('charity'),
@@ -224,11 +219,10 @@ class _DonationPageState extends State<DonationPage> {
                   padding: EdgeInsets.all(5.0),
                   child: _selectedCharity == null
                   ? Container()
-                  :_selectedCharity == 'against-malaria-foundation'
-                      ? Column(
+                  : Column(
                           children: [
                             Text(
-                              'Against Malaria Foundation',
+                              _charities[_selectedCharity]?.displayName ?? '',
                               style: TextStyle(
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.bold,
@@ -237,7 +231,7 @@ class _DonationPageState extends State<DonationPage> {
                             ),
                             SizedBox(height: 16.0),
                             Text(
-                              'The Against Malaria Foundation (AMF) is one of the most effective charities in the world, according to GiveWell, an independent charity evaluator. AMF distributes insecticidal bed nets to protect people from malaria, a disease that kills over 400,000 people every year, mostly children under five years old. The organization has been consistently rated as one of the most cost-effective health charities, with each bed net distributed costing around 3.50. Donate to AMF and help save lives today!',
+                              _charities[_selectedCharity]?.description ?? '',
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Color(0xFF3D405B),
@@ -246,27 +240,6 @@ class _DonationPageState extends State<DonationPage> {
                             ),
                           ],
                         )
-                      : Column(
-                          children: [
-                            Text(
-                              'Future Fund',
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF3D405B),
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            Text(
-                              'Future Fund is a charity that focuses on climate change and environmental conservation. They work to protect the planet by supporting initiatives that reduce greenhouse gas emissions, promote renewable energy, and protect natural habitats. Future Fund is considered one of the most effective climate charities, with a proven track record of success. By donating to Future Fund, you can help to protect the planet and ensure a sustainable future for generations to come.',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Color(0xFF3D405B),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
                 ),
                 SizedBox(height: 10.0),
                 Container(

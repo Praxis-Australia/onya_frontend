@@ -112,3 +112,25 @@ class OnyaTransactionDoc {
         data['donationSources'] as List<dynamic>);
   }
 }
+
+class Charity {
+  final String id;
+  final String displayName;
+  final String shortName;
+  final String description;
+  
+  Charity(
+      this.id,
+      this.displayName,
+      this.shortName,
+      this.description);
+
+  factory Charity.fromDocSnapshot(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Charity(
+        doc.id,
+        data['displayName'] as String,
+        data['shortName'] as String,
+        data['description'] as String);
+  }
+}

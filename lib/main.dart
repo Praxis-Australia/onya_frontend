@@ -62,6 +62,10 @@ class MyApp extends StatelessWidget {
                             initialData: const [],
                           ),
                           Provider<DatabaseService>.value(value: db),
+                          FutureProvider<Map<String, Charity>>.value(
+                            value: db.getCharities(),
+                            initialData: {},
+                          ),
                         ],
                         child: MaterialApp.router(
                           routerConfig: router,

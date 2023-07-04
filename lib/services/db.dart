@@ -100,19 +100,7 @@ class DatabaseService {
     }
   }
 
-  Future<void> updateFromDonationCard(String charity, String method) async {
-    // Add to a list in firestore under donationMethods.donationPreferences
-    // the map {charity: charity, pledgeType: pledgeType}
-
-    Map<String, dynamic> payload = {
-      'donationMethods.donationPreferences': FieldValue.arrayUnion([
-        {'charity': charity, 'method': method}
-      ])
-    };
-
-    await _firestore.collection('users').doc(uid).update(payload);
-  }
-
+  
   // Future<void> removeDonationPreference(String charity, String method) async {
   //   // Add to a list in firestore under donationMethods.donationPreferences
   //   // the map {charity: charity, pledgeType: pledgeType}

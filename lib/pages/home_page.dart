@@ -28,12 +28,8 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
-    // final Iterable<OnyaTransactionDoc>? onyaTransactions =
-    //     Provider.of<Iterable<OnyaTransactionDoc>?>(context);
-
-    // final num donationSum = onyaTransactions!.fold(0, (sum, transaction) {
-    //   return sum + transaction.amount;
-    // });
+    final Iterable<OnyaTransactionDoc>? onyaTransactions =
+        Provider.of<Iterable<OnyaTransactionDoc>?>(context);
 
     double getHeight(num length, num heightOfDevice) {
         if (length == 0) {
@@ -45,17 +41,10 @@ class HomePageState extends State<HomePage> {
         }
       }  
 
-    final num donationSum = 0;
-    final num roundupAccruedSum = 0;
-
-    // final num roundupAccruedSum = userDoc!.donationMethods['nextDebit']
-    //         ['accruedAmount']
-    //     .fold(0, (sum, donationSource) {
-    //   if (donationSource['method'] == 'roundup') {
-    //     return sum + donationSource['amount'];
-    //   }
-    //   return sum;
-    // });
+    final num roundupAccruedSum = userDoc?.donationMethods['nextDebit']['accruedAmount'] ?? 0;
+    final num donationSum = onyaTransactions?.fold(0, (sum, transaction) {
+      return (sum ?? 0) + transaction.amount;
+    }) ?? 0;
 
     // Define a variable called blue
     final Color blue = Color(0xFF003049);

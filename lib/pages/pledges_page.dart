@@ -14,6 +14,8 @@ import 'package:onya_frontend/util/bottom_navigation_bar.dart';
 
 import 'package:go_router/go_router.dart';
 
+import '../util/donation_setup.dart';
+
 class PledgePage extends StatefulWidget {
   const PledgePage({super.key});
 
@@ -24,6 +26,7 @@ class PledgePage extends StatefulWidget {
 class PledgePageState extends State<PledgePage> {
   // PageView controller
   final _controller = PageController();
+  bool _isModalOpen = false;
 
   // Define a function that takes in length and multiplied it by 200 up to a
   // maximum of 800
@@ -45,7 +48,8 @@ class PledgePageState extends State<PledgePage> {
     double widthOfDevice = MediaQuery.of(context).size.width;
     double heightOfDevice = MediaQuery.of(context).size.height;
 
-    return Scaffold(
+    return !_isModalOpen ? 
+    Scaffold(
         backgroundColor: Color(0x4fF4F1DE),
         body: SafeArea(
             child: Column(children: [
@@ -143,7 +147,9 @@ class PledgePageState extends State<PledgePage> {
                       children: [
                         InkResponse(
                           onTap: () {
-                            context.go('/onboarding/method');
+                            setState(() {
+                              _isModalOpen = true;
+                            });
                           },
                           splashFactory: InkRipple.splashFactory,
                           borderRadius: BorderRadius.circular(
@@ -162,6 +168,45 @@ class PledgePageState extends State<PledgePage> {
                   ),
           )
         ])),
-        bottomNavigationBar: BottomNavigationBarWidget(currentIndex: 2));
+        bottomNavigationBar: BottomNavigationBarWidget(currentIndex: 2)) 
+        : 
+        DonationSetupModal(closeModal: () {
+          setState(() {
+            _isModalOpen = false;
+          });
+        });
+  }
+}
+
+class DonationSetupModal extends StatelessWidget {
+  final void Function() closeModal ;
+  const DonationSetupModal({Key? key, required this.closeModal}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Color(0x4FF4F1DE),
+    body: Stack(
+      children: [
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              width: 500.0,
+              child: DonationSetup(onDonationSetupComplete: closeModal),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 16.0,
+          right: 16.0,
+          child: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: closeModal,
+          ),
+        ),
+      ],
+    ),
+  );
   }
 }

@@ -18,6 +18,7 @@ class _DonationSetupState extends State<DonationSetup> {
   String? _selectedCharity;
   String? _selectedMethod;
   int? _selectedRoundupAmount;
+  String? _selectedWatchedAccount;
   // final UserDoc? userDoc = Provider.of<UserDoc?>(context);
 
   final Map<String, String> _methods = {
@@ -166,6 +167,58 @@ class _DonationSetupState extends State<DonationSetup> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
+                                        'from ',
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Color(0xFF3D405B)),
+                                      ),
+                                      SizedBox(width: 8.0),
+                                      ConstrainedBox(
+                                        constraints:
+                                            BoxConstraints(maxWidth: 350.0),
+                                        child: DropdownButtonFormField<String>(
+                                          decoration: InputDecoration(
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFE07A5F),
+                                                width: 1.0,
+                                                style: BorderStyle.solid,
+                                              ),
+                                            ),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 5.0),
+                                          ),
+                                          value: _selectedWatchedAccount,
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _selectedWatchedAccount = value;
+                                            });
+                                          },
+                                          items: userDoc
+                                              .basiq['availableAccounts']
+                                              .map<DropdownMenuItem<String>>(
+                                                  (dynamic account) =>
+                                                      DropdownMenuItem<String>(
+                                                          value: account['id'],
+                                                          child: Text(
+                                                              account['name'] ??
+                                                                  "N/A")))
+                                              .toList(),
+                                          hint: Text(
+                                              'connected bank account for transactions'),
+                                          validator: (value) => value == null
+                                              ? 'Please select a bank account you want to monitor for transactions'
+                                              : null,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 16.0),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
                                         'to the nearest ',
                                         style: TextStyle(
                                             fontSize: 18.0,
@@ -260,72 +313,28 @@ class _DonationSetupState extends State<DonationSetup> {
               //   ),
               // ),
               padding: EdgeInsets.all(5.0),
-              child: _selectedMethod == null
-                  ? Container()
-                  : _selectedMethod == '10% of my income'
-                      ? Column(
-                          children: [
-                            Text(
-                              '10% of my income',
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF3D405B),
-                              ),
-                            ),
-                            SizedBox(height: 16.0),
-                            Text(
-                              'By selecting this method, you will donate 10% of your income to the chosen charity on a regular basis. This is a great way to ensure a consistent and meaningful contribution to the cause. Please ensure you have the necessary funds available to cover your donation commitment.',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Color(0xFF3D405B),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        )
-                      : _selectedMethod == '1% of my income'
-                          ? Column(
-                              children: [
-                                Text(
-                                  '1% of my income',
-                                  style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF3D405B),
-                                  ),
-                                ),
-                                SizedBox(height: 16.0),
-                                Text(
-                                  'By selecting this method, you will donate 1% of your income to the chosen charity on a regular basis. This is a great way to ensure a consistent and meaningful contribution to the cause. Please ensure you have the necessary funds available to cover your donation commitment.',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Color(0xFF3D405B),
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                Text(
-                                  'Round-up to nearest dollar',
-                                  style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF3D405B),
-                                  ),
-                                ),
-                                SizedBox(height: 10.0),
-                                Text(
-                                  'By selecting this method, your purchases will be rounded up to the nearest dollar and the difference will be donated to the chosen charity on a regular basis. This is a great way to donate without even noticing. Please ensure you have the necessary funds available to cover your donation commitment.',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Color(0xFF3D405B),
-                                  ),
-                                ),
-                              ],
-                            ),
+              child: _selectedMethod == 'round-up'
+                  ? Column(
+                      children: [
+                        Text(
+                          'Round-up to nearest dollar',
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF3D405B),
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        Text(
+                          'By selecting this method, your purchases will be rounded up to the nearest dollar and the difference will be donated to the chosen charity on a regular basis. This is a great way to donate without even noticing. Please ensure you have the necessary funds available to cover your donation commitment.',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Color(0xFF3D405B),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
             ),
             SizedBox(height: 20.0),
             Row(
@@ -350,7 +359,7 @@ class _DonationSetupState extends State<DonationSetup> {
 
                       if (_selectedMethod == "round-up") {
                         await db.updateRoundupConfig(
-                            isEnabled: true, roundTo: _selectedRoundupAmount);
+                            isEnabled: true, roundTo: _selectedRoundupAmount, watchedAccountId: _selectedWatchedAccount);
                       }
 
                       if (widget.onDonationSetupComplete != null) {

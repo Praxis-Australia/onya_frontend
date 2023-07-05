@@ -24,9 +24,6 @@ class RoundupPreference extends StatelessWidget {
         userDoc.donationMethods['roundup']['watchedAccountId'];
     String? debitAccountId =
         userDoc.donationMethods['roundup']['debitAccountId'];
-    num? roundTo = userDoc.donationMethods['roundup']['roundTo'];
-    bool isEnabled =
-        (isOnboarding) ? true : userDoc.donationMethods['roundup']['isEnabled'];
 
     // print(userDoc!.basiq['availableAccounts'][0].runtimeType);
     List<DropdownMenuItem<String>>? accountDropdownItems = userDoc
@@ -47,33 +44,6 @@ class RoundupPreference extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Watched account',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Color(0xff3D405B),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: 'Select an account to monitor for round-ups',
-                    contentPadding: EdgeInsets.only(top:10, bottom: 10),
-                      // hide label after chocie
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                  ),
-                  value: userDoc.donationMethods['roundup']['watchedAccountId'],
-                  onChanged: (String? accountId) =>
-                      {watchedAccountId = accountId!},
-                  items: accountDropdownItems,
-                  validator: (String? value) {
-                    if (value == null) {
-                      return 'Please select an account';
-                    }
-                    return null;
-                  },
-                ),
                 SizedBox(height: heightOfDevice/30),
                 const Text(
                   'Debit account',

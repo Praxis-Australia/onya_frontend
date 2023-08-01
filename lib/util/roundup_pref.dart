@@ -40,101 +40,106 @@ class RoundupPreference extends StatelessWidget {
     double heightOfDevice = MediaQuery.of(context).size.height;
 
     return SizedBox(
-        width: widthOfDevice/1.2,
-        height: heightOfDevice/3,
+        width: widthOfDevice / 1.2,
+        height: heightOfDevice / 3,
         child: Form(
             key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: [
-                const Text(
-                  'Watched account',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Color(0xff3D405B),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: 'Select an account to monitor for round-ups',
-                    contentPadding: EdgeInsets.only(top:10, bottom: 10),
-                      // hide label after chocie
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                  ),
-                  value: userDoc.donationMethods['roundup']['watchedAccountId'],
-                  onChanged: (String? accountId) =>
-                      {watchedAccountId = accountId!},
-                  items: accountDropdownItems,
-                  validator: (String? value) {
-                    if (value == null) {
-                      return 'Please select an account';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: heightOfDevice/30),
-                const Text(
-                  'Debit account',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Color(0xff3D405B),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      labelText:
-                          'Select an account to debit from for donations',
-                      contentPadding: EdgeInsets.only(top:10, bottom: 10),
-                      // hide label after chocie
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Watched account',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color(0xff3D405B),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    value: debitAccountId,
-                    onChanged: (String? accountId) =>
-                        {debitAccountId = accountId},
-                    items: accountDropdownItems,
-                    validator: (String? value) {
-                      if (value == null) {
-                        return 'Please select an account';
-                      }
-                      return null;
-                    }),
-                SizedBox(height: heightOfDevice/40),
-                // Disable button if no FormFields has changed
-                Center(child:ElevatedButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      print("validated");
-                      await db.updateRoundupConfig(false, debitAccountId!,
-                          watchedAccountId!, 0);
-                    }
-                    if (isOnboarding) {
-                      print("is onboarding");
-                      context.go('/onboarding/methods');
-                    }
-                  },
-                  // Style
-                  style: ElevatedButton.styleFrom(
-                    primary: const Color(0xff3D405B),
-                    onPrimary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                    DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'Select an account to monitor for round-ups',
+                        contentPadding: EdgeInsets.only(top: 10, bottom: 10),
+                        // hide label after chocie
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                      ),
+                      value: userDoc.donationMethods['roundup']
+                          ['watchedAccountId'],
+                      onChanged: (String? accountId) =>
+                          {watchedAccountId = accountId!},
+                      items: accountDropdownItems,
+                      validator: (String? value) {
+                        if (value == null) {
+                          return 'Please select an account';
+                        }
+                        return null;
+                      },
                     ),
-                    // add insets
-                    padding: EdgeInsets.symmetric(
-                        horizontal: widthOfDevice/20, vertical: heightOfDevice/40),
-                  ),
-                  child: Text(
-                        "Save preferences",
-                        style: TextStyle(
-                          fontSize: 500*20.0/widthOfDevice,
-                          color: Colors.white,
-                        )),
-                        
-                ))
+                    SizedBox(height: heightOfDevice / 30),
+                    const Text(
+                      'Debit account',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color(0xff3D405B),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          labelText:
+                              'Select an account to debit from for donations',
+                          contentPadding: EdgeInsets.only(top: 10, bottom: 10),
+                          // hide label after chocie
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                        ),
+                        value: debitAccountId,
+                        onChanged: (String? accountId) =>
+                            {debitAccountId = accountId},
+                        items: accountDropdownItems,
+                        validator: (String? value) {
+                          if (value == null) {
+                            return 'Please select an account';
+                          }
+                          return null;
+                        }),
+                    SizedBox(height: heightOfDevice / 40),
+                    // Disable button if no FormFields has changed
+                    Center(
+                        child: ElevatedButton(
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          print("validated");
+                          await db.updateRoundupConfig(
+                              false, debitAccountId!, watchedAccountId!, 0);
+                        }
+                        if (isOnboarding) {
+                          print("is onboarding");
+                          context.go('/onboarding/methods');
+                        }
+                      },
+                      // Style
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xff3D405B),
+                        onPrimary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        // add insets
+                        padding: EdgeInsets.symmetric(
+                            horizontal: widthOfDevice / 20,
+                            vertical: heightOfDevice / 40),
+                      ),
+                      child: Text("Save preferences",
+                          style: TextStyle(
+                            fontSize: 500 * 20.0 / widthOfDevice,
+                            color: Colors.white,
+                          )),
+                    ))
+                  ],
+                )
               ],
             )));
   }

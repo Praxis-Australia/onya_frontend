@@ -23,7 +23,6 @@ import 'package:onya_frontend/pages/congrats_page.dart';
 import 'package:onya_frontend/pages/pledges_page.dart';
 import 'package:onya_frontend/pages/data_page.dart';
 
-
 import 'models.dart';
 
 final GoRouter router = GoRouter(
@@ -64,15 +63,12 @@ final GoRouter router = GoRouter(
           GoRoute(
               path: 'roundup',
               builder: (context, state) => const RoundupPage()),
+          GoRoute(path: 'data', builder: (context, state) => const DataPage()),
           GoRoute(
-              path: 'data',
-              builder: (context, state) => const DataPage()),
+              path: 'pledges', builder: (context, state) => const PledgePage()),
           GoRoute(
               path: 'settings',
               builder: (context, state) => const SettingsPage()),
-          GoRoute(
-              path: 'pledges',
-              builder: (context, state) => const PledgePage()),
         ]),
     GoRoute(
       path: '/login',

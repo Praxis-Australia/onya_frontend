@@ -51,7 +51,7 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
         path: '/',
-        builder: (context, state) => const HomePage(),
+        pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
         routes: <RouteBase>[
           GoRoute(
               path: 'payments',
@@ -66,13 +66,13 @@ final GoRouter router = GoRouter(
               builder: (context, state) => const RoundupPage()),
           GoRoute(
               path: 'data',
-              builder: (context, state) => const DataPage()),
+              pageBuilder: (context, state) => const NoTransitionPage(child: DataPage())),
           GoRoute(
               path: 'settings',
-              builder: (context, state) => const SettingsPage()),
+              pageBuilder: (context, state) => const NoTransitionPage(child: SettingsPage())),
           GoRoute(
               path: 'pledges',
-              builder: (context, state) => const PledgePage()),
+              pageBuilder: (context, state) => const NoTransitionPage(child: PledgePage())),
         ]),
     GoRoute(
       path: '/login',

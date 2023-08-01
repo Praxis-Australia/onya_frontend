@@ -25,7 +25,7 @@ class ConnectBasiq extends StatelessWidget {
     Future<void> onPressConnect() async {
       try {
         String accessToken = await db.getClientToken();
-        String consentUrl = 'https://consent.basiq.io/home?token=$accessToken';
+        String consentUrl = 'https://consent.basiq.io/home?token=$accessToken&action=payment';
         String stateParam = '&state=Test';
         launchUrl(Uri.parse(consentUrl + stateParam));
       } catch (e) {

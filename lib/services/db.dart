@@ -78,6 +78,10 @@ class DatabaseService {
     if (lastName != null) payload['lastName'] = lastName;
 
     await _firestore.collection('users').doc(uid).update(payload);
+
+    // This is a bit hacky but easiest to just pass email data from Firestore here
+    payload['email'] = await getUser().then((user) => user.email);
+
     try {
       await _functions.httpsCallable('createBasiqUser').call(payload);
     } on FirebaseFunctionsException catch (e) {
@@ -89,7 +93,7 @@ class DatabaseService {
   }
 
   Future<void> addEmail(String email) async {
-    // TODO
+    await _firestore.collection('users').doc(uid).update({'email': email});
   }
 
   Future<String> getClientToken() async {

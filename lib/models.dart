@@ -7,10 +7,11 @@ class UserDoc {
   final Map<String, dynamic> donationMethods;
   final String? firstName;
   final String? lastName;
+  final String? email;
   final Timestamp userCreated;
 
   UserDoc(this.uid, this.basiq, this.charitySelection, this.donationMethods,
-      this.firstName, this.lastName, this.userCreated);
+      this.firstName, this.lastName, this.email, this.userCreated);
 
   factory UserDoc.fromDocSnapshot(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
@@ -22,6 +23,7 @@ class UserDoc {
       data['donationMethods'] as Map<String, dynamic>,
       data['firstName'] as String?,
       data['lastName'] as String?,
+      data['email'] as String?,
       data['userCreated'] as Timestamp,
     );
   }

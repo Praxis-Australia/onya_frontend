@@ -88,6 +88,10 @@ class DatabaseService {
     }
   }
 
+  Future<void> addEmail(String email) async {
+    // TODO
+  }
+
   Future<String> getClientToken() async {
     try {
       HttpsCallableResult res =

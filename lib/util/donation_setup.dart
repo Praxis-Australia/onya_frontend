@@ -39,6 +39,7 @@ class _DonationSetupState extends State<DonationSetup> {
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
     final Map<String, Charity> _charities =
         Provider.of<Map<String, Charity>>(context);
+    final double width = MediaQuery.of(context).size.width;
 
     return Form(
         key: _formKey,
@@ -72,7 +73,7 @@ class _DonationSetupState extends State<DonationSetup> {
                       ),
                       SizedBox(height: 10.0),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'I want to donate to ',
@@ -81,7 +82,7 @@ class _DonationSetupState extends State<DonationSetup> {
                           ),
                           SizedBox(width: 8.0),
                           ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: 250.0),
+                            constraints: BoxConstraints(maxWidth: width/2.5),
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
@@ -103,7 +104,7 @@ class _DonationSetupState extends State<DonationSetup> {
                               items: _charities.entries
                                   .map((entry) => DropdownMenuItem(
                                         value: entry.key,
-                                        child: Text(entry.value.displayName),
+                                        child: Text(entry.value.shortName),
                                       ))
                                   .toList(),
                               hint: Text('charity'),
@@ -125,7 +126,7 @@ class _DonationSetupState extends State<DonationSetup> {
                           ),
                           SizedBox(width: 8.0),
                           ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: 350.0),
+                            constraints: BoxConstraints(maxWidth: width/2),
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
@@ -175,7 +176,7 @@ class _DonationSetupState extends State<DonationSetup> {
                                       SizedBox(width: 8.0),
                                       ConstrainedBox(
                                         constraints:
-                                            BoxConstraints(maxWidth: 350.0),
+                                            BoxConstraints(maxWidth: width/1.5),
                                         child: DropdownButtonFormField<String>(
                                           decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
@@ -206,7 +207,7 @@ class _DonationSetupState extends State<DonationSetup> {
                                                                   "N/A")))
                                               .toList(),
                                           hint: Text(
-                                              'connected bank account for transactions'),
+                                              'connected account'),
                                           validator: (value) => value == null
                                               ? 'Please select a bank account you want to monitor for transactions'
                                               : null,
@@ -227,9 +228,9 @@ class _DonationSetupState extends State<DonationSetup> {
                                       SizedBox(width: 8.0),
                                       ConstrainedBox(
                                         constraints:
-                                            BoxConstraints(maxWidth: 250.0),
+                                            BoxConstraints(maxWidth: width/2.5),
                                         child: DropdownButtonFormField<int>(
-                                          decoration: InputDecoration(
+                                      decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
                                                 color: Color(0xFFE07A5F),
@@ -267,75 +268,8 @@ class _DonationSetupState extends State<DonationSetup> {
             // This should be a container which updates depending on the
             // user's selection of cahrity choosing to display the charity's
             // information depending on the user's selection
-            Container(
-                // decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(20.0),
-                // color: Colors.white,
-                // border: Border.all(
-                //   color: Color(0xFF3D405B),
-                //   width: 1.0,
-                //   style: BorderStyle.solid,
-                // ),
-                // ),
-                padding: EdgeInsets.all(5.0),
-                child: _selectedCharity == null
-                    ? Container()
-                    : Column(
-                        children: [
-                          Text(
-                            _charities[_selectedCharity]?.displayName ?? '',
-                            style: TextStyle(
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF3D405B),
-                            ),
-                          ),
-                          SizedBox(height: 16.0),
-                          Text(
-                            _charities[_selectedCharity]?.description ?? '',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              color: Color(0xFF3D405B),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      )),
             SizedBox(height: 10.0),
-            Container(
-              // decoration: BoxDecoration(
-              //   color: Colors.white,
-              //   borderRadius: BorderRadius.circular(20.0),
-              //   border: Border.all(
-              //     color: Color(0xFF3D405B),
-              //     width: 1.0,
-              //     style: BorderStyle.solid,
-              //   ),
-              // ),
-              padding: EdgeInsets.all(5.0),
-              child: _selectedMethod == 'round-up'
-                  ? Column(
-                      children: [
-                        Text(
-                          'Round-up to nearest dollar',
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF3D405B),
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          'By selecting this method, your purchases will be rounded up to the nearest dollar and the difference will be donated to the chosen charity on a regular basis. This is a great way to donate without even noticing. Please ensure you have the necessary funds available to cover your donation commitment.',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Color(0xFF3D405B),
-                          ),
-                        ),
-                      ],
-                    )
-                  : Container(),
-            ),
+          
             SizedBox(height: 20.0),
             Row(
                 // Add alignment to right hand side

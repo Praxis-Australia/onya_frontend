@@ -22,6 +22,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _login() async {
+    // TODO: Add state change to show loading indicator
     try {
       confirmationResult = await _auth.signInWithPhoneNumber(phoneNumber);
       setState(() {

@@ -11,11 +11,12 @@ import 'package:onya_frontend/util/my_roundup_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:onya_frontend/util/giving_card.dart';
 import 'package:onya_frontend/util/bottom_navigation_bar.dart';
+import 'package:onya_frontend/util/global_scaffold.dart';
 
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   HomePageState createState() => HomePageState();
@@ -39,7 +40,7 @@ class HomePageState extends State<HomePage> {
         } else {
           return length * 100;
         }
-      }  
+    }
 
     final num roundupAccruedSum = userDoc?.donationMethods['nextDebit']['accruedAmount'] ?? 0;
     final num donationSum = onyaTransactions?.fold(0, (sum, transaction) {
@@ -53,28 +54,11 @@ class HomePageState extends State<HomePage> {
     double widthOfDevice = MediaQuery.of(context).size.width;
     double heightOfDevice = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-        backgroundColor: Color(0x4fF4F1DE),
-        body: SafeArea(
+    return GlobalScaffold(
+      body: Container(
+        color: Color(0x4fF4F1DE),
+        child: SafeArea(
             child: Column(children: [
-                          // const SizedBox(height: 25),
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'onya.',
-                  style: TextStyle(
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF003049),
-                  ),
-                ),
-              ],
-            ), // Row
-          ), // Padding
-
           SizedBox(height: heightOfDevice/40),
           Container(
               height: heightOfDevice/4,
@@ -111,7 +95,7 @@ class HomePageState extends State<HomePage> {
             width: widthOfDevice/1.1
           ),
         ])),
-        bottomNavigationBar: BottomNavigationBarWidget(currentIndex:0)
-      );
+      ),
+      currentIndex: 0);
   }
 }

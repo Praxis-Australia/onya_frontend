@@ -3,6 +3,7 @@ import 'package:onya_frontend/services/db.dart';
 import 'package:provider/provider.dart';
 import 'package:onya_frontend/models.dart';
 import 'package:go_router/go_router.dart';
+import 'package:onya_frontend/functions/font_sizing_functions.dart';
 
 // class GivingCard extends StatelessWidget {
 //   final num index;
@@ -99,6 +100,9 @@ class RoundupCard extends StatelessWidget {
     final double roundToAmount = userDoc.donationMethods!['roundup']['roundTo'];
     final String method = "purchases rounded to the nearest \$${roundToAmount/100}";
 
+    double widthOfDevice = MediaQuery.of(context).size.width;
+    double heightOfDevice = MediaQuery.of(context).size.height;
+
     return SizedBox(
         width: 525.0,
         child: Column(
@@ -133,7 +137,7 @@ class RoundupCard extends StatelessWidget {
                           ],
                         ),
                         style: TextStyle(
-                          fontSize: 24.0,
+                          fontSize: getFontSize(0.04, widthOfDevice, heightOfDevice),
                           color: Color(0xFF3D405B),
                         ),
                       ),

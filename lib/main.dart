@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import 'router.dart';
+import 'dart:ui';
 import 'firebase_options.dart';
 import "package:scaled_app/scaled_app.dart";
 import "package:flutter/widgets.dart";
@@ -79,7 +80,26 @@ class MyApp extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const CircularProgressIndicator();
+                    return MaterialApp(
+                      color: Colors.black.withOpacity(0.5),
+                      home: Scaffold(
+                        body: Stack(
+                          children: <Widget>[
+                            Center(
+                              child: Container(
+                                child: Container(
+                                  height: MediaQuery.of(context).size.width * 0.4,
+                                  width: MediaQuery.of(context).size.width * 0.4, 
+                                  child:Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   }
                 });
           }

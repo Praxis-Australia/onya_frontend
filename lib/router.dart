@@ -7,6 +7,7 @@ import 'package:onya_frontend/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:onya_frontend/util/email_signup.dart';
 import 'package:provider/provider.dart';
 
 import 'package:onya_frontend/pages/complete_registration.dart';
@@ -22,7 +23,7 @@ import 'package:onya_frontend/pages/giving_page.dart';
 import 'package:onya_frontend/pages/congrats_page.dart';
 import 'package:onya_frontend/pages/pledges_page.dart';
 import 'package:onya_frontend/pages/data_page.dart';
-
+import 'package:onya_frontend/pages/email_page.dart';
 
 import 'models.dart';
 
@@ -40,6 +41,10 @@ final GoRouter router = GoRouter(
         return '/onboarding';
       }
 
+      if (userDoc.email == null) {
+        return '/onboarding/email';
+      }
+
       if (userDoc.basiq["configStatus"] == "BASIQ_USER_CREATED") {
         return '/onboarding/basiq-setup';
       }
@@ -51,7 +56,8 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
         path: '/',
-        pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: HomePage()),
         routes: <RouteBase>[
           GoRoute(
               path: 'payments',
@@ -66,13 +72,16 @@ final GoRouter router = GoRouter(
               builder: (context, state) => const RoundupPage()),
           GoRoute(
               path: 'data',
-              pageBuilder: (context, state) => const NoTransitionPage(child: DataPage())),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: DataPage())),
           GoRoute(
               path: 'settings',
-              pageBuilder: (context, state) => const NoTransitionPage(child: SettingsPage())),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: SettingsPage())),
           GoRoute(
               path: 'pledges',
-              pageBuilder: (context, state) => const NoTransitionPage(child: PledgePage())),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: PledgePage())),
         ]),
     GoRoute(
       path: '/login',
@@ -82,6 +91,10 @@ final GoRouter router = GoRouter(
       path: '/onboarding',
       builder: (context, state) => const CompleteRegistrationPage(),
       routes: <RouteBase>[
+        GoRoute(
+          path: 'email',
+          builder: (context, state) => const EmailPage(),
+        ),
         GoRoute(
           path: 'basiq-setup',
           builder: (context, state) => const BasiqSetupPage(),

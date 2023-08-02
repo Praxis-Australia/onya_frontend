@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import 'package:onya_frontend/util/my_phone_login.dart';
+import 'package:onya_frontend/util/email_signup.dart';
+
+class EmailPage extends StatefulWidget {
+  const EmailPage({Key? key}) : super(key: key);
+
+  @override
+  EmailPageState createState() => EmailPageState();
+}
+
+class EmailPageState extends State<EmailPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Color(0x4fF4F1DE),
+        body: SafeArea(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'onya.',
+                  style: TextStyle(
+                    fontSize: 70.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff3D405B),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 35.0,
+          ),
+          Center(
+            child: Container(
+              width: 300.0,
+              height: 200.0,
+              child: EmailSignup(),
+            ),
+          ),
+          SizedBox(
+            height: 00.0,
+          )
+        ])));
+  }
+}

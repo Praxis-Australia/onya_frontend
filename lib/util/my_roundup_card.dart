@@ -23,7 +23,7 @@ class MyRoundupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyCard(
-      titleText: 'Accrued Roundup',
+      titleText: 'Donations To Give',
       amount: accAmount.toString(),
       color: color,
     );

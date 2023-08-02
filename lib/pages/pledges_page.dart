@@ -51,130 +51,130 @@ class PledgePageState extends State<PledgePage> {
     double widthOfDevice = MediaQuery.of(context).size.width;
     double heightOfDevice = MediaQuery.of(context).size.height;
 
-    return !_isModalOpen ? 
-    GlobalScaffold(
-      currentIndex: 2,
-      body: Scaffold(
-        backgroundColor: Color(0x4fF4F1DE),
-        body: SafeArea(
-            child: Column(children: [
-          // const SizedBox(height: 25),
-              Padding(
-                padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      // Make this string work even if ${userDoc!.firstName}! is null
-                      'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
-                      style: TextStyle(
-                        fontSize: 400 * 50.0 / widthOfDevice,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF003049),
-                      ),
-                    ),
-                  ],
-                ), // Row
-              ), // Padding
-
-              SizedBox(height: heightOfDevice / 70),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'You have made the following pledges:',
-                      style: TextStyle(
-                        fontSize: 200 * 50.0 / widthOfDevice,
-                        // fontWeight: FontWeight.bold,
-                        color: Color(0xFF003049),
-                      ),
-                    ),
-                  ],
-                ), // Row
-              ), // Padding
-
-              SizedBox(height: heightOfDevice / 50),
-
-              GivingCardsList(width: widthOfDevice - 50),
-
-              // Button sending you to the onboarding/method page
-              Container(
-                child: userDoc!.donationMethods['roundup']['isEnabled']
-                    ? Container()
-                    : Padding(
-                        padding: const EdgeInsets.only(
-                            left: 25.0, right: 25.0, top: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkResponse(
-                              onTap: () {
-                                setState(() {
-                                  _isModalOpen = true;
-                                });
-                              },
-                              splashFactory: InkRipple.splashFactory,
-                              borderRadius: BorderRadius.circular(
-                                  30), // Make sure this value is equal to the CircleAvatar radius
-                              child: CircleAvatar(
-                                backgroundColor: Color(0xFF003049),
-                                radius:
-                                    30, // Adjust this value to make the circle bigger or smaller
-                                child: Icon(Icons.add,
-                                    color: Colors.white,
-                                    size: 30.0), // Increase the icon size
-                              ),
-                            ),
-                          ],
+    return !_isModalOpen
+        ? GlobalScaffold(
+            currentIndex: 2,
+            body: Scaffold(
+                backgroundColor: Color(0x4fF4F1DE),
+                body: SafeArea(
+                    child: Column(children: [
+                  // const SizedBox(height: 25),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(left: 25.0, right: 25.0, top: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          // Make this string work even if ${userDoc!.firstName}! is null
+                          'Great stuff ' + (userDoc!.firstName ?? 'User') + '!',
+                          style: TextStyle(
+                            fontSize: 400 * 40.0 / widthOfDevice,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF003049),
+                          ),
                         ),
-                      ),
-              )
-            ])))
-    ) :
-    GlobalScaffold(
-      body: DonationSetupModal(closeModal: () {
-          setState(() {
-            _isModalOpen = false;
-          });
-      }), 
-      currentIndex: 2);
+                      ],
+                    ), // Row
+                  ), // Padding
+
+                  SizedBox(height: heightOfDevice / 70),
+
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 25.0, right: 25.0, top: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'You have made the pledge:',
+                          style: TextStyle(
+                            fontSize: 200 * 50.0 / widthOfDevice,
+                            // fontWeight: FontWeight.bold,
+                            color: Color(0xFF003049),
+                          ),
+                        ),
+                      ],
+                    ), // Row
+                  ), // Padding
+
+                  SizedBox(height: heightOfDevice / 50),
+
+                  GivingCardsList(width: widthOfDevice - 50),
+
+                  // Button sending you to the onboarding/method page
+                  Container(
+                    child: userDoc!.donationMethods['roundup']['isEnabled']
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(
+                                left: 25.0, right: 25.0, top: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkResponse(
+                                  onTap: () {
+                                    setState(() {
+                                      _isModalOpen = true;
+                                    });
+                                  },
+                                  splashFactory: InkRipple.splashFactory,
+                                  borderRadius: BorderRadius.circular(
+                                      30), // Make sure this value is equal to the CircleAvatar radius
+                                  child: CircleAvatar(
+                                    backgroundColor: Color(0xFF003049),
+                                    radius:
+                                        30, // Adjust this value to make the circle bigger or smaller
+                                    child: Icon(Icons.add,
+                                        color: Colors.white,
+                                        size: 30.0), // Increase the icon size
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                  )
+                ]))))
+        : GlobalScaffold(
+            body: DonationSetupModal(closeModal: () {
+              setState(() {
+                _isModalOpen = false;
+              });
+            }),
+            currentIndex: 2);
   }
 }
 
-
-
 class DonationSetupModal extends StatelessWidget {
-  final void Function() closeModal ;
-  const DonationSetupModal({Key? key, required this.closeModal}) : super(key: key);
+  final void Function() closeModal;
+  const DonationSetupModal({Key? key, required this.closeModal})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: Color(0x4FF4F1DE),
-    body: Stack(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              width: 500.0,
-              child: DonationSetup(onDonationSetupComplete: closeModal),
+    return Scaffold(
+      backgroundColor: Color(0x4FF4F1DE),
+      body: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                width: 500.0,
+                child: DonationSetup(onDonationSetupComplete: closeModal),
+              ),
             ),
           ),
-        ),
-        Positioned(
-          top: 16.0,
-          right: 16.0,
-          child: IconButton(
-            icon: Icon(Icons.close),
-            onPressed: closeModal,
+          Positioned(
+            top: 16.0,
+            right: 16.0,
+            child: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: closeModal,
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
   }
 }

@@ -37,14 +37,14 @@ class RoundupPreference extends StatelessWidget {
     double heightOfDevice = MediaQuery.of(context).size.height;
 
     return SizedBox(
-        width: widthOfDevice/1.2,
-        height: heightOfDevice/3,
+        // width: widthOfDevice / 1.2,
+        // height: heightOfDevice / 4,
         child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: heightOfDevice/30),
+                // SizedBox(height: heightOfDevice / 30),
                 const Text(
                   'Debit account',
                   style: TextStyle(
@@ -58,7 +58,7 @@ class RoundupPreference extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText:
                           'Select an account to debit from for donations',
-                      contentPadding: EdgeInsets.only(top:10, bottom: 10),
+                      contentPadding: EdgeInsets.only(top: 10, bottom: 10),
                       // hide label after chocie
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
@@ -72,9 +72,10 @@ class RoundupPreference extends StatelessWidget {
                       }
                       return null;
                     }),
-                SizedBox(height: heightOfDevice/40),
+                SizedBox(height: heightOfDevice / 40),
                 // Disable button if no FormFields has changed
-                Center(child:ElevatedButton(
+                Center(
+                    child: ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
                       print("validated");
@@ -89,23 +90,27 @@ class RoundupPreference extends StatelessWidget {
                     }
                   },
                   // Style
+                  // ElevatedButton(
+                  //             onPressed: () async {
+                  //               if (true) {
+                  //                 _validate();
+                  //               }
+                  //             },
+                  //             style: ElevatedButton.styleFrom(
+                  //               backgroundColor: Color(0xff3D405B),
+                  //               foregroundColor: Colors.white,
+                  //             ),
+                  //             child: const Text('Validate'),
+                  //           ),
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xff3D405B),
-                    onPrimary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    // add insets
-                    padding: EdgeInsets.symmetric(
-                        horizontal: widthOfDevice/20, vertical: heightOfDevice/40),
+                    backgroundColor: Color(0xFF003049),
+                    foregroundColor: Colors.white,
                   ),
-                  child: Text(
-                        "Save preferences",
-                        style: TextStyle(
-                          fontSize: 500*20.0/widthOfDevice,
-                          color: Colors.white,
-                        )),
-                        
+                  child: Text("Save preferences",
+                      style: TextStyle(
+                        fontSize: 400 * 20.0 / widthOfDevice,
+                        color: Colors.white,
+                      )),
                 ))
               ],
             )));

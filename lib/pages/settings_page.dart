@@ -32,19 +32,24 @@ class SettingsPageState extends State<SettingsPage> {
             children: [
               SizedBox(height: heightOfDevice / 50),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: heightOfDevice / 70),
+                padding: EdgeInsets.symmetric(horizontal: widthOfDevice * 0.05),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 1.0,
-                          spreadRadius: 1.0,
-                          offset: Offset(1, 1.0),
-                        )
-                      ]),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: const Offset(1, 1),
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Color(0xFF003049),
+                      width: 1,
+                    ),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -79,16 +84,20 @@ class SettingsPageState extends State<SettingsPage> {
                 padding: EdgeInsets.symmetric(horizontal: widthOfDevice * 0.05),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 1.0,
-                        spreadRadius: 1.0,
-                        offset: Offset(1, 1.0),
-                      )
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: const Offset(1, 1),
+                      ),
                     ],
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Color(0xFF003049),
+                      width: 1,
+                    ),
                   ),
                   padding: EdgeInsets.all(30),
                   child: SingleChildScrollView(

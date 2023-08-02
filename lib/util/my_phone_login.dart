@@ -16,6 +16,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
   final TextEditingController _otpController = TextEditingController();
   String phoneNumber = '';
   bool _otpSent = false;
+  bool _sending_request = false;
   Exception? _errorMessage;
   late ConfirmationResult confirmationResult;
 
@@ -23,6 +24,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
 
   void _login() async {
     // TODO: Add state change to show loading indicator
+    setState(() => _sending_request = true);
     try {
       confirmationResult = await _auth.signInWithPhoneNumber(phoneNumber);
       setState(() {
@@ -31,9 +33,11 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
     } on Exception catch (e) {
       print(e);
     }
+    setState(() => _sending_request = false);
   }
 
   void _validate() async {
+    setState(() => _sending_request = true);
     try {
       await confirmationResult.confirm(_otpController.text);
       context.go('/');
@@ -44,6 +48,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
         print("there was an exception");
       });
     }
+    setState(() => _sending_request = false);
   }
 
   @override
@@ -76,18 +81,20 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     alignment: Alignment.center,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (true) {
-                          _login();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff3D405B),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Login'),
-                    ),
+                    child: _sending_request
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: () async {
+                              if (true) {
+                                _login();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff3D405B),
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Login'),
+                          ),
                   )
                 ],
               )),
@@ -110,18 +117,20 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       alignment: Alignment.center,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (true) {
-                            _validate();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff3D405B),
-                          foregroundColor: Colors.white,
-                        ),
-                        child: const Text('Validate'),
-                      ),
+                      child: _sending_request
+                          ? const CircularProgressIndicator()
+                          : ElevatedButton(
+                              onPressed: () async {
+                                if (true) {
+                                  _validate();
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xff3D405B),
+                                foregroundColor: Colors.white,
+                              ),
+                              child: const Text('Validate'),
+                            ),
                     )
                   ])),
         ]));

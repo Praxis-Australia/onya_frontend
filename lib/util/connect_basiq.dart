@@ -5,8 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:onya_frontend/models.dart';
 
-class ConnectBasiq extends StatelessWidget {
+class ConnectBasiq extends StatefulWidget {
   const ConnectBasiq({Key? key}) : super(key: key);
+
+  @override
+  _ConnectBasiqState createState() => _ConnectBasiqState();
+}
+
+class _ConnectBasiqState extends State<ConnectBasiq> {
+  bool _sending_request = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +30,40 @@ class ConnectBasiq extends StatelessWidget {
     }
 
     Future<void> onPressConnect() async {
+      setState(() => _sending_request = true);
       try {
         String accessToken = await db.getClientToken();
-        String consentUrl = 'https://consent.basiq.io/home?token=$accessToken&action=payment';
+        String consentUrl =
+            'https://consent.basiq.io/home?token=$accessToken&action=payment';
         String stateParam = '&state=Test';
-        launchUrl(Uri.parse(consentUrl + stateParam));
+        await launch(consentUrl + stateParam);
       } catch (e) {
         print(e);
       }
+      setState(() => _sending_request = false);
     }
 
     return SizedBox(
         width: 300.0,
         height: 400.0,
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text("Open the Button below to connect your bank"),
-            ElevatedButton(
-                onPressed: onPressConnect,
-                child: const Text("Connect bank account")),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              alignment: Alignment.center,
+              child: _sending_request
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: onPressConnect,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff3D405B),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text("Connect bank account"),
+                    ),
+            ),
             const Text(
                 "Once you've connected your bank account through the link, click the button below to continue"),
             Container(
@@ -51,8 +72,8 @@ class ConnectBasiq extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onPressContinue,
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xff3D405B),
                   foregroundColor: Colors.white,
-                  backgroundColor: Colors.blue, // foreground
                 ),
                 child: const Text('Continue'),
               ),

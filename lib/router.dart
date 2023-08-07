@@ -7,15 +7,10 @@ import 'package:onya_frontend/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:onya_frontend/util/email_signup.dart';
 import 'package:provider/provider.dart';
 
 import 'package:onya_frontend/pages/complete_registration.dart';
-import 'package:onya_frontend/pages/give_page.dart';
-import 'package:onya_frontend/pages/methods_page.dart';
-import 'package:onya_frontend/pages/send_page.dart';
 import 'package:onya_frontend/pages/settings_page.dart';
-import 'package:onya_frontend/pages/statistics_page.dart';
 import 'package:onya_frontend/pages/home_page.dart';
 import 'package:onya_frontend/pages/payments_page.dart';
 import 'package:onya_frontend/pages/login_page.dart';
@@ -23,7 +18,6 @@ import 'package:onya_frontend/pages/giving_page.dart';
 import 'package:onya_frontend/pages/congrats_page.dart';
 import 'package:onya_frontend/pages/pledges_page.dart';
 import 'package:onya_frontend/pages/data_page.dart';
-import 'package:onya_frontend/pages/email_page.dart';
 
 import 'models.dart';
 
@@ -37,15 +31,14 @@ final GoRouter router = GoRouter(
     }
 
     if (userDoc != null) {
-      if (userDoc.firstName == null || userDoc.lastName == null) {
+      if (userDoc.firstName == null ||
+          userDoc.lastName == null ||
+          userDoc.email == null ||
+          userDoc.basiq["configStatus"] == "NOT_CONFIGURED") {
         return '/onboarding';
       }
 
-      if (userDoc.email == null) {
-        return '/onboarding/email';
-      }
-
-      if (userDoc.basiq["configStatus"] == "BASIQ_USER_CREATED") {
+      if (userDoc.basiq["configStatus"] != "COMPLETE") {
         return '/onboarding/basiq-setup';
       }
     }
@@ -92,10 +85,6 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const CompleteRegistrationPage(),
       routes: <RouteBase>[
         GoRoute(
-          path: 'email',
-          builder: (context, state) => const EmailPage(),
-        ),
-        GoRoute(
           path: 'basiq-setup',
           builder: (context, state) => const BasiqSetupPage(),
         ),
@@ -104,7 +93,7 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const RoundupOnboardingPage(),
         ),
         GoRoute(
-          path: 'method',
+          path: 'methods',
           builder: (context, state) => const DonationPage(),
         ),
         GoRoute(

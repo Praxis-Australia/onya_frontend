@@ -33,10 +33,15 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
       setState(() => _sending_request = true);
       try {
         String accessToken = await db.getClientToken();
-        String consentUrl =
-            'https://consent.basiq.io/home?token=$accessToken&action=payment';
-        String stateParam = '&state=Test';
-        await launch(consentUrl + stateParam);
+        Uri consentUrl = Uri(
+            scheme: 'https',
+            host: 'consent.basiq.io',
+            path: '/home',
+            queryParameters: {
+              'token': accessToken,
+              'action': 'payment',
+            });
+        await launchUrl(consentUrl);
       } catch (e) {
         print(e);
       }

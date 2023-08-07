@@ -17,28 +17,16 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final DatabaseService db = Provider.of<DatabaseService>(context);
 
-    Future<void> onPressConnect() async {
-      try {
-        String accessToken = await db.getClientToken();
-        String consentUrl = 'https://consent.basiq.io/home?token=$accessToken';
-        String stateParam = '&state=Test';
-        launchUrl(Uri.parse(consentUrl + stateParam));
-      } catch (e) {
-        print(e);
-      }
-    }
-
     Future<void> onPress() async {
       try {
-        await db.completeRegistration(
-            _firstNameController.text, _lastNameController.text);
-        await onPressConnect();
-        // Run the connect basiq function from the connect_basiq.dart page
+        await db.completeRegistration(_firstNameController.text,
+            _lastNameController.text, _emailController.text);
         context.go('/onboarding/basiq-setup');
       } catch (e) {
         print(e);
@@ -48,9 +36,8 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
     return Scaffold(
         backgroundColor: Color(0x4fF4F1DE),
         body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Padding(
             padding: const EdgeInsets.only(left: 25.0, right: 25.0),
             child: Row(
@@ -97,6 +84,19 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
                             validator: (String? value) {
                               if (value!.isEmpty) {
                                 return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
                               }
                               return null;
                             },

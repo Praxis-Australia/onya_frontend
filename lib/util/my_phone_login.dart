@@ -30,7 +30,9 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
       setState(() {
         _otpSent = true;
       });
-    } on Exception catch (e) {
+    } on FirebaseException catch (e) {
+      print(e.message);
+    } catch (e) {
       print(e);
     }
     setState(() => _sending_request = false);

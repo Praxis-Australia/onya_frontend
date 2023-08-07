@@ -8,7 +8,7 @@ class DatabaseService {
     _firestore = FirebaseFirestore.instance;
     _functions = FirebaseFunctions.instanceFor(region: 'australia-southeast1');
 
-    // _functions.useFunctionsEmulator('localhost', 5001);
+    _functions.useFunctionsEmulator('localhost', 5001);
   }
 
   final String uid;
@@ -72,15 +72,15 @@ class DatabaseService {
     });
   }
 
-  Future<void> completeRegistration(String? firstName, String? lastName) async {
-    Map<String, dynamic> payload = {};
-    if (firstName != null) payload['firstName'] = firstName;
-    if (lastName != null) payload['lastName'] = lastName;
+  Future<void> completeRegistration(
+      String firstName, String lastName, String email) async {
+    Map<String, dynamic> payload = {
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+    };
 
     await _firestore.collection('users').doc(uid).update(payload);
-
-    // This is a bit hacky but easiest to just pass email data from Firestore here
-    payload['email'] = await getUser().then((user) => user.email);
 
     try {
       await _functions.httpsCallable('createBasiqUser').call(payload);
@@ -92,15 +92,11 @@ class DatabaseService {
     }
   }
 
-  Future<void> addEmail(String email) async {
-    await _firestore.collection('users').doc(uid).update({'email': email});
-  }
-
   Future<String> getClientToken() async {
     try {
       HttpsCallableResult res =
-          await _functions.httpsCallable('getClientToken').call();
-      return res.data['access_token'];
+          await _functions.httpsCallable('fetchClientToken').call();
+      return res.data;
     } on FirebaseFunctionsException {
       rethrow;
     } catch (e) {

@@ -84,7 +84,6 @@ class OnyaTransactionDoc {
   final Map<String, dynamic> payer;
   final String description;
   final num amount;
-  final Map<String, dynamic> charitySelection;
   final List<dynamic> donationSources;
 
   OnyaTransactionDoc(
@@ -96,7 +95,6 @@ class OnyaTransactionDoc {
       this.payer,
       this.description,
       this.amount,
-      this.charitySelection,
       this.donationSources);
 
   factory OnyaTransactionDoc.fromDocSnapshot(DocumentSnapshot doc) {
@@ -110,7 +108,6 @@ class OnyaTransactionDoc {
         data['payer'] as Map<String, dynamic>,
         data['description'] as String,
         data['amount'] as num,
-        data['charitySelection'] as Map<String, dynamic>,
         data['donationSources'] as List<dynamic>);
   }
 }
@@ -120,19 +117,12 @@ class Charity {
   final String displayName;
   final String shortName;
   final String description;
-  
-  Charity(
-      this.id,
-      this.displayName,
-      this.shortName,
-      this.description);
+
+  Charity(this.id, this.displayName, this.shortName, this.description);
 
   factory Charity.fromDocSnapshot(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return Charity(
-        doc.id,
-        data['displayName'] as String,
-        data['shortName'] as String,
-        data['description'] as String);
+    return Charity(doc.id, data['displayName'] as String,
+        data['shortName'] as String, data['description'] as String);
   }
 }

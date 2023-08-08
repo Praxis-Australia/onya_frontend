@@ -33,19 +33,21 @@ class HomePageState extends State<HomePage> {
         Provider.of<Iterable<OnyaTransactionDoc>?>(context);
 
     double getHeight(num length, num heightOfDevice) {
-        if (length == 0) {
-          return 0;
-        } else if (length * 100 > heightOfDevice/2) {
-          return heightOfDevice/2;
-        } else {
-          return length * 100;
-        }
+      if (length == 0) {
+        return 0;
+      } else if (length * 100 > heightOfDevice / 2) {
+        return heightOfDevice / 2;
+      } else {
+        return length * 100;
+      }
     }
 
-    final num roundupAccruedSum = userDoc?.donationMethods['nextDebit']['accruedAmount'] ?? 0;
+    final num roundupAccruedSum =
+        userDoc?.donationMethods['nextDebit']['accruedAmount'] ?? 0;
     final num donationSum = onyaTransactions?.fold(0, (sum, transaction) {
-      return (sum ?? 0) + transaction.amount;
-    }) ?? 0;
+          return (sum ?? 0) + transaction.amount;
+        }) ??
+        0;
 
     // Define a variable called blue
     final Color blue = Color(0xFF003049);
@@ -55,47 +57,45 @@ class HomePageState extends State<HomePage> {
     double heightOfDevice = MediaQuery.of(context).size.height;
 
     return GlobalScaffold(
-      body: Container(
-        color: Color(0x4fF4F1DE),
-        child: SafeArea(
-            child: Column(children: [
-          SizedBox(height: heightOfDevice/40),
-          Container(
-              height: heightOfDevice/4,
-              width: widthOfDevice,
-              child: PageView(
-                scrollDirection: Axis.horizontal,
-                controller: _controller,
-                children: [
-                  MyTotalDonationsCard(
-                    total: donationSum / 100,
-                    color: Color(0xFF003049),
-                  ),
-                  MyRoundupCard(
-                    accAmount: roundupAccruedSum / 100,
-                    color: Color(0xFF003049),
-                  ),
-                ],
-              )),
+        body: Container(
+          color: Color(0x4fF4F1DE),
+          child: SafeArea(
+              child: Column(children: [
+            SizedBox(height: heightOfDevice / 40),
+            Container(
+                height: heightOfDevice / 4,
+                width: widthOfDevice,
+                child: PageView(
+                  scrollDirection: Axis.horizontal,
+                  controller: _controller,
+                  children: [
+                    MyTotalDonationsCard(
+                      total: donationSum / 100,
+                      color: Color(0xFF003049),
+                    ),
+                    MyRoundupCard(
+                      accAmount: roundupAccruedSum / 100,
+                      color: Color(0xFF003049),
+                    ),
+                  ],
+                )),
 
-          SizedBox(height: heightOfDevice/40),
+            SizedBox(height: heightOfDevice / 40),
 
-          SmoothPageIndicator(
-            controller: _controller,
-            count: 2,
-            effect: const ExpandingDotsEffect(
-              activeDotColor: Color(0xFF003049),
+            SmoothPageIndicator(
+              controller: _controller,
+              count: 2,
+              effect: const ExpandingDotsEffect(
+                activeDotColor: Color(0xFF003049),
+              ),
             ),
-          ),
 
-          const SizedBox(height: 25),
+            const SizedBox(height: 25),
 
-          // Put two boxes of the same color here
-          GivingCardsList(
-            width: widthOfDevice/1.1
-          ),
-        ])),
-      ),
-      currentIndex: 0);
+            // Put two boxes of the same color here
+            GivingCardsList(width: widthOfDevice / 1.1),
+          ])),
+        ),
+        currentIndex: 0);
   }
 }

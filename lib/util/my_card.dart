@@ -19,7 +19,7 @@ class MyCard extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Container(
-            width: 300,
+            width: 400,
             padding: EdgeInsets.all(25.0),
             decoration: BoxDecoration(
               color: color,

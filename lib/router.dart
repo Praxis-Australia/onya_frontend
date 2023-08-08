@@ -71,10 +71,10 @@ final GoRouter router = GoRouter(
               path: 'settings',
               pageBuilder: (context, state) =>
                   const NoTransitionPage(child: SettingsPage())),
-          GoRoute(
-              path: 'pledges',
-              pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: PledgePage())),
+          // GoRoute(
+          //     path: 'pledges',
+          //     pageBuilder: (context, state) =>
+          //         const NoTransitionPage(child: PledgePage())),
         ]),
     GoRoute(
       path: '/login',

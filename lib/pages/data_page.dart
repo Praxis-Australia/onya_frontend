@@ -60,7 +60,8 @@ class DataPageState extends State<DataPage> {
         color: Color(0x4fF4F1DE),
         child: Column(
           children: [
-            SizedBox(height: heightOfDevice / 70),
+            // SizedBox(height: heightOfDevice / 70),
+            SizedBox(height: heightOfDevice / 50),
             Padding(
               padding: const EdgeInsets.only(left: 25.0, right: 25.0),
               child: Row(
@@ -69,17 +70,14 @@ class DataPageState extends State<DataPage> {
                   RichText(
                     text: TextSpan(
                       text: 'You have donated ',
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        color: Color(0xFF003049),
-                      ),
+                      style: TextStyle(fontSize: 30.0, color: Colors.black),
                       children: <TextSpan>[
                         TextSpan(
-                          text: '\$' + donationSum.toString(),
+                          text: '\$' + (donationSum / 100).toString(),
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF003049),
+                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -93,41 +91,43 @@ class DataPageState extends State<DataPage> {
               height: heightOfDevice / 3,
               width: widthOfDevice - 50,
               decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.white,
-                  width: 1,
-                ),
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.5),
+                //     spreadRadius: 1,
+                //     blurRadius: 1,
+                //     offset: const Offset(1, 1),
+                //   ),
+                // ],
+                color: Colors.transparent,
+                // borderRadius: BorderRadius.circular(20),
+                // border: Border.all(
+                //   color: Color(0xFF003049),
+                //   width: 1,
+                // ),
               ),
               child: GraphCard(),
             ),
             SizedBox(height: heightOfDevice / 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: 'Your recent transactions ',
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        color: Color(0xFF003049),
-                      ),
+            onyaTransactions!.length == 0
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Your recent transactions ',
+                            style: TextStyle(
+                              fontSize: 30.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
             SizedBox(height: heightOfDevice / 50),
             Container(
               height: heightOfDevice / 4.5,
@@ -147,7 +147,7 @@ class DataPageState extends State<DataPage> {
                           text: TextSpan(
                             children: [
                               const TextSpan(
-                                text: 'You donated ',
+                                text: 'You donated \$',
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
@@ -155,9 +155,10 @@ class DataPageState extends State<DataPage> {
                                 ),
                               ),
                               TextSpan(
-                                text: onyaTransactions
-                                    .elementAt(index)
-                                    .amount
+                                text: ((onyaTransactions
+                                            .elementAt(index)
+                                            .amount) /
+                                        100)
                                     .toString(),
                                 style: TextStyle(
                                   fontSize: 20.0,

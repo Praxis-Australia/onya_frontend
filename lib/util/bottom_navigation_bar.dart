@@ -37,15 +37,9 @@ class BottomNavigationBarWidget extends StatelessWidget {
             label: 'Data',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.group,
-                size: 40,
-                color: currentIndex == 2 ? Colors.white : Colors.white54),
-            label: 'Pledges',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.settings,
                 size: 40,
-                color: currentIndex == 3 ? Colors.white : Colors.white54),
+                color: currentIndex == 2 ? Colors.white : Colors.white54),
             label: 'Settings',
           ),
         ],
@@ -58,9 +52,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
               context.go('/data');
               break;
             case 2:
-              context.go('/pledges');
-              break;
-            case 3:
               context.go('/settings');
               break;
           }

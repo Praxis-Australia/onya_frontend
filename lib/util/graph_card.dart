@@ -6,11 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class GraphCard extends StatelessWidget {
-  const GraphCard({
-    Key? key,
-    typeOfGraph: 'totalDonations' // other option is byCharity
-  
-  })
+  const GraphCard(
+      {Key? key, typeOfGraph: 'totalDonations' // other option is byCharity
+      })
       : super(key: key);
 
   @override
@@ -19,7 +17,7 @@ class GraphCard extends StatelessWidget {
     final DatabaseService db = Provider.of<DatabaseService>(context);
     final Iterable<OnyaTransactionDoc>? onyaTransactions =
         Provider.of<Iterable<OnyaTransactionDoc>?>(context);
-    
+
     String typeOfGraph = 'totalDonations';
 
     if (userDoc == null) {
@@ -33,19 +31,19 @@ class GraphCard extends StatelessWidget {
         List<Point> points = [];
         List sortedTransactions = onyaTransactions.toList()
           ..sort((a, b) => a.created.compareTo(b.created));
-        
-        num earliestCreated = sortedTransactions.first.created.millisecondsSinceEpoch / 86400000;
+
+        num earliestCreated =
+            sortedTransactions.first.created.millisecondsSinceEpoch / 86400000;
 
         num cumulativeAmount = 0;
 
         sortedTransactions.forEach((transaction) {
-          print(transaction.amount);
           cumulativeAmount += transaction.amount;
-          print("Cumm amount" + cumulativeAmount.toString());
-          // Convert transaction to days since epoch and round to nearest day making it an integer
-          num daysSinceEpoch = transaction.created.millisecondsSinceEpoch / 86400000;
+          num daysSinceEpoch =
+              transaction.created.millisecondsSinceEpoch / 86400000;
           daysSinceEpoch -= earliestCreated;
-          points.add(Point(daysSinceEpoch.toInt(), cumulativeAmount.toInt()));
+          points.add(Point(daysSinceEpoch.toInt(),
+              cumulativeAmount.toInt().toDouble() / 100));
         });
 
         seriesList.add(charts.Series<Point, int>(
@@ -58,61 +56,53 @@ class GraphCard extends StatelessWidget {
       }
 
       return Container(
-        // width: 550.0,
-        // height: 350.0,
-        // add padding
-        padding: EdgeInsets.symmetric(horizontal:20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Center(
           child: charts.LineChart(
             seriesList,
             animate: true,
             defaultRenderer: charts.LineRendererConfig(strokeWidthPx: 3),
             domainAxis: charts.NumericAxisSpec(
-              tickProviderSpec: charts.BasicNumericTickProviderSpec(
-                zeroBound: false,
-                dataIsInWholeNumbers: true,     
-                desiredTickCount: 5,          
-                // Make the axis thicker
-              ),
               renderSpec: charts.SmallTickRendererSpec(
-                  labelStyle: charts.TextStyleSpec(
-                    fontSize: 16, // Change the font size to your desired value
-                  ),
+                labelStyle: charts.TextStyleSpec(
+                  fontSize: 16,
+                  color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
+                  fontWeight: 'bold',
                 ),
+                lineStyle: charts.LineStyleSpec(
+                  color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
+                  thickness: 2,
+                ),
+                tickLengthPx: 0, // to hide tick marks
+              ),
             ),
             primaryMeasureAxis: charts.NumericAxisSpec(
-              tickProviderSpec: charts.BasicNumericTickProviderSpec(
-                zeroBound: false,
-                dataIsInWholeNumbers: true,
-                // scale axis
-                desiredTickCount: 5,
-              ),
               renderSpec: charts.SmallTickRendererSpec(
-                  labelStyle: charts.TextStyleSpec(
-                    fontSize: 16, // Change the font size to your desired value
-                  ),
+                labelStyle: charts.TextStyleSpec(
+                  fontSize: 16,
+                  color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
+                  fontWeight: 'bold',
                 ),
+                lineStyle: charts.LineStyleSpec(
+                  color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
+                  thickness: 2,
+                ),
+                tickLengthPx: 0, // to hide tick marks
+              ),
             ),
-            // add axis labels
-            defaultInteractions: false,
             behaviors: [
               charts.ChartTitle(
                 'Days',
                 behaviorPosition: charts.BehaviorPosition.bottom,
-                titleOutsideJustification: charts.OutsideJustification.middleDrawArea,
+                titleStyleSpec: charts.TextStyleSpec(
+                  fontSize: 18,
+                  color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
+                  fontWeight: 'bold',
+                ),
+                titleOutsideJustification:
+                    charts.OutsideJustification.middleDrawArea,
               ),
-              // charts.ChartTitle(
-              //   'Total',
-              //   behaviorPosition: charts.BehaviorPosition.start,
-              //   titleOutsideJustification: charts.OutsideJustification.middleDrawArea,
-              //   // Improve the style 
-              //   titleStyleSpec: charts.TextStyleSpec(
-              //     fontSize: 18,
-              //     // Make the color consistent with 0xFF003049 and 0x4fF4F1DE
-              //     color: charts.ColorUtil.fromDartColor(Color(0xFF003049)),
-              //   ),
-              // ),
-            ]
+            ],
           ),
         ),
       );
@@ -124,7 +114,7 @@ class GraphCard extends StatelessWidget {
 
 class Point {
   final int x;
-  final int y;
+  final double y;
 
   Point(this.x, this.y);
 }

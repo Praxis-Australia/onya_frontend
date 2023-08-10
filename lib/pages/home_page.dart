@@ -94,29 +94,21 @@ class HomePageState extends State<HomePage> {
                     child: userDoc!.donationMethods['roundup']['isEnabled']
                         ? Container()
                         : Padding(
-                            padding: const EdgeInsets.only(
-                                left: 25.0, right: 25.0, top: 15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkResponse(
-                                  onTap: () {
-                                    setState(() {
-                                      _isModalOpen = true;
-                                    });
-                                  },
-                                  splashFactory: InkRipple.splashFactory,
-                                  borderRadius: BorderRadius.circular(
-                                      30), // Make sure this value is equal to the CircleAvatar radius
-                                  child: CircleAvatar(
-                                    backgroundColor: Color(0xFF003049),
-                                    radius: 30,
-                                    child: Icon(Icons.add,
-                                        color: Colors.white,
-                                        size: 30.0), // Increase the icon size
-                                  ),
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Center(
+                              child: InkResponse(
+                                onTap: () {
+                                  setState(() {
+                                    _isModalOpen = true;
+                                  });
+                                },
+                                splashFactory: InkRipple.splashFactory,
+                                child: Icon(
+                                  Icons.add,
+                                  color: Color(0xFF003049),
+                                  size: 40.0,
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                   )

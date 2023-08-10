@@ -88,18 +88,18 @@ final GoRouter router = GoRouter(
           path: 'basiq-setup',
           builder: (context, state) => const BasiqSetupPage(),
         ),
-        GoRoute(
-          path: 'roundups',
-          builder: (context, state) => const RoundupOnboardingPage(),
-        ),
+        // GoRoute(
+        //   path: 'roundups',
+        //   builder: (context, state) => const RoundupOnboardingPage(),
+        // ),
         GoRoute(
           path: 'methods',
           builder: (context, state) => const DonationPage(),
         ),
-        GoRoute(
-          path: 'congrats',
-          builder: (context, state) => const CongratsPage(),
-        )
+        // GoRoute(
+        //   path: 'congrats',
+        //   builder: (context, state) => const CongratsPage(),
+        // )
       ],
     ),
   ],

@@ -19,12 +19,13 @@ class _DonationSetupState extends State<DonationSetup> {
   String? _selectedMethod;
   int? _selectedRoundupAmount;
   String? _selectedWatchedAccount;
+  bool _isLoading = false;
   // final UserDoc? userDoc = Provider.of<UserDoc?>(context);
 
   final Map<String, String> _methods = {
     // '10% of my income',
     // '1% of my income',
-    'round-up': 'a round-up of my purchases'
+    'round-up': 'a round-up'
   };
 
   final Map<int, String> _roundupAmounts = {
@@ -39,7 +40,11 @@ class _DonationSetupState extends State<DonationSetup> {
     final UserDoc? userDoc = Provider.of<UserDoc?>(context);
     final Map<String, Charity> _charities =
         Provider.of<Map<String, Charity>>(context);
-    final double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
+
+    if (width > 400) {
+      width = 400;
+    }
 
     return Form(
         key: _formKey,
@@ -67,13 +72,14 @@ class _DonationSetupState extends State<DonationSetup> {
                       Text(
                         userDoc!.firstName! + "'s Pledge",
                         style: TextStyle(
-                            fontSize: 25.0,
-                            color: Color(0xFF3D405B),
-                            fontWeight: FontWeight.bold),
+                          fontSize: 25.0,
+                          color: Colors.black,
+                          // fontWeight: FontWeight.bold
+                        ),
                       ),
                       SizedBox(height: 10.0),
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'I want to donate to ',
@@ -82,7 +88,7 @@ class _DonationSetupState extends State<DonationSetup> {
                           ),
                           SizedBox(width: 8.0),
                           ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: width/2.5),
+                            constraints: BoxConstraints(maxWidth: width / 3),
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
@@ -126,7 +132,7 @@ class _DonationSetupState extends State<DonationSetup> {
                           ),
                           SizedBox(width: 8.0),
                           ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: width/2),
+                            constraints: BoxConstraints(maxWidth: width / 3),
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
@@ -175,8 +181,8 @@ class _DonationSetupState extends State<DonationSetup> {
                                       ),
                                       SizedBox(width: 8.0),
                                       ConstrainedBox(
-                                        constraints:
-                                            BoxConstraints(maxWidth: width/1.5),
+                                        constraints: BoxConstraints(
+                                            maxWidth: width / 1.5),
                                         child: DropdownButtonFormField<String>(
                                           decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
@@ -206,8 +212,7 @@ class _DonationSetupState extends State<DonationSetup> {
                                                               account['name'] ??
                                                                   "N/A")))
                                               .toList(),
-                                          hint: Text(
-                                              'connected account'),
+                                          hint: Text('connected account'),
                                           validator: (value) => value == null
                                               ? 'Please select a bank account you want to monitor for transactions'
                                               : null,
@@ -227,10 +232,10 @@ class _DonationSetupState extends State<DonationSetup> {
                                       ),
                                       SizedBox(width: 8.0),
                                       ConstrainedBox(
-                                        constraints:
-                                            BoxConstraints(maxWidth: width/2.5),
+                                        constraints: BoxConstraints(
+                                            maxWidth: width / 2.5),
                                         child: DropdownButtonFormField<int>(
-                                      decoration: InputDecoration(
+                                          decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
                                                 color: Color(0xFFE07A5F),
@@ -269,43 +274,56 @@ class _DonationSetupState extends State<DonationSetup> {
             // user's selection of cahrity choosing to display the charity's
             // information depending on the user's selection
             SizedBox(height: 10.0),
-          
-            SizedBox(height: 20.0),
             Row(
                 // Add alignment to right hand side
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF3D405B),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50.0, vertical: 15.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    onPressed: () async {
-                      if (!_formKey.currentState!.validate()) {
-                        return;
-                      }
+                  Container(
+                    // padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    alignment: Alignment.center,
+                    child: _isLoading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                _isLoading =
+                                    true; // set loading to true when the button is pressed
+                              });
 
-                      await db.updateCharitySelection({_selectedCharity!: 100});
+                              if (!_formKey.currentState!.validate()) {
+                                setState(() {
+                                  _isLoading =
+                                      false; // set loading to false if validation fails
+                                });
+                                return;
+                              }
 
-                      if (_selectedMethod == "round-up") {
-                        await db.updateRoundupConfig(
-                            isEnabled: true, roundTo: _selectedRoundupAmount, watchedAccountId: _selectedWatchedAccount);
-                      }
+                              await db.updateCharitySelection(
+                                  {_selectedCharity!: 100});
 
-                      if (widget.onDonationSetupComplete != null) {
-                        widget.onDonationSetupComplete!();
-                      }
-                      // context.go('/');
-                    },
-                    child: Text('Finish',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                        )),
+                              if (_selectedMethod == "round-up") {
+                                await db.updateRoundupConfig(
+                                    isEnabled: true,
+                                    roundTo: _selectedRoundupAmount,
+                                    watchedAccountId: _selectedWatchedAccount);
+                              }
+
+                              if (widget.onDonationSetupComplete != null) {
+                                widget.onDonationSetupComplete!();
+                              }
+                              // context.go('/');
+
+                              setState(() {
+                                _isLoading =
+                                    false; // set loading to false once all async operations are done
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF003049),
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Finish'),
+                          ),
                   ),
                 ]),
           ],

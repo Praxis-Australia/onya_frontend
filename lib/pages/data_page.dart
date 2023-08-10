@@ -14,6 +14,7 @@ import 'package:onya_frontend/util/giving_card.dart';
 import 'package:onya_frontend/util/graph_card.dart';
 import 'package:onya_frontend/util/bottom_navigation_bar.dart';
 import 'package:onya_frontend/util/global_scaffold.dart';
+import 'package:onya_frontend/util/transaction_widget.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -109,29 +110,112 @@ class DataPageState extends State<DataPage> {
               child: GraphCard(),
             ),
             SizedBox(height: heightOfDevice / 20),
-            onyaTransactions!.length == 0
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: 'Your recent transactions ',
-                            style: TextStyle(
-                              fontSize: 30.0,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-            SizedBox(height: heightOfDevice / 50),
+            // onyaTransactions!.length == 0
+            //     ? Container()
+            //     : Padding(
+            //         padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             RichText(
+            //               text: TextSpan(
+            //                 text: 'Your recent transactions ',
+            //                 style: TextStyle(
+            //                   fontSize: 30.0,
+            //                   color: Colors.black,
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            // SizedBox(height: heightOfDevice / 50),
+            // Container(
+            //   height: heightOfDevice / 4.5,
+            //   width: widthOfDevice - 50,
+            //   child: ListView.builder(
+            //     itemCount: onyaTransactions!.length,
+            //     itemBuilder: (context, index) {
+            //       return Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           Container(
+            //             height: heightOfDevice / 10,
+            //             padding: const EdgeInsets.all(10),
+            //             alignment: Alignment.center,
+            //             child: RichText(
+            //               text: TextSpan(
+            //                 children: [
+            //                   const TextSpan(
+            //                     text: 'You donated \$',
+            //                     style: TextStyle(
+            //                       fontSize: 20.0,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: Color(0xFF003049),
+            //                     ),
+            //                   ),
+            //                   TextSpan(
+            //                     text: ((onyaTransactions
+            //                                 .elementAt(index)
+            //                                 .amount) /
+            //                             100)
+            //                         .toString(),
+            //                     style: TextStyle(
+            //                       fontSize: 20.0,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: Color(0xFF003049),
+            //                     ),
+            //                   ),
+            //                   const TextSpan(
+            //                     text: ' on ',
+            //                     style: TextStyle(
+            //                       fontSize: 20.0,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: Color(0xFF003049),
+            //                     ),
+            //                   ),
+            //                   TextSpan(
+            //                     text: DateFormat.yMMMMd().format(
+            //                         onyaTransactions
+            //                             .elementAt(index)
+            //                             .created
+            //                             .toDate()),
+            //                     style: TextStyle(
+            //                       fontSize: 20.0,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: Color(0xFF003049),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //             decoration: BoxDecoration(
+            //               boxShadow: [
+            //                 BoxShadow(
+            //                   color: Colors.grey.withOpacity(0.5),
+            //                   spreadRadius: 1,
+            //                   blurRadius: 1,
+            //                   offset: const Offset(1, 1),
+            //                 ),
+            //               ],
+            //               color: Colors.white,
+            //               borderRadius: BorderRadius.circular(20),
+            //               border: Border.all(
+            //                 color: Color(0xFF003049),
+            //                 width: 1,
+            //               ),
+            //             ),
+            //           ),
+            //           SizedBox(height: heightOfDevice / 50),
+            //         ],
+            //       );
+            //     },
+            //   ),
+            // ),
             Container(
               height: heightOfDevice / 4.5,
-              width: widthOfDevice - 50,
+              width: 370,
               child: ListView.builder(
                 itemCount: onyaTransactions!.length,
                 itemBuilder: (context, index) {
@@ -139,79 +223,16 @@ class DataPageState extends State<DataPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        height: heightOfDevice / 10,
-                        padding: const EdgeInsets.all(10),
-                        alignment: Alignment.center,
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: 'You donated \$',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF003049),
-                                ),
-                              ),
-                              TextSpan(
-                                text: ((onyaTransactions
-                                            .elementAt(index)
-                                            .amount) /
-                                        100)
-                                    .toString(),
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF003049),
-                                ),
-                              ),
-                              const TextSpan(
-                                text: ' on ',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF003049),
-                                ),
-                              ),
-                              TextSpan(
-                                text: DateFormat.yMMMMd().format(
-                                    onyaTransactions
-                                        .elementAt(index)
-                                        .created
-                                        .toDate()),
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF003049),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 1,
-                              offset: const Offset(1, 1),
-                            ),
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Color(0xFF003049),
-                            width: 1,
-                          ),
-                        ),
+                      TransactionWidget(
+                        heightOfDevice: heightOfDevice,
+                        transaction: onyaTransactions.elementAt(index),
                       ),
                       SizedBox(height: heightOfDevice / 50),
                     ],
                   );
                 },
               ),
-            ),
+            )
           ],
         ),
       )),

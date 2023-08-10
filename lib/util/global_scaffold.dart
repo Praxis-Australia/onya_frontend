@@ -50,7 +50,7 @@ class GlobalScaffold extends StatelessWidget {
           height: heightOfPageContainer,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
-                40.0), // Adjust this for desired curvature
+                20.0), // Adjust this for desired curvature
             color: Colors.grey, // Background color of the container
             boxShadow: [
               BoxShadow(

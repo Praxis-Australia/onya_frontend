@@ -67,7 +67,9 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Sign in or sign up with your phone number"),
+                  Center(
+                      child: const Text(
+                          "Sign in or sign up with your phone number")),
                   InternationalPhoneNumberInput(
                     onInputChanged: onInputChanged,
                     validator: (String? value) {
@@ -92,7 +94,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff3D405B),
+                              backgroundColor: Color(0xFF003049),
                               foregroundColor: Colors.white,
                             ),
                             child: const Text('Login'),
@@ -128,7 +130,7 @@ class _MyPhoneLoginState extends State<MyPhoneLogin> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff3D405B),
+                                backgroundColor: Color(0xFF003049),
                                 foregroundColor: Colors.white,
                               ),
                               child: const Text('Validate'),

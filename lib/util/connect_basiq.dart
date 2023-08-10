@@ -13,7 +13,9 @@ class ConnectBasiq extends StatefulWidget {
 }
 
 class _ConnectBasiqState extends State<ConnectBasiq> {
-  bool _sending_request = false;
+  bool _sending_request_connect = false;
+  bool _sending_request_continue =
+      false; // Added another flag for continue button
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +23,20 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
     final DatabaseService db = Provider.of<DatabaseService>(context);
 
     Future<void> onPressContinue() async {
+      setState(() =>
+          _sending_request_continue = true); // Set the flag true when pressed
       try {
         await db.checkBasiqConnections();
-        context.go('/onboarding/roundups');
+        context.go('/onboarding/methods');
       } catch (e) {
         print(e);
       }
+      setState(() =>
+          _sending_request_continue = false); // Reset the flag after operation
     }
 
     Future<void> onPressConnect() async {
-      setState(() => _sending_request = true);
+      setState(() => _sending_request_connect = true);
       try {
         String accessToken = await db.getClientToken();
         Uri consentUrl = Uri(
@@ -45,7 +51,7 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
       } catch (e) {
         print(e);
       }
-      setState(() => _sending_request = false);
+      setState(() => _sending_request_connect = false);
     }
 
     return SizedBox(
@@ -58,30 +64,33 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               alignment: Alignment.center,
-              child: _sending_request
+              child: _sending_request_connect
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: onPressConnect,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff3D405B),
+                        backgroundColor: Color(0xFF003049),
                         foregroundColor: Colors.white,
                       ),
                       child: const Text("Connect bank account"),
                     ),
             ),
-            const Text(
-                "Once you've connected your bank account through the link, click the button below to continue"),
+            const Center(child: Text(// Wrapped text with Center
+                "Once you've connected your bank account through the link, click the button below to continue")),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: onPressContinue,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff3D405B),
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Continue'),
-              ),
+              child:
+                  _sending_request_continue // Check for the continue button's flag
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: onPressContinue,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF003049),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Continue'),
+                        ),
             )
           ],
         ));

@@ -16,6 +16,30 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
   bool _sending_request_connect = false;
   bool _sending_request_continue =
       false; // Added another flag for continue button
+  bool _hasFetchedToken = false;
+  String? accessToken;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_hasFetchedToken) {
+      _prepareAccessToken();
+      _hasFetchedToken = true;
+    }
+  }
+
+  Future<void> _prepareAccessToken() async {
+    final DatabaseService db = Provider.of<DatabaseService>(context);
+    setState(() => _sending_request_connect = true);
+
+    try {
+      accessToken = await db.getClientToken();
+    } catch (e) {
+      print("Failed to get token: $e");
+    }
+
+    setState(() => _sending_request_connect = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +59,21 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
           _sending_request_continue = false); // Reset the flag after operation
     }
 
-    Future<void> onPressConnect() async {
+    void onPressConnect() {
+      // Before pressing the button, prepare the token and the URL
+      Uri consentUrl;
+
       setState(() => _sending_request_connect = true);
-      try {
-        String accessToken = await db.getClientToken();
-        Uri consentUrl = Uri(
-            scheme: 'https',
-            host: 'consent.basiq.io',
-            path: '/home',
-            queryParameters: {
-              'token': accessToken,
-              'action': 'payment',
-            });
-        await launchUrl(consentUrl);
-      } catch (e) {
-        print(e);
-      }
+      consentUrl = Uri(
+        scheme: 'https',
+        host: 'consent.basiq.io',
+        path: '/home',
+        queryParameters: {
+          'token': accessToken,
+          'action': 'payment',
+        },
+      );
+      launchUrl(consentUrl);
       setState(() => _sending_request_connect = false);
     }
 
@@ -67,7 +90,7 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
               child: _sending_request_connect
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
-                      onPressed: onPressConnect,
+                      onPressed: accessToken != null ? onPressConnect : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF003049),
                         foregroundColor: Colors.white,

@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../models.dart';
+
 class CompleteRegistrationPage extends StatefulWidget {
   const CompleteRegistrationPage({super.key});
 
@@ -18,19 +20,26 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  bool _sending_request = false;
 
   @override
   Widget build(BuildContext context) {
     final DatabaseService db = Provider.of<DatabaseService>(context);
+    final UserDoc? userDoc = Provider.of<UserDoc?>(context);
 
-    Future<void> onPress() async {
+    void onPress() async {
+      // TODO: Add state change to show loading indicator
+      setState(() => _sending_request = true);
       try {
         await db.completeRegistration(_firstNameController.text,
             _lastNameController.text, _emailController.text);
+        // Wait for 0.1s
+        await Future.delayed(Duration(milliseconds: 100));
         context.go('/onboarding/basiq-setup');
       } catch (e) {
         print(e);
       }
+      setState(() => _sending_request = false);
     }
 
     return Scaffold(
@@ -104,14 +113,16 @@ class CompleteRegistrationPageState extends State<CompleteRegistrationPage> {
                           Container(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             alignment: Alignment.center,
-                            child: ElevatedButton(
-                              onPressed: onPress,
-                              child: const Text('Continue'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xff3D405B), // background
-                                onPrimary: Colors.white, // foreground
-                              ),
-                            ),
+                            child: _sending_request
+                                ? const CircularProgressIndicator()
+                                : ElevatedButton(
+                                    onPressed: onPress,
+                                    child: const Text('Continue'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xff3D405B), // background
+                                      onPrimary: Colors.white, // foreground
+                                    ),
+                                  ),
                           )
                         ]))),
           ),

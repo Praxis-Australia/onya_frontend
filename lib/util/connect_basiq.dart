@@ -51,9 +51,10 @@ class _ConnectBasiqState extends State<ConnectBasiq> {
           _sending_request_continue = true); // Set the flag true when pressed
       try {
         await db.checkBasiqConnections();
-        context.go('/onboarding/methods');
+        context.go('/');
       } catch (e) {
         print(e);
+        context.go('/');
       }
       setState(() =>
           _sending_request_continue = false); // Reset the flag after operation
